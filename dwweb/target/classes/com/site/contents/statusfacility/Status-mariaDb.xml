@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.contents.status.Status">
+	<!-- 상태코드 설정 정보 조회 : 장애 코드만 조회 -->
+	<select id="selectListStatusGroup" resultType="StatusVo">
+		SELECT
+			STATUSNO
+			,DESCRIPTION
+		FROM STATUS_GROUP
+		<!-- WHERE STATUSNO <![CDATA[ > ]]> 4 -->
+	</select>
+	
+	<!-- 시설물 장애 전체 건수조회 -->
+	<select id="selectTotStatus" parameterType="StatusVo" resultType="Integer">
+		SELECT
+			COUNT(*) AS TOTCNT
+		FROM STATUS
+		WHERE 1=1
+		<if test='status != null and status !="" '>
+			AND STATUS = #{status}
+		</if>
+		<if test='keyKind != null and keyKind != "" and keyKind == "name" and keyWord != null and keyWord != ""'>
+			<!-- AND NAME = #{keyWord} -->
+			AND NAME LIKE CONCAT('%',#{keyWord},'%')
+		</if>
+	</select>
+	
+	<!-- 시설물 장애 현황 조회 -->
+	<select id="selectListStatus" parameterType="StatusVo" resultType="StatusVo">
+		SELECT
+			ST.NO
+			,ST.NAME
+			,ST.STATUS
+			,(SELECT DESCRIPTION FROM STATUS_GROUP WHERE STATUSNO = ST.STATUS) AS DESCRIPTION
+		FROM STATUS ST
+		WHERE 1=1
+		<if test='status != null and status !="" '>
+			AND ST.STATUS = #{status}
+		</if>
+		<if test='keyKind != null and keyKind != "" and keyKind == "name" and keyWord != null and keyWord != ""'>
+			<!-- AND ST.NAME = #{keyWord} -->
+			AND NAME LIKE CONCAT('%',#{keyWord},'%')
+		</if> 
+		ORDER BY ST.NO DESC
+		LIMIT #{limitStart}, #{limitEnd}
+	</select>
+	
+	
+	<!-- 임의 데이터 기록 -->
+	<insert id="insertStatus" parameterType="StatusVo">
+		<selectKey keyProperty="no" resultType="String" order="BEFORE">
+			SELECT IFNULL(MAX(NO),0) + 1 AS NO FROM STATUS
+		</selectKey>
+		INSERT INTO STATUS (
+			NO
+			,NAME
+			,STATUS
+		)VALUES(
+			#{no}
+			,#{name}
+			,#{status}
+		)
+	</insert>
+</mapper>

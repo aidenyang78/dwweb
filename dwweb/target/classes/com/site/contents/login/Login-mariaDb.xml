@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.contents.login.Login">
+	
+	<!-- 로그인  -->
+	<select id="selectUserLogin" parameterType="UserVo" resultType="UserVo">
+	
+		SELECT UD.SEQ 
+		       ,UD.GROUP_CODE 
+		       ,(SELECT REG_DESC 
+		         FROM   USER_GROUP 
+		         WHERE  GROUP_CODE = UD.GROUP_CODE) AS GROUP_NM 
+		       ,UD.NAME 
+		       ,UD.USER_ID 
+		       ,UD.USER_PWD 
+		       ,UD.REG_DATE 
+		       ,UD.VALIDATE_DATE 
+		       ,UD.REG_DESC 
+		       ,CASE 
+		          WHEN UD.VALIDATE_DATE <![CDATA[ < ]]> NOW() THEN 'Y' 
+		          ELSE 'N' 
+		        END                                 AS EXPIRED_YN 
+		       ,UA.MAP_EDIT 
+		       ,UA.USER_MODIFY 
+		FROM   USER_DETAIL UD 
+		       ,USER_AUTHORITY UA 
+		WHERE  UD.GROUP_CODE = UA.GROUP_CODE 
+		       AND UD.USER_ID = #{userId} 
+		       AND UD.USER_PWD = password(#{userPwd})
+	</select>
+	
+
+
+</mapper>

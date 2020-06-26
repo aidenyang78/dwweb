@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.contents.crossroadInfo.CrossroadInfo">
+
+<!-- 도로명정보 조회 -->
+	<select id="selectCrossroadListAjax" parameterType="CrossroadInfoVo" resultType="CrossroadInfoVo">
+		SELECT 
+			COUNT(MCI.SEQ) OVER() AS TOT_CNT
+			,MCI.SEQ
+			,MCI.POL_CD
+			,MCI.POL_DISTRICT
+			,MCI.ROUTE_CD
+			,MCI.CROSSROAD_NM
+			,MCI.ROAD_NM
+			,MCI.LAT
+			,MCI.LNG
+		FROM MGMT_CROSSROAD_INFO MCI
+		WHERE MCI.DEL_DATE IS NULL
+		<if test='polCd != null and polCd != ""'>
+			AND MCI.POL_CD = #{polCd}
+		</if>
+		<if test='polDistrict != null and polDistrict != ""'>
+			AND MCI.POL_DISTRICT = #{polDistrict}
+		</if>
+		<if test='routeCd != null and routeCd != ""'>
+			AND MCI.ROUTE_CD = #{routeCd}
+		</if>
+		ORDER BY MCI.CROSSROAD_NM ASC
+	</select>
+</mapper>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.contents.config.Config">
+	<!-- 사용자 아이디 중복 확인 -->
+	<select id="selectMembIdCnt" parameterType="UserVo" resultType="Integer">
+		SELECT
+			COUNT(*)
+		FROM USER_DETAIL
+		WHERE USER_ID = #{userId}
+		<!-- AND DEL_DATE IS NULL -->
+	</select>
+	
+	<!-- 그룹코드 조회 -->
+	<select id="selectGroupCode" parameterType="UserVo" resultType="String">
+		SELECT
+			GROUP_CODE
+		FROM USER_GROUP
+		WHERE SEQ = #{groupCode}
+	</select>
+	
+	<!-- 사용자 전체 카운트 -->
+	<select id="selectTotUsers" parameterType="UserVo" resultType="Integer">
+		SELECT
+			COUNT(*) AS TOT
+			FROM USER_DETAIL UD
+			WHERE UD.DEL_DATE IS NULL
+	<if test='keyKind != null and keyKind != ""'> 		
+		<if test='keyKind == "user_id" and keyWord != null and keyWord != ""'>
+			AND UD.USER_ID LIKE CONCAT('%',#{keyWord},'%')
+		</if>
+		<if test='keyKind == "user_name" and keyWord != null and keyWord != ""'>
+			AND UD.NAME  LIKE CONCAT('%',#{keyWord},'%')
+		</if>
+	</if>
+		<if test='groupCode != null and groupCode !=""'>
+			AND UD.GROUP_CODE = #{groupCode}
+		</if>
+	</select>
+	
+	
+	<!-- 사용자 리스트 조회 -->
+	<select id="selectListUser" parameterType="UserVo" resultType="UserVo">
+		SELECT
+			SEQ
+			,GROUP_CODE
+			,(SELECT REG_DESC FROM USER_GROUP WHERE GROUP_CODE = UD.GROUP_CODE) AS GROUP_NM
+			,NAME
+			,USER_ID
+			,DATE_FORMAT(REG_DATE,'%Y-%m-%d') AS REG_DATE
+			,VALIDATE_DATE
+			,REG_DESC
+		FROM USER_DETAIL UD
+		WHERE UD.DEL_DATE IS NULL
+	<if test='keyKind != null and keyKind != ""'> 		
+		<if test='keyKind == "user_id" and keyWord != null and keyWord != ""'>
+			AND UD.USER_ID LIKE CONCAT('%',#{keyWord},'%')
+		</if>
+		<if test='keyKind == "user_name" and keyWord != null and keyWord != ""'>
+			AND UD.NAME  LIKE CONCAT('%',#{keyWord},'%')
+		</if>
+	</if>
+		<if test='groupCode != null and groupCode !=""'>
+			AND UD.GROUP_CODE = #{groupCode}
+		</if>
+		ORDER BY UD.SEQ DESC
+		LIMIT #{limitStart}, #{limitEnd}
+	</select>
+	
+	<!-- 사용자 등록 -->
+	<insert id="insertUser" parameterType="UserVo">
+	INSERT INTO USER_DETAIL(
+			GROUP_CODE
+			,NAME
+			,USER_ID
+			,USER_PWD
+			,DEPARTMENT
+			,VALIDATE_DATE
+			,REG_DESC
+			,REG_USER_ID
+			,REG_DATE
+		)VALUES(
+			#{groupCode}
+			,#{name}
+			,#{userId}
+			,PASSWORD(#{userPwd})
+			,#{department}
+			,DATE_FORMAT(#{validateDate},'%Y-%m-%d')
+			,#{regDesc}
+			,#{regUserId}
+			,NOW()
+		)
+	</insert>
+	
+	<!-- 사용자 삭제 -->
+	<update id="deleteUserAct" parameterType="UserVo">
+		UPDATE USER_DETAIL
+			SET DEL_USER_ID = #{delUserId}
+			,DEL_DATE = NOW()
+		WHERE
+			SEQ = #{seq}
+			AND USER_ID = #{userId}
+	</update>
+	
+	<!-- 사용자정보 조회 -->
+	<select id="selectUserInfo" parameterType="UserVo" resultType="UserVo">
+		SELECT
+			UD.SEQ
+			,UD.GROUP_CODE
+			,(SELECT REG_DESC FROM USER_GROUP WHERE GROUP_CODE = UD.GROUP_CODE) AS GROUP_NM 
+			,UD.NAME
+			,UD.USER_ID
+			,UD.DEPARTMENT
+			,UD.VALIDATE_DATE
+			,SUBSTRING(UD.VALIDATE_DATE,1,4) AS VALIDATE_DATE_YEAR
+			,SUBSTRING(UD.VALIDATE_DATE,6,2) AS VALIDATE_DATE_MONTH
+			,SUBSTRING(UD.VALIDATE_DATE,9,2) AS VALIDATE_DATE_DAY
+			,UD.REG_DESC
+		FROM USER_DETAIL UD
+		WHERE UD.DEL_DATE IS NULL
+		AND UD.USER_ID = #{userId}
+		AND UD.SEQ = #{seq}
+	</select>
+	
+	<!-- 사용자정보 수정 -->
+	<update id="updateUserAct" parameterType="UserVo">	
+		UPDATE USER_DETAIL SET
+				DEPARTMENT = #{department}
+			<if test='groupCode != null and groupCode != ""'>
+				,GROUP_CODE = #{groupCode}
+			</if>
+			<if test='name != null and name != ""'>
+				,NAME = #{name}
+			</if>
+			<if test='userPwd != null and userPwd != ""'>
+				,USER_PWD = password(#{userPwd})
+			</if>
+			<if test='regDesc != null and regDesc != ""'>
+				,REG_DESC = #{regDesc}
+			</if>
+			<if test='validateDate != null and validateDate != ""'>
+				,VALIDATE_DATE = #{validateDate}
+			</if>
+		WHERE SEQ = #{seq}
+		AND USER_ID = #{userId}
+	</update>
+</mapper>

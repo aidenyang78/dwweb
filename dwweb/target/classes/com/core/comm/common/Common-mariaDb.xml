@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="comm.common.Common">
+	<!-- 월의 마지막날 조회 -->
+	<select id="selectLastDate" parameterType="String" resultType="String">
+		SELECT LAST_DAY(#{strDate})
+	</select>
+	
+	<!-- 그룹코드 조회 -->
+	<select id="selectGroupList" parameterType="String" resultType="GroupVo">
+		SELECT
+			SEQ
+			,GROUP_CODE
+			,REG_DESC
+			,REG_DATE
+		FROM USER_GROUP
+	</select>
+	
+</mapper>

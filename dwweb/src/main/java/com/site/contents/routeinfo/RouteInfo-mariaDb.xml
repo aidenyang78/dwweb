@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.contents.routeInfo.RouteInfo">
+	<select id="selectRouteListAjax" parameterType="RouteInfoVo" resultType="RouteInfoVo">
+		SELECT
+			COUNT(MRI.SEQ) OVER() AS TOT_CNT
+			,MRI.SEQ
+			,MRI.POL_CD
+			,MRI.POL_DISTRICT
+			,MRI.ROUTE_NM
+		FROM MGMT_ROUTE_INFO MRI
+		WHERE MRI.DEL_DATE IS NULL
+		AND MRI.POL_CD = #{polCd}
+		AND MRI.POL_DISTRICT = #{polDistrict}
+		ORDER BY MRI.ROUTE_NM
+	</select>
+</mapper>

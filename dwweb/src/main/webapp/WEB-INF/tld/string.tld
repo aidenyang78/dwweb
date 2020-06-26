@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?> 
+<!DOCTYPE taglib 
+  PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" 
+  "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd"> 
+<taglib> 
+	<tlib-version>1.0</tlib-version> 
+	<jsp-version>1.2</jsp-version> 
+	<short-name>string</short-name> 
+
+	<tag> 
+		<name>subStr</name> 
+		<tag-class>com.iwi.cms.comm.customTag.StringSubStrTag</tag-class> 
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>value</name> 
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>str</name> 
+			<required>false</required> 
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>length</name> 
+			<required>false</required> 
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Integer</type>
+		</attribute>
+	</tag>
+	
+	<tag> 
+		<name>unescape</name> 
+		<tag-class>com.iwi.cms.comm.customTag.StringUnescapeTag</tag-class> 
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>value</name> 
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+	
+	<tag> 
+		<name>removeTag</name> 
+		<tag-class>com.iwi.cms.comm.customTag.StringRemoveTag</tag-class> 
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>value</name> 
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>str</name> 
+			<required>false</required> 
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>length</name> 
+			<required>false</required> 
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<name>searchValue</name> 
+			<required>false</required> 
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+	
+</taglib>

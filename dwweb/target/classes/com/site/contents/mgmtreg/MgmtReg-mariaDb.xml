@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.contents.mgmtReg.MgmtReg">
+
+
+	<!-- 신호관리대장 설치기본 정보 -->
+	<insert id="insertMgmtRegInstall" parameterType="MgmtRegVo" useGeneratedKeys="true" keyProperty="mgmtSeq">
+<!-- <selectKey keyProperty="mgmtSeq" resultType="String" order="AFTER">
+			SELECT MAX(MGMT_SEQ) FROM MGMT_REG_INSTALL
+		</selectKey> -->
+		INSERT INTO MGMT_REG_INSTALL (
+			POL_NM
+			,POL_CD
+			,POL_DISTRICT
+			,ROUTE_CD
+			,ROUTE_NM
+			,CROSSROAD_CD
+			,CROSSROAD_NM
+			,LIGHT_NO1
+			,LIGHT_NO2
+			,LIGHT_NO3
+			,INSTALL_DATE
+			,INSTALL_ADDR_DTL1
+			,INSTALL_ADDR_DTL2
+			,INSTALL_ADDR_DTL3
+			,INSTALL_ADDR_DTL4
+			,INSTALL_ADDR_DTL5
+			,INSTALL_ADDR_DTL6
+			,TYPE_CONTROLL
+			,TYPE_ROAD
+			,LAT
+			,LNG
+			,REG_USERID
+			,REG_DATE
+		)VALUES(
+			#{polNm}
+			,#{polCd}
+			,#{polDistrict}
+			,#{routeCd}
+			,#{routeNm, jdbcType=VARCHAR}
+			,#{crossroadCd}
+			,#{crossroadNm, jdbcType=VARCHAR}
+			,#{lightNo1, jdbcType=VARCHAR}
+			,#{lightNo2, jdbcType=VARCHAR}
+			,#{lightNo3, jdbcType=VARCHAR}
+			,#{installDate, jdbcType=VARCHAR}
+			,#{installAddrDtl1, jdbcType=VARCHAR}
+			,#{installAddrDtl2, jdbcType=VARCHAR}
+			,#{installAddrDtl3, jdbcType=VARCHAR}
+			,#{installAddrDtl4, jdbcType=VARCHAR}
+			,#{installAddrDtl5, jdbcType=VARCHAR}
+			,#{installAddrDtl6, jdbcType=VARCHAR}
+			,#{typeControll, jdbcType=VARCHAR}
+			,#{typeRoad, jdbcType=VARCHAR}
+			,#{lat, jdbcType=VARCHAR}
+			,#{lng, jdbcType=VARCHAR}
+			,#{regUserid}
+			,NOW()
+		)
+</insert>
+	
+	<!-- 공사일반 저장 -->
+	<insert id="insertMgmtRegConstruction" parameterType="MgmtRegVo">
+		INSERT INTO MGMT_REG_CONSTRUCTION (
+			MGMT_SEQ
+			,SIGNAL_RULES
+			,SIGNAL_WIRING
+			,UPS_TYPE
+			,UPS_BAT_EXCHANGE_DATE
+			,CONSTRUCTOR_SIGNAL1
+			,CONSTRUCTOR_SIGNAL2
+			,CONSTRUCTOR_CTRL1
+			,CONSTRUCTOR_CTRL2
+			,CONSTRUCTOR_ENG1
+			,CONSTRUCTOR_ENG2
+			,CONSTRUCTION_EXPENSES
+		)VALUES(
+			#{mgmtSeq}
+			,#{signalRules, jdbcType=VARCHAR}
+			,#{signalWiring, jdbcType=VARCHAR}
+			,#{upsType, jdbcType=VARCHAR}
+			,#{upsBatExchangeDate, jdbcType=VARCHAR}
+			,#{constructorSignal1, jdbcType=VARCHAR}
+			,#{constructorSignal2, jdbcType=VARCHAR}
+			,#{constructorCtrl1, jdbcType=VARCHAR}
+			,#{constructorCtrl2, jdbcType=VARCHAR}
+			,#{constructorEng1, jdbcType=VARCHAR}
+			,#{constructorEng2, jdbcType=VARCHAR}
+			,#{constructionExpenses, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!-- 교통신호등 -->
+	<insert id="insertMgmtRegTrafficLight" parameterType="MgmtRegVo">
+		INSERT INTO MGMT_REG_TRAFFIC_LIGHT(
+			MGMT_SEQ
+			,KIND_TRAFFIC_LIGHT1
+			,KIND_TRAFFIC_LIGHT2
+			,KIND_TRAFFIC_LIGHT3
+			,KIND_TRAFFIC_LIGHT4
+			,KIND_TRAFFIC_LIGHT5
+			,KIND_TRAFFIC_LIGHT6
+			,KIND_TRAFFIC_LIGHT7
+			,KIND_TRAFFIC_LIGHT8
+			,KIND_TRAFFIC_LIGHT9
+			,KIND_TRAFFIC_LIGHT10
+			,KIND_TRAFFIC_LIGHT11
+			,KIND_TRAFFIC_LIGHT12
+			,KIND_TRAFFIC_LIGHT13
+			,KIND_TRAFFIC_LIGHT14
+			,KIND_TRAFFIC_LIGHT15
+			,KIND_TRAFFIC_LIGHT16
+			,KIND_LAMP_WARNING1
+			,KIND_LAMP_WARNING2
+			,KIND_LAMP_WARNING3
+			,KIND_LAMP_WARNING4
+			,KIND_LAMP_WARNING5
+			,KIND_LAMP_WARNING6
+			,KIND_LAMP_WARNING7
+			,KIND_LAMP_WARNING8
+			,KIND_LAMP_WARNING9
+			,KIND_LAMP_WARNING10
+			,KIND_LAMP_WARNING11
+			,KIND_LAMP_WARNING12
+			,KIND_LAMP_VARIABLE1
+			,KIND_LAMP_VARIABLE2
+			,KIND_LAMP_VARIABLE3
+			,KIND_LAMP_VARIABLE4
+			,KIND_LAMP_VARIABLE5
+			,KIND_LAMP_VARIABLE6
+			,KIND_LAMP_VARIABLE7
+			,KIND_LAMP_VARIABLE8
+			,KIND_LAMP_VARIABLE9
+			,KIND_LAMP_VARIABLE10
+			,KIND_LAMP_VARIABLE11
+			,KIND_LAMP_VARIABLE12
+			,KIND_LAMP_WALKING1
+			,KIND_LAMP_WALKING2
+			,KIND_LAMP_WALKING3
+			,KIND_LAMP_WALKING4
+			,KIND_LAMP_WALKING5
+			,KIND_LAMP_WALKING6
+			,KIND_LAMP_WALKING7
+			,KIND_LAMP_WALKING8
+			,KIND_LAMP_WALKING9
+			,KIND_LAMP_WALKING10
+			,KIND_LAMP_WALKING11
+			,KIND_LAMP_WALKING12
+		)VALUES(
+			#{mgmtSeq}
+			,#{kindTrafficLight1, jdbcType=VARCHAR}
+			,#{kindTrafficLight2, jdbcType=VARCHAR}
+			,#{kindTrafficLight3, jdbcType=VARCHAR}
+			,#{kindTrafficLight4, jdbcType=VARCHAR}
+			,#{kindTrafficLight5, jdbcType=VARCHAR}
+			,#{kindTrafficLight6, jdbcType=VARCHAR}
+			,#{kindTrafficLight7, jdbcType=VARCHAR}
+			,#{kindTrafficLight8, jdbcType=VARCHAR}
+			,#{kindTrafficLight9, jdbcType=VARCHAR}
+			,#{kindTrafficLight10, jdbcType=VARCHAR}
+			,#{kindTrafficLight11, jdbcType=VARCHAR}
+			,#{kindTrafficLight12, jdbcType=VARCHAR}
+			,#{kindTrafficLight13, jdbcType=VARCHAR}
+			,#{kindTrafficLight14, jdbcType=VARCHAR}
+			,#{kindTrafficLight15, jdbcType=VARCHAR}
+			,#{kindTrafficLight16, jdbcType=VARCHAR}
+			,#{kindLampWarning1, jdbcType=VARCHAR}
+			,#{kindLampWarning2, jdbcType=VARCHAR}
+			,#{kindLampWarning3, jdbcType=VARCHAR}
+			,#{kindLampWarning4, jdbcType=VARCHAR}
+			,#{kindLampWarning5, jdbcType=VARCHAR}
+			,#{kindLampWarning6, jdbcType=VARCHAR}
+			,#{kindLampWarning7, jdbcType=VARCHAR}
+			,#{kindLampWarning8, jdbcType=VARCHAR}
+			,#{kindLampWarning9, jdbcType=VARCHAR}
+			,#{kindLampWarning10, jdbcType=VARCHAR}
+			,#{kindLampWarning11, jdbcType=VARCHAR}
+			,#{kindLampWarning12, jdbcType=VARCHAR}
+			,#{kindLampVariable1, jdbcType=VARCHAR}
+			,#{kindLampVariable2, jdbcType=VARCHAR}
+			,#{kindLampVariable3, jdbcType=VARCHAR}
+			,#{kindLampVariable4, jdbcType=VARCHAR}
+			,#{kindLampVariable5, jdbcType=VARCHAR}
+			,#{kindLampVariable6, jdbcType=VARCHAR}
+			,#{kindLampVariable7, jdbcType=VARCHAR}
+			,#{kindLampVariable8, jdbcType=VARCHAR}
+			,#{kindLampVariable9, jdbcType=VARCHAR}
+			,#{kindLampVariable10, jdbcType=VARCHAR}
+			,#{kindLampVariable11, jdbcType=VARCHAR}
+			,#{kindLampVariable12, jdbcType=VARCHAR}
+			,#{kindLampWalking1, jdbcType=VARCHAR}
+			,#{kindLampWalking2, jdbcType=VARCHAR}
+			,#{kindLampWalking3, jdbcType=VARCHAR}
+			,#{kindLampWalking4, jdbcType=VARCHAR}
+			,#{kindLampWalking5, jdbcType=VARCHAR}
+			,#{kindLampWalking6, jdbcType=VARCHAR}
+			,#{kindLampWalking7, jdbcType=VARCHAR}
+			,#{kindLampWalking8, jdbcType=VARCHAR}
+			,#{kindLampWalking9, jdbcType=VARCHAR}
+			,#{kindLampWalking10, jdbcType=VARCHAR}
+			,#{kindLampWalking11, jdbcType=VARCHAR}
+			,#{kindLampWalking12, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!-- 신호등 지주 -->
+	<insert id="insertMgmtRegPillar" parameterType="MgmtRegVo">
+		INSERT INTO MGMT_REG_PILLAR(
+			MGMT_SEQ
+			,PILLAR_VEHICLE_LAMP1
+			,PILLAR_VEHICLE_LAMP2
+			,PILLAR_VEHICLE_LAMP3
+			,PILLAR_VEHICLE_LAMP4
+			,PILLAR_VEHICLE_LAMP5
+			,PILLAR_WALKING_LAMP1
+			,PILLAR_WALKING_LAMP2
+			,PILLAR_TRAFFIC_LIGHT1
+			,PILLAR_TRAFFIC_LIGHT2
+			,PILLAR_TRAFFIC_LIGHT3
+			,PILLAR_TRAFFIC_LIGHT4
+			,PILLAR_TRAFFIC_LIGHT5
+			,PILLAR_INTEGRATION1
+			,PILLAR_INTEGRATION2
+			,ATTACH_ETC1
+			,ATTACH_ETC2		
+		)VALUES(
+			#{mgmtSeq}
+			,#{pillarVehicleLamp1, jdbcType=VARCHAR}
+			,#{pillarVehicleLamp2, jdbcType=VARCHAR}
+			,#{pillarVehicleLamp3, jdbcType=VARCHAR}
+			,#{pillarVehicleLamp4, jdbcType=VARCHAR}
+			,#{pillarVehicleLamp5, jdbcType=VARCHAR}
+			,#{pillarWalkingLamp1, jdbcType=VARCHAR}
+			,#{pillarWalkingLamp2, jdbcType=VARCHAR}
+			,#{pillarTrafficLight1, jdbcType=VARCHAR}
+			,#{pillarTrafficLight2, jdbcType=VARCHAR}
+			,#{pillarTrafficLight3, jdbcType=VARCHAR}
+			,#{pillarTrafficLight4, jdbcType=VARCHAR}
+			,#{pillarTrafficLight5, jdbcType=VARCHAR}
+			,#{pillarIntegration1, jdbcType=VARCHAR}
+			,#{pillarIntegration2, jdbcType=VARCHAR}
+			,#{attachEtc1, jdbcType=VARCHAR}
+			,#{attachEtc2, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!-- 신호제어기 -->
+	<insert id="insertMgmtRegController" parameterType="MgmtRegVo">
+		INSERT INTO MGMT_REG_CONTROLLER(
+			MGMT_SEQ
+			,CTRL_ELECTRON
+			,CTRL_CYCLE
+			,CTRL_SENSITIVE
+			,SIGNAL_CYCLE1
+			,SIGNAL_CYCLE2
+			,SIGNAL_CYCLE3
+			,SIGNAL_CYCLE4
+			,SIGNAL_CYCLE5
+			,SIGNAL_CYCLE6
+			,SIGNAL_SEC1
+			,SIGNAL_SEC2
+			,SIGNAL_SEC3
+			,SIGNAL_SEC4
+			,SIGNAL_SEC5
+			,SIGNAL_SEC6
+			,SIGNAL_SEC_TOT
+			,CURRENT_SEL_TIME1
+			,CURRENT_SEL_TIME2
+			,CURRENT_SEL_TIME3
+			,CURRENT_SEL_TIME4
+			,CURRENT_SEL_TIME5
+			,CURRENT_SEL_TIME6
+			,CURRENT_SEL_TIME7
+			,CURRENT_TIME1
+			,CURRENT_TIME2
+			,CURRENT_TIME3
+			,CURRENT_TIME4
+			,CURRENT_TIME5
+			,CURRENT_TIME6
+			,CURRENT_TIME7
+			,SIGNAL_YELLOW1
+			,SIGNAL_YELLOW2
+			,SIGNAL_YELLOW3
+			,SIGNAL_YELLOW4
+			,SIGNAL_YELLOW5
+			,SIGNAL_YELLOW6
+			,SIGNAL_ALL_RED1
+			,SIGNAL_ALL_RED2
+			,SIGNAL_ALL_RED3
+			,SIGNAL_ALL_RED4
+			,SIGNAL_ALL_RED5
+			,SIGNAL_ALL_RED6
+			,SIGNAL_CROSSWALK1
+			,SIGNAL_CROSSWALK2
+			,SIGNAL_CROSSWALK3
+			,SIGNAL_CROSSWALK4
+			,SIGNAL_CROSSWALK5
+			,SIGNAL_CROSSWALK6		
+		)VALUES(
+			#{mgmtSeq}
+			,#{ctrlElectron, jdbcType=VARCHAR}
+			,#{ctrlCycle, jdbcType=VARCHAR}
+			,#{ctrlSensitive, jdbcType=VARCHAR}
+			,#{signalCycle1, jdbcType=VARCHAR}
+			,#{signalCycle2, jdbcType=VARCHAR}
+			,#{signalCycle3, jdbcType=VARCHAR}
+			,#{signalCycle4, jdbcType=VARCHAR}
+			,#{signalCycle5, jdbcType=VARCHAR}
+			,#{signalCycle6, jdbcType=VARCHAR}
+			,#{signalSec1, jdbcType=VARCHAR}
+			,#{signalSec2, jdbcType=VARCHAR}
+			,#{signalSec3, jdbcType=VARCHAR}
+			,#{signalSec4, jdbcType=VARCHAR}
+			,#{signalSec5, jdbcType=VARCHAR}
+			,#{signalSec6, jdbcType=VARCHAR}
+			,#{signalSecTot, jdbcType=VARCHAR}
+			,#{currentSelTime1, jdbcType=VARCHAR}
+			,#{currentSelTime2, jdbcType=VARCHAR}
+			,#{currentSelTime3, jdbcType=VARCHAR}
+			,#{currentSelTime4, jdbcType=VARCHAR}
+			,#{currentSelTime5, jdbcType=VARCHAR}
+			,#{currentSelTime6, jdbcType=VARCHAR}
+			,#{currentSelTime7, jdbcType=VARCHAR}
+			,#{currentTime1, jdbcType=VARCHAR}
+			,#{currentTime2, jdbcType=VARCHAR}
+			,#{currentTime3, jdbcType=VARCHAR}
+			,#{currentTime4, jdbcType=VARCHAR}
+			,#{currentTime5, jdbcType=VARCHAR}
+			,#{currentTime6, jdbcType=VARCHAR}
+			,#{currentTime7, jdbcType=VARCHAR}
+			,#{signalYellow1, jdbcType=VARCHAR}
+			,#{signalYellow2, jdbcType=VARCHAR}
+			,#{signalYellow3, jdbcType=VARCHAR}
+			,#{signalYellow4, jdbcType=VARCHAR}
+			,#{signalYellow5, jdbcType=VARCHAR}
+			,#{signalYellow6, jdbcType=VARCHAR}
+			,#{signalAllRed1, jdbcType=VARCHAR}
+			,#{signalAllRed2, jdbcType=VARCHAR}
+			,#{signalAllRed3, jdbcType=VARCHAR}
+			,#{signalAllRed4, jdbcType=VARCHAR}
+			,#{signalAllRed5, jdbcType=VARCHAR}
+			,#{signalAllRed6, jdbcType=VARCHAR}
+			,#{signalCrosswalk1, jdbcType=VARCHAR}
+			,#{signalCrosswalk2, jdbcType=VARCHAR}
+			,#{signalCrosswalk3, jdbcType=VARCHAR}
+			,#{signalCrosswalk4, jdbcType=VARCHAR}
+			,#{signalCrosswalk5, jdbcType=VARCHAR}
+			,#{signalCrosswalk6, jdbcType=VARCHAR}		
+		)
+	</insert>
+	
+	<!-- 신호관리대장 전체 카운트 -->
+	<select id="selectTotMgmtReg" parameterType="MgmtRegVo" resultType="Integer">
+		SELECT
+			COUNT(*) AS TOT
+		FROM MGMT_REG_INSTALL MRI
+		WHERE DEL_DATE IS NULL
+		<if test='searchDistrict != null and searchDistrict != ""'>
+			AND MRI.POL_DISTRICT = #{searchDistrict}
+		</if>
+		<if test='keyKind != null and keyKind == "routeNm"'>
+			AND MRI.ROUTE_NM LIKE CONCAT('%',#{keyWord},'%')
+		</if>
+		<if test='keyKind != null and keyKind == "crossroadNm"'>
+			AND MRI.CROSSROAD_NM LIKE CONCAT('%',#{keyWord},'%')
+		</if>
+		<if test='keyKind != null and keyKind == "crossroadCd"'>
+			AND MRI.CROSSROAD_CD = #{keyWord}
+		</if>
+	</select>
+	
+	<!-- 신호관리대장 리스트 조회 -->
+	<select id="selectListMgmtReg"  parameterType="MgmtRegVo" resultType="MgmtRegVo">
+		SELECT
+			MRI.MGMT_SEQ
+			,MRI.POL_NM
+			,MRI.POL_CD
+			,MRI.POL_DISTRICT
+			,MRI.ROUTE_CD
+			,MRI.ROUTE_NM
+			,MRI.LIGHT_NO1
+			,MRI.LIGHT_NO2
+			,MRI.LIGHT_NO3
+			<!-- ,INSTALL_DATE -->
+			,DATE_FORMAT(STR_TO_DATE(MRI.INSTALL_DATE, '%Y%m%d'),'%Y-%m-%d ') AS INSTALL_DATE
+			,MRI.CROSSROAD_CD
+			,MRI.CROSSROAD_NM
+			,MRI.INSTALL_ADDR_DTL1
+			,MRI.INSTALL_ADDR_DTL2
+			,MRI.INSTALL_ADDR_DTL3
+			,MRI.INSTALL_ADDR_DTL4
+			,MRI.INSTALL_ADDR_DTL5
+			,MRI.INSTALL_ADDR_DTL6
+			,MRI.TYPE_CONTROLL
+			,MRI.TYPE_ROAD
+			,MRI.LAT
+			,MRI.LNG
+			,MRI.REG_USERID
+			,MRI.REG_DATE
+		FROM MGMT_REG_INSTALL MRI
+		WHERE MRI.DEL_DATE IS NULL
+		<if test='searchDistrict != null and searchDistrict != ""'>
+			AND MRI.POL_DISTRICT = #{searchDistrict}
+		</if>
+		<if test='keyKind != null and keyKind == "routeNm"'>
+			AND MRI.ROUTE_NM LIKE CONCAT('%',#{keyWord},'%')
+		</if>
+		<if test='keyKind != null and keyKind == "crossroadNm"'>
+			AND MRI.CROSSROAD_NM LIKE CONCAT('%',#{keyWord},'%')
+		</if>
+		<if test='keyKind != null and keyKind == "crossroadCd"'>
+			AND MRI.CROSSROAD_CD = #{keyWord}
+		</if>
+		ORDER BY MRI.MGMT_SEQ DESC
+		LIMIT #{limitStart}, #{limitEnd}
+	</select>
+	
+	<!-- 신호관리대장 조회 : 설치 정보 -->
+	<select id="selectMgmtRegInstall" parameterType="MgmtRegVo" resultType="MgmtRegVo">
+		SELECT
+			MRI.MGMT_SEQ
+			,MRI.POL_NM
+			,MRI.POL_CD
+			,MRI.POL_DISTRICT
+			,MRI.ROUTE_CD
+			,MRI.ROUTE_NM
+			,MRI.LIGHT_NO1
+			,MRI.LIGHT_NO2
+			,MRI.LIGHT_NO3
+			,INSTALL_DATE
+			,MRI.CROSSROAD_CD
+			,MRI.CROSSROAD_NM
+			,MRI.INSTALL_ADDR_DTL1
+			,MRI.INSTALL_ADDR_DTL2
+			,MRI.INSTALL_ADDR_DTL3
+			,MRI.INSTALL_ADDR_DTL4
+			,MRI.INSTALL_ADDR_DTL5
+			,MRI.INSTALL_ADDR_DTL6
+			,MRI.TYPE_CONTROLL
+			,MRI.TYPE_ROAD
+			,MRI.LAT
+			,MRI.LNG
+			,MRI.REG_USERID
+			,MRI.REG_DATE
+		FROM MGMT_REG_INSTALL MRI
+		WHERE MRI.DEL_DATE IS NULL
+		AND MRI.MGMT_SEQ = #{mgmtSeq}
+	</select>
+	
+	<!-- 신호관리대장 조회 : 공사일반 -->
+	<select id="selectMgmtRegConstruction"  parameterType="MgmtRegVo" resultType="MgmtRegVo">
+		SELECT
+			MRC.MGMT_SEQ
+			,MRC.SIGNAL_RULES
+			,MRC.SIGNAL_WIRING
+			,MRC.UPS_TYPE
+			,MRC.UPS_BAT_EXCHANGE_DATE
+			,MRC.CONSTRUCTOR_SIGNAL1
+			,MRC.CONSTRUCTOR_SIGNAL2
+			,MRC.CONSTRUCTOR_CTRL1
+			,MRC.CONSTRUCTOR_CTRL2
+			,MRC.CONSTRUCTOR_ENG1
+			,MRC.CONSTRUCTOR_ENG2
+			,MRC.CONSTRUCTION_EXPENSES
+		FROM MGMT_REG_CONSTRUCTION MRC
+		WHERE MRC.MGMT_SEQ = #{mgmtSeq}
+	</select>
+	
+	<!-- 신호관리대장 조회 : 교통신호등 -->
+	<select id="selectMgmtRegTrafficLight"  parameterType="MgmtRegVo" resultType="MgmtRegVo">
+		SELECT
+			MRTL.MGMT_SEQ
+			,MRTL.KIND_TRAFFIC_LIGHT1
+			,MRTL.KIND_TRAFFIC_LIGHT2
+			,MRTL.KIND_TRAFFIC_LIGHT3
+			,MRTL.KIND_TRAFFIC_LIGHT4
+			,MRTL.KIND_TRAFFIC_LIGHT5
+			,MRTL.KIND_TRAFFIC_LIGHT6
+			,MRTL.KIND_TRAFFIC_LIGHT7
+			,MRTL.KIND_TRAFFIC_LIGHT8
+			,MRTL.KIND_TRAFFIC_LIGHT9
+			,MRTL.KIND_TRAFFIC_LIGHT10
+			,MRTL.KIND_TRAFFIC_LIGHT11
+			,MRTL.KIND_TRAFFIC_LIGHT12
+			,MRTL.KIND_TRAFFIC_LIGHT13
+			,MRTL.KIND_TRAFFIC_LIGHT14
+			,MRTL.KIND_TRAFFIC_LIGHT15
+			,MRTL.KIND_TRAFFIC_LIGHT16
+			,MRTL.KIND_LAMP_WARNING1
+			,MRTL.KIND_LAMP_WARNING2
+			,MRTL.KIND_LAMP_WARNING3
+			,MRTL.KIND_LAMP_WARNING4
+			,MRTL.KIND_LAMP_WARNING5
+			,MRTL.KIND_LAMP_WARNING6
+			,MRTL.KIND_LAMP_WARNING7
+			,MRTL.KIND_LAMP_WARNING8
+			,MRTL.KIND_LAMP_WARNING9
+			,MRTL.KIND_LAMP_WARNING10
+			,MRTL.KIND_LAMP_WARNING11
+			,MRTL.KIND_LAMP_WARNING12
+			,MRTL.KIND_LAMP_VARIABLE1
+			,MRTL.KIND_LAMP_VARIABLE2
+			,MRTL.KIND_LAMP_VARIABLE3
+			,MRTL.KIND_LAMP_VARIABLE4
+			,MRTL.KIND_LAMP_VARIABLE5
+			,MRTL.KIND_LAMP_VARIABLE6
+			,MRTL.KIND_LAMP_VARIABLE7
+			,MRTL.KIND_LAMP_VARIABLE8
+			,MRTL.KIND_LAMP_VARIABLE9
+			,MRTL.KIND_LAMP_VARIABLE10
+			,MRTL.KIND_LAMP_VARIABLE11
+			,MRTL.KIND_LAMP_VARIABLE12
+			,MRTL.KIND_LAMP_WALKING1
+			,MRTL.KIND_LAMP_WALKING2
+			,MRTL.KIND_LAMP_WALKING3
+			,MRTL.KIND_LAMP_WALKING4
+			,MRTL.KIND_LAMP_WALKING5
+			,MRTL.KIND_LAMP_WALKING6
+			,MRTL.KIND_LAMP_WALKING7
+			,MRTL.KIND_LAMP_WALKING8
+			,MRTL.KIND_LAMP_WALKING9
+			,MRTL.KIND_LAMP_WALKING10
+			,MRTL.KIND_LAMP_WALKING11
+			,MRTL.KIND_LAMP_WALKING12
+		FROM MGMT_REG_TRAFFIC_LIGHT MRTL
+		WHERE MRTL.MGMT_SEQ = #{mgmtSeq}
+	</select>
+	
+	<!-- 신호관리대장 조회 : 신호등 지주 -->
+	<select id="selectMgmtRegPillar" parameterType="MgmtRegVo" resultType="MgmtRegVo">
+		SELECT
+			MRP.MGMT_SEQ
+			,MRP.PILLAR_VEHICLE_LAMP1
+			,MRP.PILLAR_VEHICLE_LAMP2
+			,MRP.PILLAR_VEHICLE_LAMP3
+			,MRP.PILLAR_VEHICLE_LAMP4
+			,MRP.PILLAR_VEHICLE_LAMP5
+			,MRP.PILLAR_WALKING_LAMP1
+			,MRP.PILLAR_WALKING_LAMP2
+			,MRP.PILLAR_TRAFFIC_LIGHT1
+			,MRP.PILLAR_TRAFFIC_LIGHT2
+			,MRP.PILLAR_TRAFFIC_LIGHT3
+			,MRP.PILLAR_TRAFFIC_LIGHT4
+			,MRP.PILLAR_TRAFFIC_LIGHT5
+			,MRP.PILLAR_INTEGRATION1
+			,MRP.PILLAR_INTEGRATION2
+			,MRP.ATTACH_ETC1
+		,MRP.ATTACH_ETC2
+		FROM MGMT_REG_PILLAR MRP
+		WHERE MRP.MGMT_SEQ = #{mgmtSeq}		
+	</select>
+	
+	<!-- 신호관리대장 조회 : 신호 제어기 -->
+	<select id="selectMgmtRegController" parameterType="MgmtRegVo" resultType="MgmtRegVo">
+		SELECT
+			MRC.MGMT_SEQ
+			,MRC.CTRL_ELECTRON
+			,MRC.CTRL_CYCLE
+			,MRC.CTRL_SENSITIVE
+			,MRC.SIGNAL_CYCLE1
+			,MRC.SIGNAL_CYCLE2
+			,MRC.SIGNAL_CYCLE3
+			,MRC.SIGNAL_CYCLE4
+			,MRC.SIGNAL_CYCLE5
+			,MRC.SIGNAL_CYCLE6
+			,MRC.SIGNAL_SEC1
+			,MRC.SIGNAL_SEC2
+			,MRC.SIGNAL_SEC3
+			,MRC.SIGNAL_SEC4
+			,MRC.SIGNAL_SEC5
+			,MRC.SIGNAL_SEC6
+			,MRC.SIGNAL_SEC_TOT
+			,MRC.CURRENT_SEL_TIME1
+			,MRC.CURRENT_SEL_TIME2
+			,MRC.CURRENT_SEL_TIME3
+			,MRC.CURRENT_SEL_TIME4
+			,MRC.CURRENT_SEL_TIME5
+			,MRC.CURRENT_SEL_TIME6
+			,MRC.CURRENT_SEL_TIME7
+			,MRC.CURRENT_TIME1
+			,MRC.CURRENT_TIME2
+			,MRC.CURRENT_TIME3
+			,MRC.CURRENT_TIME4
+			,MRC.CURRENT_TIME5
+			,MRC.CURRENT_TIME6
+			,MRC.CURRENT_TIME7
+			,MRC.SIGNAL_YELLOW1
+			,MRC.SIGNAL_YELLOW2
+			,MRC.SIGNAL_YELLOW3
+			,MRC.SIGNAL_YELLOW4
+			,MRC.SIGNAL_YELLOW5
+			,MRC.SIGNAL_YELLOW6
+			,MRC.SIGNAL_ALL_RED1
+			,MRC.SIGNAL_ALL_RED2
+			,MRC.SIGNAL_ALL_RED3
+			,MRC.SIGNAL_ALL_RED4
+			,MRC.SIGNAL_ALL_RED5
+			,MRC.SIGNAL_ALL_RED6
+			,MRC.SIGNAL_CROSSWALK1
+			,MRC.SIGNAL_CROSSWALK2
+			,MRC.SIGNAL_CROSSWALK3
+			,MRC.SIGNAL_CROSSWALK4
+			,MRC.SIGNAL_CROSSWALK5
+			,MRC.SIGNAL_CROSSWALK6
+		FROM MGMT_REG_CONTROLLER MRC
+		WHERE MRC.MGMT_SEQ = #{mgmtSeq}
+	</select>
+	
+	<!-- 신호관리대장 수정 : 설치정보 -->
+	<update id="updateMgmtRegInstall" parameterType="MgmtRegVo">
+		UPDATE MGMT_REG_INSTALL
+			SET POL_NM = #{polNm}
+			,POL_CD = #{polCd}
+			,POL_DISTRICT = #{polDistrict}
+			,ROUTE_CD = #{routeCd}
+			,ROUTE_NM = #{routeNm}
+			,LIGHT_NO1 = #{lightNo1, jdbcType=VARCHAR}
+			,LIGHT_NO2 = #{lightNo2, jdbcType=VARCHAR}
+			,LIGHT_NO3 = #{lightNo3, jdbcType=VARCHAR}
+			,INSTALL_DATE = #{installDate, jdbcType=VARCHAR}
+			,CROSSROAD_CD = #{crossroadCd, jdbcType=VARCHAR}
+			,CROSSROAD_NM = #{crossroadNm, jdbcType=VARCHAR}
+			,INSTALL_ADDR_DTL1 = #{installAddrDtl1, jdbcType=VARCHAR}
+			,INSTALL_ADDR_DTL2 = #{installAddrDtl2, jdbcType=VARCHAR}
+			,INSTALL_ADDR_DTL3 = #{installAddrDtl3, jdbcType=VARCHAR}
+			,INSTALL_ADDR_DTL4 = #{installAddrDtl4, jdbcType=VARCHAR}
+			,INSTALL_ADDR_DTL5 = #{installAddrDtl5, jdbcType=VARCHAR}
+			,INSTALL_ADDR_DTL6 = #{installAddrDtl6, jdbcType=VARCHAR}
+			,TYPE_CONTROLL = #{typeControll, jdbcType=VARCHAR}
+			,TYPE_ROAD = #{typeRoad, jdbcType=VARCHAR}
+			,LAT = #{lat, jdbcType=VARCHAR}
+			,LNG = #{lng, jdbcType=VARCHAR}
+			,UPDT_USERID = #{updtUserid}
+			,UPDT_DATE = NOW()
+		WHERE MGMT_SEQ = #{mgmtSeq}
+	</update>
+	
+	<!-- 신호관리대장 수정 : 공사일반 -->	
+	<update id="updateMgmtRegConstruction" parameterType="MgmtRegVo">
+		UPDATE MGMT_REG_CONSTRUCTION
+			SET SIGNAL_RULES = #{signalRules, jdbcType=VARCHAR}
+			,SIGNAL_WIRING = #{signalWiring, jdbcType=VARCHAR}
+			,UPS_TYPE = #{upsType, jdbcType=VARCHAR}
+			,UPS_BAT_EXCHANGE_DATE = #{upsBatExchangeDate, jdbcType=VARCHAR}
+			,CONSTRUCTOR_SIGNAL1 = #{constructorSignal1, jdbcType=VARCHAR}
+			,CONSTRUCTOR_SIGNAL2 = #{constructorSignal2, jdbcType=VARCHAR}
+			,CONSTRUCTOR_CTRL1 = #{constructorCtrl1, jdbcType=VARCHAR}
+			,CONSTRUCTOR_CTRL2 = #{constructorCtrl2, jdbcType=VARCHAR}
+			,CONSTRUCTOR_ENG1 = #{constructorEng1, jdbcType=VARCHAR}
+			,CONSTRUCTOR_ENG2 = #{constructorEng2, jdbcType=VARCHAR}
+			,CONSTRUCTION_EXPENSES = #{constructionExpenses, jdbcType=VARCHAR}
+		WHERE MGMT_SEQ = #{mgmtSeq}
+	</update>
+	 
+	<!-- 신호관리대장 수정 : 교통신호등 -->
+	<update id="updateMgmtRegTrafficLight" parameterType="MgmtRegVo">
+		UPDATE MGMT_REG_TRAFFIC_LIGHT
+			SET KIND_TRAFFIC_LIGHT1 = #{kindTrafficLight1, jdbcType=VARCHAR}
+			,KIND_TRAFFIC_LIGHT2 = #{kindTrafficLight2, jdbcType=VARCHAR}
+			,KIND_TRAFFIC_LIGHT3 = #{kindTrafficLight3, jdbcType=VARCHAR}
+			,KIND_TRAFFIC_LIGHT4 = #{kindTrafficLight4, jdbcType=VARCHAR}
+			,KIND_TRAFFIC_LIGHT5 = #{kindTrafficLight5, jdbcType=VARCHAR}
+			,KIND_TRAFFIC_LIGHT6 = #{kindTrafficLight6, jdbcType=VARCHAR}
+			,KIND_TRAFFIC_LIGHT7 = #{kindTrafficLight7, jdbcType=VARCHAR}
+			,KIND_TRAFFIC_LIGHT8 = #{kindTrafficLight8, jdbcType=VARCHAR}
+			,KIND_TRAFFIC_LIGHT9 = #{kindTrafficLight9, jdbcType=VARCHAR}
+			,KIND_TRAFFIC_LIGHT10 = #{kindTrafficLight10, jdbcType=VARCHAR}
+			,KIND_TRAFFIC_LIGHT11 =  #{kindTrafficLight11, jdbcType=VARCHAR}
+			,KIND_TRAFFIC_LIGHT12 = #{kindTrafficLight12, jdbcType=VARCHAR}
+			,KIND_TRAFFIC_LIGHT13 = #{kindTrafficLight13, jdbcType=VARCHAR}
+			,KIND_TRAFFIC_LIGHT14 = #{kindTrafficLight14, jdbcType=VARCHAR}
+			,KIND_TRAFFIC_LIGHT15 = #{kindTrafficLight15, jdbcType=VARCHAR}
+			,KIND_TRAFFIC_LIGHT16 = #{kindTrafficLight16, jdbcType=VARCHAR}
+			,KIND_LAMP_WARNING1 = #{kindLampWarning1, jdbcType=VARCHAR}
+			,KIND_LAMP_WARNING2 = #{kindLampWarning2, jdbcType=VARCHAR}
+			,KIND_LAMP_WARNING3 = #{kindLampWarning3, jdbcType=VARCHAR}
+			,KIND_LAMP_WARNING4 = #{kindLampWarning4, jdbcType=VARCHAR}
+			,KIND_LAMP_WARNING5 = #{kindLampWarning5, jdbcType=VARCHAR}
+			,KIND_LAMP_WARNING6 = #{kindLampWarning6, jdbcType=VARCHAR}
+			,KIND_LAMP_WARNING7 = #{kindLampWarning7, jdbcType=VARCHAR}
+			,KIND_LAMP_WARNING8 = #{kindLampWarning8, jdbcType=VARCHAR}
+			,KIND_LAMP_WARNING9 = #{kindLampWarning9, jdbcType=VARCHAR}
+			,KIND_LAMP_WARNING10 = #{kindLampWarning10, jdbcType=VARCHAR}
+			,KIND_LAMP_WARNING11 = #{kindLampWarning11, jdbcType=VARCHAR}
+			,KIND_LAMP_WARNING12 = #{kindLampWarning12, jdbcType=VARCHAR}
+			,KIND_LAMP_VARIABLE1 = #{kindLampVariable1, jdbcType=VARCHAR}
+			,KIND_LAMP_VARIABLE2 = #{kindLampVariable2, jdbcType=VARCHAR}
+			,KIND_LAMP_VARIABLE3 = #{kindLampVariable3, jdbcType=VARCHAR}
+			,KIND_LAMP_VARIABLE4 = #{kindLampVariable4, jdbcType=VARCHAR}
+			,KIND_LAMP_VARIABLE5 = #{kindLampVariable5, jdbcType=VARCHAR}
+			,KIND_LAMP_VARIABLE6 = #{kindLampVariable6, jdbcType=VARCHAR}
+			,KIND_LAMP_VARIABLE7 = #{kindLampVariable7, jdbcType=VARCHAR}
+			,KIND_LAMP_VARIABLE8 = #{kindLampVariable8, jdbcType=VARCHAR}
+			,KIND_LAMP_VARIABLE9 = #{kindLampVariable9, jdbcType=VARCHAR}
+			,KIND_LAMP_VARIABLE10 = #{kindLampVariable10, jdbcType=VARCHAR}
+			,KIND_LAMP_VARIABLE11 = #{kindLampVariable11, jdbcType=VARCHAR}
+			,KIND_LAMP_VARIABLE12 = #{kindLampVariable12, jdbcType=VARCHAR}
+			,KIND_LAMP_WALKING1 = #{kindLampWalking1, jdbcType=VARCHAR}
+			,KIND_LAMP_WALKING2 = #{kindLampWalking2, jdbcType=VARCHAR}
+			,KIND_LAMP_WALKING3 = #{kindLampWalking3, jdbcType=VARCHAR}
+			,KIND_LAMP_WALKING4 = #{kindLampWalking4, jdbcType=VARCHAR}
+			,KIND_LAMP_WALKING5 = #{kindLampWalking5, jdbcType=VARCHAR}
+			,KIND_LAMP_WALKING6 = #{kindLampWalking6, jdbcType=VARCHAR}
+			,KIND_LAMP_WALKING7 = #{kindLampWalking7, jdbcType=VARCHAR}
+			,KIND_LAMP_WALKING8 = #{kindLampWalking8, jdbcType=VARCHAR}
+			,KIND_LAMP_WALKING9 = #{kindLampWalking9, jdbcType=VARCHAR}
+			,KIND_LAMP_WALKING10 = #{kindLampWalking10, jdbcType=VARCHAR}
+			,KIND_LAMP_WALKING11 = #{kindLampWalking11, jdbcType=VARCHAR}
+			,KIND_LAMP_WALKING12 = #{kindLampWalking12, jdbcType=VARCHAR}
+		WHERE MGMT_SEQ = #{mgmtSeq}	
+	</update>
+	
+	<!-- 신호관리대장 수정 : 신호등 지주 -->
+	<update id="updateMgmtRegPillar" parameterType="MgmtRegVo">
+		UPDATE MGMT_REG_PILLAR
+			SET PILLAR_VEHICLE_LAMP1 = #{pillarVehicleLamp1, jdbcType=VARCHAR}
+			,PILLAR_VEHICLE_LAMP2 = #{pillarVehicleLamp2, jdbcType=VARCHAR}
+			,PILLAR_VEHICLE_LAMP3 = #{pillarVehicleLamp3, jdbcType=VARCHAR}
+			,PILLAR_VEHICLE_LAMP4 = #{pillarVehicleLamp4, jdbcType=VARCHAR}
+			,PILLAR_VEHICLE_LAMP5 = #{pillarVehicleLamp5, jdbcType=VARCHAR}
+			,PILLAR_WALKING_LAMP1 = #{pillarWalkingLamp1, jdbcType=VARCHAR}
+			,PILLAR_WALKING_LAMP2 = #{pillarWalkingLamp2, jdbcType=VARCHAR}
+			,PILLAR_TRAFFIC_LIGHT1 = #{pillarTrafficLight1, jdbcType=VARCHAR}
+			,PILLAR_TRAFFIC_LIGHT2 = #{pillarTrafficLight2, jdbcType=VARCHAR}
+			,PILLAR_TRAFFIC_LIGHT3 = #{pillarTrafficLight3, jdbcType=VARCHAR}
+			,PILLAR_TRAFFIC_LIGHT4 = #{pillarTrafficLight4, jdbcType=VARCHAR}
+			,PILLAR_TRAFFIC_LIGHT5 = #{pillarTrafficLight5, jdbcType=VARCHAR}
+			,PILLAR_INTEGRATION1 = #{pillarIntegration1, jdbcType=VARCHAR}
+			,PILLAR_INTEGRATION2 = #{pillarIntegration2, jdbcType=VARCHAR}
+			,ATTACH_ETC1 = #{attachEtc1, jdbcType=VARCHAR}
+			,ATTACH_ETC2 = #{attachEtc2, jdbcType=VARCHAR}
+		WHERE MGMT_SEQ = #{mgmtSeq}
+	</update>
+	
+	<!-- 신호관리대장 수정 : 신호 제어기 -->
+	<update id="updateMgmtRegController" parameterType="MgmtRegVo">
+		UPDATE MGMT_REG_CONTROLLER 
+			SET CTRL_ELECTRON = #{ctrlElectron, jdbcType=VARCHAR}
+			,CTRL_CYCLE = #{ctrlCycle, jdbcType=VARCHAR}
+			,CTRL_SENSITIVE = #{ctrlSensitive, jdbcType=VARCHAR}
+			,SIGNAL_CYCLE1 = #{signalCycle1, jdbcType=VARCHAR}
+			,SIGNAL_CYCLE2 = #{signalCycle2, jdbcType=VARCHAR}
+			,SIGNAL_CYCLE3 = #{signalCycle3, jdbcType=VARCHAR}
+			,SIGNAL_CYCLE4 = #{signalCycle4, jdbcType=VARCHAR}
+			,SIGNAL_CYCLE5 = #{signalCycle5, jdbcType=VARCHAR}
+			,SIGNAL_CYCLE6 = #{signalCycle6, jdbcType=VARCHAR}
+			,SIGNAL_SEC1 = #{signalSec1, jdbcType=VARCHAR}
+			,SIGNAL_SEC2 = #{signalSec2, jdbcType=VARCHAR}
+			,SIGNAL_SEC3 = #{signalSec3, jdbcType=VARCHAR}
+			,SIGNAL_SEC4 = #{signalSec4, jdbcType=VARCHAR}
+			,SIGNAL_SEC5 = #{signalSec5, jdbcType=VARCHAR}
+			,SIGNAL_SEC6 = #{signalSec6, jdbcType=VARCHAR}
+			,SIGNAL_SEC_TOT = #{signalSecTot, jdbcType=VARCHAR}
+			,CURRENT_SEL_TIME1 = #{currentSelTime1, jdbcType=VARCHAR}
+			,CURRENT_SEL_TIME2 = #{currentSelTime2, jdbcType=VARCHAR}
+			,CURRENT_SEL_TIME3 = #{currentSelTime3, jdbcType=VARCHAR}
+			,CURRENT_SEL_TIME4 = #{currentSelTime4, jdbcType=VARCHAR}
+			,CURRENT_SEL_TIME5 = #{currentSelTime5, jdbcType=VARCHAR}
+			,CURRENT_SEL_TIME6 = #{currentSelTime6, jdbcType=VARCHAR}
+			,CURRENT_SEL_TIME7 = #{currentSelTime7, jdbcType=VARCHAR}
+			,CURRENT_TIME1 = #{currentTime1, jdbcType=VARCHAR}
+			,CURRENT_TIME2 = #{currentTime2, jdbcType=VARCHAR}
+			,CURRENT_TIME3 = #{currentTime3, jdbcType=VARCHAR}
+			,CURRENT_TIME4 = #{currentTime4, jdbcType=VARCHAR}
+			,CURRENT_TIME5 = #{currentTime5, jdbcType=VARCHAR}
+			,CURRENT_TIME6 = #{currentTime6, jdbcType=VARCHAR}
+			,CURRENT_TIME7 = #{currentTime7, jdbcType=VARCHAR}
+			,SIGNAL_YELLOW1 = #{signalYellow1, jdbcType=VARCHAR}
+			,SIGNAL_YELLOW2 = #{signalYellow2, jdbcType=VARCHAR}
+			,SIGNAL_YELLOW3 = #{signalYellow3, jdbcType=VARCHAR}
+			,SIGNAL_YELLOW4 = #{signalYellow4, jdbcType=VARCHAR}
+			,SIGNAL_YELLOW5 = #{signalYellow5, jdbcType=VARCHAR}
+			,SIGNAL_YELLOW6 = #{signalYellow6, jdbcType=VARCHAR}
+			,SIGNAL_ALL_RED1 = #{signalAllRed1, jdbcType=VARCHAR}
+			,SIGNAL_ALL_RED2 = #{signalAllRed2, jdbcType=VARCHAR}
+			,SIGNAL_ALL_RED3 = #{signalAllRed3, jdbcType=VARCHAR}
+			,SIGNAL_ALL_RED4 = #{signalAllRed4, jdbcType=VARCHAR}
+			,SIGNAL_ALL_RED5 = #{signalAllRed5, jdbcType=VARCHAR}
+			,SIGNAL_ALL_RED6 = #{signalAllRed6, jdbcType=VARCHAR}
+			,SIGNAL_CROSSWALK1 = #{signalCrosswalk1, jdbcType=VARCHAR}
+			,SIGNAL_CROSSWALK2 = #{signalCrosswalk2, jdbcType=VARCHAR}
+			,SIGNAL_CROSSWALK3 = #{signalCrosswalk3, jdbcType=VARCHAR}
+			,SIGNAL_CROSSWALK4 = #{signalCrosswalk4, jdbcType=VARCHAR}
+			,SIGNAL_CROSSWALK5 = #{signalCrosswalk5, jdbcType=VARCHAR}
+			,SIGNAL_CROSSWALK6 = #{signalCrosswalk6, jdbcType=VARCHAR}
+		WHERE MGMT_SEQ = #{mgmtSeq}
+	</update>
+	
+	
+	<!-- 신호관리대장 삭제 -->
+	<update id="deleteMgmtRegAct" parameterType="MgmtRegVo">
+		UPDATE MGMT_REG_INSTALL 
+			SET DEL_USERID = #{delUserid}
+			, DEL_DATE = NOW()
+			WHERE MGMT_SEQ = #{mgmtSeq} 
+	</update>
+
+
+</mapper>

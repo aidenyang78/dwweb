@@ -1,0 +1,224 @@
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ include file="/WEB-INF/jsp/site/www/common/taglib.jsp"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<title>교통 신호등 시설물 통합관리 시스템 || 지도 검색</title>
+
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/Base.css" />
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/ui-lightness/jquery-ui.css" />
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" />
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/common.js"></script>
+<script type="text/javascript">
+	
+	$(document).ready(function(){
+		
+		// menu 클래스 바로 하위에 있는 a 태그를 클릭했을때
+        $(".menu>a").click(function(){
+            var submenu = $(this).next("ul");
+ 
+            // submenu 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
+            if( submenu.is(":visible") ){
+                submenu.slideUp();
+            }else{
+                submenu.slideDown();
+            }
+        });
+		
+      	//처음 접속 시 메뉴 오픈
+		$(".menu:eq(0)>a").click();
+	})
+	
+</script>
+
+</head>
+
+<body
+	onLoad="MM_preloadImages('${pageContext.request.contextPath}/images/img/icon_signal_over.png','${pageContext.request.contextPath}/images/img/icon_setting_over.png','${pageContext.request.contextPath}/images/img/icon_chart_over.png')">
+
+	<div id="contentWrapper">
+
+		<div id="contentLeft">
+			 <jsp:include page="/WEB-INF/jsp/site/www/contents/include/left_menu.jsp"/> 
+		</div>
+		
+		<div id="contentRight">
+
+			<table width="100%" height="100%" border="0" cellpadding="0"
+				cellspacing="0">
+				<tr>
+					<td colspan="4" align="center">
+						<table border="0" width="582" height="53">
+							<tr>
+								<td valign="middle" colspan="2" width="90%" align="center"
+									background="${pageContext.request.contextPath}/images/img/title_name.png"
+									class="mainTotleText"></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr height="35">
+					<td width="70"></td>
+
+					<td colspan="3" class="naviText" valign="top">
+						<table border="0" width="100%">
+							<tr>
+
+								<td class="naviText" align="left">교통신호 시설물 관리시스템 > 지도 검색</td>
+								<td width="60" class="authorityText" align="right">${NAME}&nbsp;|&nbsp;&nbsp;</td>
+								<td width="60" class="naviText" align="right"><a href="${pageContext.request.contextPath}/logout/logout.do"
+									onMouseOut="MM_swapImgRestore()"
+									onMouseOver="MM_swapImage('Image7','','${pageContext.request.contextPath}/images/img/logout_over.png',1)"><img
+										src="${pageContext.request.contextPath}/images/img/logout_nor.png"
+										name="Image7" width="66" height="22" border="0"></a></td>
+								<td width="30"></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr valign="middle" height="100%">
+
+					<td width="70"></td>
+
+					<td width="371" valign="top">
+						<table width="371" height="864" border="0" cellpadding="0"
+							cellspacing="0"
+							background="${pageContext.request.contextPath}/images/img/content_bg_left.png">
+							<tr align="left" valign="top">
+								<td width="10"></td>
+								<td width="318" height="45">left_top</td>
+								<td width="7"></td>
+							</tr>
+
+							<tr align="left" valign="top">
+								<td width="10"></td>
+								<td width="318" height="819">
+									<div style="overflow:auto; width:96%; height:98%; padding-left:6px; padding-top:6px;">
+										<ul>
+											<li class="hidden" style="height:10px;"></li>
+										</ul>
+									    <ul>
+									        <li class="menu">
+									            <a><img src="" alt="상위메뉴이미지1"/></a>
+									            <ul class="hide">
+									                <li>메뉴1-1</li>
+									                <li>메뉴1-2</li>
+									                <li>메뉴1-3</li>
+									                <li>메뉴1-4</li>
+									                <li>메뉴1-5</li>
+									                <li>메뉴1-6</li>
+									                <li>메뉴1-6</li>
+									                <li>메뉴1-6</li>
+									                <li>메뉴1-6</li>
+									                <li>메뉴1-6</li>
+									                <li>메뉴1-6</li>
+									                <li>메뉴1-6</li>
+									                <li>메뉴1-6</li>
+									                <li>메뉴1-6</li>
+									                <li>메뉴1-6</li>
+									                <li>메뉴1-6</li>
+									                <li>메뉴1-6</li>
+									                <li>메뉴1-6</li>
+									                <li>메뉴1-6</li>
+									                <li>메뉴1-6</li>
+									                <li>메뉴1-20</li>
+									            </ul>
+									        </li>
+									        <li class="menu">
+									            <a><img src="" alt="상위메뉴이미지2"/></a>
+									            <ul class="hide">
+									                <li>메뉴2-1</li>
+									                <li>메뉴2-2</li>
+									                <li>메뉴2-3</li>
+									                <li>메뉴2-4</li>
+									                <li>메뉴2-5</li>
+									                <li>메뉴2-6</li>
+									                <li>메뉴2-6</li>
+									                <li>메뉴2-6</li>
+									                <li>메뉴2-6</li>
+									                <li>메뉴2-6</li>
+									                <li>메뉴2-6</li>
+									                <li>메뉴2-6</li>
+									                <li>메뉴2-6</li>
+									                <li>메뉴2-6</li>
+									                <li>메뉴2-6</li>
+									                <li>메뉴2-6</li>
+									                <li>메뉴2-6</li>
+									                <li>메뉴2-6</li>
+									                <li>메뉴2-6</li>
+									                <li>메뉴2-20</li>
+									            </ul>
+									        </li>
+									        
+									         <li class="menu">
+									            <a><img src="" alt="상위메뉴이미지3"/></a>
+									            <ul class="hide">
+									                <li>메뉴3-1</li>
+									                <li>메뉴3-2</li>
+									                <li>메뉴3-3</li>
+									                <li>메뉴3-4</li>
+									                <li>메뉴3-5</li>
+									                <li>메뉴3-6</li>
+									                <li>메뉴3-6</li>
+									                <li>메뉴3-6</li>
+									                <li>메뉴3-6</li>
+									                <li>메뉴3-6</li>
+									                <li>메뉴3-6</li>
+									                <li>메뉴3-6</li>
+									                <li>메뉴3-6</li>
+									                <li>메뉴3-6</li>
+									                <li>메뉴3-6</li>
+									                <li>메뉴3-6</li>
+									                <li>메뉴3-6</li>
+									                <li>메뉴3-6</li>
+									                <li>메뉴3-6</li>
+									                <li>메뉴3-20</li>
+									            </ul>
+									        </li>
+									    </ul>
+									</div>
+
+								</td>
+								<td width="7"></td>
+							</tr>
+						</table>
+					</td>
+
+
+					<td width="10"></td>
+
+					<td width="1361" valign="top">
+						<table width="1361" height="863" border="0" cellpadding="0"
+							cellspacing="0"
+							background="${pageContext.request.contextPath}/images/img/content_bg_right.png">
+							<tr align="left" valign="top">
+								<td width="12"></td>
+								<td width="1342" height="45">right_top</td>
+								<td width="7"></td>
+							</tr>
+
+							<tr align="left" valign="top">
+								<td width="12"></td>
+								<td width="1342" height="818">right_content</td>
+								<td width="7"></td>
+							</tr>
+						</table>
+					</td>
+
+				</tr>
+			</table>
+		</div>
+
+	</div>
+</body>
+</html>
+

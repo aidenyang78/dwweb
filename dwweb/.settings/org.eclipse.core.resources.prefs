@@ -1,0 +1,8 @@
+eclipse.preferences.version=1
+encoding//src/main/java=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/site/www/contents/include/left_menu.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/site/www/contents/login/user_login.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/site/www/contents/main/main_map.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/site/www/contents/mgmtreg/mgmt_reg_list.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/site/www/contents/statistics/statistics_list.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/site/www/contents/statistics/statistics_list_excel.jsp=UTF-8

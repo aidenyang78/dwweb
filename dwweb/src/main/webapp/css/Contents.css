@@ -1,0 +1,78 @@
+/* title */
+.h4_title{margin-bottom:10px;padding-left:10px;font-weight:bold;color:#333;background:url(/mng/common/site/www/admin/images/common/icon_h4.gif) no-repeat 0 0.3em;}
+.h4_title_2{margin:40px 0 10px;padding-left:10px;font-weight:bold;color:#333;background:url(/mng/common/site/www/admin/images/common/icon_h4.gif) no-repeat 0 0.3em;}
+
+/* contents */
+.searchResult{margin:14px 0;padding-left:24px;background:url(/mng/common/site/www/admin/images/common/bg_searchResult.gif) no-repeat 0 0.1em;}
+
+.thumWrap{padding-bottom:5px;}
+.thumWrap .text{display:inline-block;padding-top:80px;}
+
+.profileWrap{padding-bottom:5px;}
+.profileWrap .text{display:inline-block;padding-top:30px;}
+
+.smsWrap{overflow:hidden;}
+.smsWrap .leftBox{float:left;width:48%;}
+.smsWrap .leftBox .leftList{clear:both;margin:10px 0;height:285px;overflow-y:auto;}
+.smsWrap .rightBox{float:right;width:48%;}
+.smsWrap .rightBox .emoticon{float:right;margin:-20px 10px 0 0;}
+.smsWrap .rightBox .listArea{border:1px solid #ddd;margin:5px 10px 0 10px;height:65px;overflow-y:auto;text-align:left;}
+
+/* 이모티콘 레이어 */
+.emoticon_layer {width:320px;position:absolute;display:none;border:2px solid #425360;z-index:100}
+.emoticon_td {background-color:white;text-align:center;}
+.emoticon_td_over {background-color:#f4f4f4}
+.emoticon_div {text-align:center;;cursor:pointer}
+.emoticon_div_over {color:#ED135A;font-weight:normal;cursor:pointer}
+
+
+img.photo{width:78px;height:78px;border:1px solid #ccc;}
+.img{vertical-align:middle;}
+
+/* slide */
+.slideWrap{padding-bottom:10px;}
+.slideWrap .slideTitle{background:#f7f7f7;border:1px solid #ddd;font-weight:normal;}
+.slideWrap .slideTitle a{display:block;padding:13px 18px;background:url(/mng/common/site/www/admin/images/board/btn_arrowTop.gif) no-repeat 98% 50%;}
+.slideWrap .slideTitle a.on{background:url(/mng/common/site/www/admin/images/board/btn_arrowBottom.gif) no-repeat 98% 50%;}
+.slideWrap .slideTitle a:link,
+.slideWrap .slideTitle a:visited,
+.slideWrap .slideTitle a:hover,
+.slideWrap .slideTitle a:active{color:#555;text-decoration:none;}
+.slideWrap .slideCont{padding-top:10px;}
+.slideWrap .slideCont .listWrap{overflow:hidden;}
+.slideWrap .slideCont .listWrap .listLeft{float:left;width:51%}
+.slideWrap .slideCont .listWrap .listLeft .inner{border:1px solid #aaa;height:443px;padding:0 10px;}
+.slideWrap .slideCont .listWrap .listLeft .inner .listResult{height:468px;overflow-y:auto;margin-bottom:10px;}
+.slideWrap .slideCont .listWrap .listAdd{float:left;position:relative;width:4%;}
+.slideWrap .slideCont .listWrap .listAdd a{position:absolute;left:50%;top:263px;margin-left:-6px;}
+.slideWrap .slideCont .listWrap .listRight{float:right;width:45%;zoom:1;}
+.slideWrap .slideCont .listWrap .listRight .inner{border:1px solid #aaa;padding:0 10px;}
+.slideWrap .slideCont .listWrap .listRight .inner .listResult{height:408px;overflow-y:auto;}
+
+/* tab */
+.tabsWrap{padding-bottom:10px;}
+.tabs{width:100%;height:34px;padding-top:10px;border-bottom:1px solid #aeafb2;}
+.tabs:after{display:block;content:"";clear:both;}
+.tabs li{float:left;margin-left:-1px;width:180px;height:33px;line-height:2.75em;}
+.tabs li:first-child{margin-left:0;}
+.tabs li a{display:block;text-align:center;font-weight:bold;color:#999;background-color:#fbfbfb;border:1px solid #dbdbdb;border-bottom:none;}
+.tabs li .active{color:#333;background-color:#fff;border:1px solid #aeafb2;border-bottom:1px solid #fff;z-index:9999;position:relative;}
+
+.subTabs{overflow:hidden;margin-top:30px;}
+.subTabs li{float:left;width:150px;margin-right:3px;}
+.subTabs li a{display:block;padding:5px 0;font-weight:bold;text-align:center;color:#999;border:1px solid #d5d5d5;background-color:#e5e5e5;}
+.subTabs li a.active{color:#2e5b95;border:1px solid #c7dae4;background-color:#deebf2;}
+
+/* login */
+#loginWrap{position:fixed;width:100%;height:100%;background:url(/mng/common/site/www/admin/images/login/bg_login.jpg) repeat center top;}
+#loginWrap .inner{width:340px;margin:0 auto;padding-top:300px;}
+#loginWrap .inner .login{margin:15px 0 20px;padding:50px 35px;background:url(/mng/common/site/www/admin/images/login/bg_input.png) repeat;}
+#loginWrap .inner .login dl{overflow:hidden;padding-bottom:12px;}
+#loginWrap .inner .login dl:first-child{padding-bottom:15px;}
+#loginWrap .inner .login dl dt{float:left;border-right:1px solid #dcdee0;}
+#loginWrap .inner .login dl dd{float:left;width:227px;padding:11px 0;background-color:#fff;}
+#loginWrap .inner .login dl dd input{width:217px;border:none;color:#222;}
+#loginWrap .inner .login .id_save{color:#fff;font-size:11px;}
+#loginWrap .inner .login .id_save input{margin-top:-2px;}
+#loginWrap .inner .login .btn_login{padding-top:20px;}
+#loginWrap .inner .login .btn_login a{display:block;padding:13px 0 14px;color:#fff;font-size:1.167em;text-align:center;font-weight:bold;background:#007bd9;}

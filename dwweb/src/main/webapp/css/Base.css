@@ -1,0 +1,165 @@
+@charset "utf-8";
+
+@import url("Common.css");
+@import url("Contents.css");
+@import url("Board.css");
+@import url("Popup.css");
+@import url("Custom.css");
+@import url("sub.css");
+
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, address, big, cite, code, del, dfn, em, font,
+img, ins, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td
+{margin:0;padding:0;border:0;}
+
+a:link {
+	text-decoration: none;
+	color: #555;
+}
+
+a:visited {
+	color: #555;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #1c5dad;
+	text-decoration: none;
+}
+
+a:active {
+	color: #555;
+	text-decoration: none;
+}
+
+ol, ul, li, dl, dt, dd {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+ins {
+	text-decoration: none;
+}
+
+del {
+	text-decoration: line-through;
+}
+
+table {
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+address, caption, cite, code, dfn, em, strong, th, var {
+	font-style: normal;
+}
+
+input {
+	vertical-align: middle;
+	font-family: "ng";
+	color: #666;
+}
+
+img {
+	vertical-align: top;
+}
+
+input[type="checkbox"] {
+	width: 13px;
+	height: 13px;
+	vertical-align: middle;
+}
+
+input[type="radio"] {
+	width: 13px;
+	height: 13px;
+	margin-top: -2px;
+	vertical-align: middle;
+}
+
+select {
+	border: 1px solid #bbb;
+	color: #666;
+	font-family: "ng";
+	vertical-align: middle;
+}
+
+select option {
+	padding: 0 5px;
+}
+
+textarea {
+	border-top: 1px solid #a7a7a7;
+	border-left: 1px solid #a7a7a7;
+	border-right: 1px solid #d8d8d8;
+	border-bottom: 1px solid #d8d8d8;
+	margin: 0px;
+	padding: 5px;
+	color: #777;
+	font-family: "ng";
+	font-size: 1em;
+}
+
+legend, caption {
+	visibility: hidden;
+	width: 0;
+	height: 0;
+	line-height: 0;
+	font-size: 0;
+}
+
+hr, .hidden {
+	position: absolute;
+	top: 0;
+	left: -5000px;
+	padding: 0;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+	line-height: 0;
+}
+
+.radio {
+	margin-top: -4px;
+}
+
+textarea.input_text {
+	border: 1px solid #bbbbbb;
+	color: #777777;
+	height: 90px;
+	padding: 5px;
+	width: 99%;
+}
+
+/* h1, h2, h3, h4, h5, h6{font-size:1em} */
+
+/* 나눔 기본 */
+@font-face {
+  font-family: 'ng';
+  font-style: normal;
+  font-weight: normal;
+  src: url("/dwweb/webfont/NanumGothic.eot");
+  src: url("/dwweb/webfont/NanumGothic.eot?#iefix") format("embedded-opentype"), url("/dwweb/webfont/NanumGothic.woff") format("woff"), url("/dwweb/webfont/NanumGothic.ttf") format("truetype");
+}
+/* 나눔 Regular */
+@font-face {
+  font-family: 'ng-reg';
+  font-style: normal;
+  font-weight: 300;
+  src: url("/dwweb/webfont/NanumGothic-Regular.eot");
+  src: url("/dwweb/webfont/NanumGothic-Regular.eot?#iefix") format("embedded-opentype"), url("/dwweb/webfont/NanumGothic-Regular.woff2") format("woff2"), url("/dwweb/webfont/NanumGothic-Regular.woff") format("woff"), url("/dwweb/webfont/NanumGothic-Regular.ttf") format("truetype");
+}
+/* 나눔 Bold */
+@font-face {
+  font-family: 'ng-bold';
+  font-style: normal;
+  font-weight: 400;
+  src: url("/dwweb/webfont/NanumGothic-Bold.eot");
+  src: url("/dwweb/webfont/NanumGothic-Bold.eot?#iefix") format("embedded-opentype"), url("/dwweb/webfont/NanumGothic-Bold.woff2") format("woff2"), url("/dwweb/webfont/NanumGothic-Bold.woff") format("woff"), url("/dwweb/webfont/NanumGothic-Bold.ttf") format("truetype");
+}
