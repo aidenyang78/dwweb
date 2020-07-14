@@ -1,0 +1,252 @@
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ include file="/WEB-INF/jsp/site/www/common/taglib.jsp"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/Base.css" />
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/ui-lightness/jquery-ui.css" />
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/style.css" />
+
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/js/jquery-3.5.1.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/js/common.js"></script>
+
+<title>교통 신호등 시설물 통합관리 시스템 || 설정</title>
+
+<style>
+body {
+	background-image:
+		url(${pageContext.request.contextPath}/images/img/bg.png);
+	background-size: cover;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+}
+
+.menu a {
+	cursor: pointer;
+}
+
+.menu .hide {
+	display: none;
+}
+
+.hidden {
+	display: none;
+}
+</style>
+
+<script type="text/javascript">
+	function MM_swapImgRestore() { //v3.0
+		var i, x, a = document.MM_sr;
+		for (i = 0; a && i < a.length && (x = a[i]) && x.oSrc; i++)
+			x.src = x.oSrc;
+	}
+	function MM_preloadImages() { //v3.0
+		var d = document;
+		if (d.images) {
+			if (!d.MM_p)
+				d.MM_p = new Array();
+			var i, j = d.MM_p.length, a = MM_preloadImages.arguments;
+			for (i = 0; i < a.length; i++)
+				if (a[i].indexOf("#") != 0) {
+					d.MM_p[j] = new Image;
+					d.MM_p[j++].src = a[i];
+				}
+		}
+	}
+
+	function MM_findObj(n, d) { //v4.01
+		var p, i, x;
+		if (!d)
+			d = document;
+		if ((p = n.indexOf("?")) > 0 && parent.frames.length) {
+			d = parent.frames[n.substring(p + 1)].document;
+			n = n.substring(0, p);
+		}
+		if (!(x = d[n]) && d.all)
+			x = d.all[n];
+		for (i = 0; !x && i < d.forms.length; i++)
+			x = d.forms[i][n];
+		for (i = 0; !x && d.layers && i < d.layers.length; i++)
+			x = MM_findObj(n, d.layers[i].document);
+		if (!x && d.getElementById)
+			x = d.getElementById(n);
+		return x;
+	}
+
+	function MM_swapImage() { //v3.0
+		var i, j = 0, x, a = MM_swapImage.arguments;
+		document.MM_sr = new Array;
+		for (i = 0; i < (a.length - 2); i += 3)
+			if ((x = MM_findObj(a[i])) != null) {
+				document.MM_sr[j++] = x;
+				if (!x.oSrc)
+					x.oSrc = x.src;
+				x.src = a[i + 2];
+			}
+	}
+
+	$(document)
+			.ready(function() {
+
+			})
+</script>
+</head>
+
+
+<body
+	onLoad="MM_preloadImages('${pageContext.request.contextPath}/images/img/icon_map_over.png','${pageContext.request.contextPath}/images/img/icon_signal_over.png','${pageContext.request.contextPath}/images/img/icon_chart_over.png')">
+
+	<div id="contentWrapper">
+
+		<div id="contentLeft">
+			<table width="100%" cellpadding="0" cellspacing="0" border="0">
+				<tr valign="top" height="96">
+					<td><img
+						src="${pageContext.request.contextPath}/images/img/logo.png"
+						width="92" height="96"></td>
+				</tr>
+
+				<tr>
+					<td height="20px"></td>
+				</tr>
+
+				<tr valign="top" height="96">
+					<td><a href="./main_map.html" onMouseOut="MM_swapImgRestore()"
+						onMouseOver="MM_swapImage('Image2','','${pageContext.request.contextPath}/images/img/icon_map_over.png',1)"><img
+							src="${pageContext.request.contextPath}/images/img/icon_map_nor.png"
+							name="Image2" width="92" height="96" border="0"></a></td>
+				</tr>
+
+				<tr valign="top" height="96">
+					<td><a href="./main_signal.html"
+						onMouseOut="MM_swapImgRestore()"
+						onMouseOver="MM_swapImage('Image3','','${pageContext.request.contextPath}/images/img/icon_signal_over.png',1)"><img
+							src="${pageContext.request.contextPath}/images/img/icon_signal_nor.png"
+							name="Image3" width="92" height="96" border="0"></a></td>
+				</tr>
+
+				<tr valign="top" height="96">
+					<td><a href="./main_fclty.html"
+						onMouseOut="MM_swapImgRestore()"
+						onMouseOver="MM_swapImage('Image4','','${pageContext.request.contextPath}/images/img/icon_fclty_over.png',1)"><img
+							src="${pageContext.request.contextPath}/images/img/icon_fclty_nor.png"
+							name="Image4" width="92" height="96" border="0"></a></td>
+				</tr>
+
+				<tr valign="top" height="96">
+					<td><a href="./main_chart.html"
+						onMouseOut="MM_swapImgRestore()"
+						onMouseOver="MM_swapImage('Image5','','${pageContext.request.contextPath}/images/img/icon_chart_over.png',1)"><img
+							src="${pageContext.request.contextPath}/images/img/icon_chart_nor.png"
+							name="Image5" width="92" height="96" border="0"></a></td>
+				</tr>
+
+				<tr valign="top" height="96">
+					<td><img
+						src="${pageContext.request.contextPath}/images/img/icon_setting_over.png"
+						width="92" height="96"></td>
+				</tr>
+			</table>
+		</div>
+
+		<div id="contentRight">
+
+			<table width="100%" height="100%" border="0" cellpadding="0"
+				cellspacing="0">
+				<tr>
+					<td colspan="4" align="center">
+						<table border="0" width="582" height="53">
+							<tr>
+								<td valign="middle" colspan="2" width="90%" align="center"
+									background="${pageContext.request.contextPath}/images/img/title_name.png"
+									class="mainTotleText"></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr height="35">
+					<td width="70"></td>
+
+					<td colspan="3" class="naviText" valign="top">
+						<table border="0" width="100%">
+							<tr>
+
+								<td class="naviText" align="left">±³Åë½ÅÈ£ ½Ã¼³¹°
+									°ü¸®½Ã½ºÅÛ > ¼³Á¤</td>
+								<td width="60" class="authorityText" align="right">°ü¸®ÀÚ |
+								</td>
+								<td width="60" class="naviText" align="right"><a href="#"
+									onMouseOut="MM_swapImgRestore()"
+									onMouseOver="MM_swapImage('Image7','','${pageContext.request.contextPath}/images/img/logout_over.png',1)"><img
+										src="${pageContext.request.contextPath}/images/img/logout_nor.png"
+										name="Image7" width="66" height="22" border="0"></a></td>
+
+
+								<td width="30"></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr valign="middle" height="100%">
+
+					<td width="70"></td>
+
+					<td width="371" valign="top">
+						<table width="371" height="864" border="0" cellpadding="0"
+							cellspacing="0"
+							background="${pageContext.request.contextPath}/images/img/content_bg_left.png">
+							<tr align="left" valign="top">
+								<td width="10"></td>
+								<td width="318" height="45">left_top</td>
+								<td width="7"></td>
+							</tr>
+
+							<tr align="left" valign="top">
+								<td width="10"></td>
+								<td width="318" height="819">left_content</td>
+								<td width="7"></td>
+							</tr>
+						</table>
+					</td>
+
+
+					<td width="10"></td>
+
+					<td width="1361" valign="top">
+						<table width="1361" height="863" border="0" cellpadding="0"
+							cellspacing="0"
+							background="${pageContext.request.contextPath}/images/img/content_bg_right.png">
+							<tr align="left" valign="top">
+								<td width="12"></td>
+								<td width="1342" height="45">right_top</td>
+								<td width="7"></td>
+							</tr>
+
+							<tr align="left" valign="top">
+								<td width="12"></td>
+								<td width="1342" height="818">right_content</td>
+								<td width="7"></td>
+							</tr>
+						</table>
+					</td>
+
+				</tr>
+			</table>
+		</div>
+
+	</div>
+</body>
+</html>
+

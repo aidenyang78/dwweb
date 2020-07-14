@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.contents.main.Main">
+	<!-- 도로(국도) 리스트 조회 -->
+	<select id="selectMainRouteList" parameterType="MainVo" resultType="MainVo">
+		SELECT
+			SEQ
+			,POL_CD
+			,POL_DISTRICT
+			,ROUTE_NM
+		FROM MGMT_ROUTE_INFO MRI
+		WHERE DEL_DATE IS NULL
+		ORDER BY MRI.POL_DISTRICT ASC
+			,CAST(MRI.ROUTE_NM AS UNSIGNED)
+			,MRI.ROUTE_NM ASC
+	</select>
+	
+	<!-- 교차로 리스트 조회 -->
+	<select id="selectMainCrossroadList" parameterType="MainVo" resultType="MainVo">
+		SELECT
+			MRI.SEQ
+			,MRI.POL_CD
+			,MRI.POL_DISTRICT
+			,MRI.ROUTE_NM
+			,MCI.SEQ AS CROSSROAD_SEQ
+			,MCI.ROUTE_CD
+			,MCI.CROSSROAD_NM
+			,MCI.LAT
+			,MCI.LNG
+			,MCI.LINKED_SEQ
+		FROM MGMT_ROUTE_INFO MRI, MGMT_CROSSROAD_INFO MCI
+		WHERE MRI.POL_CD = MCI.POL_CD
+		AND MRI.POL_DISTRICT = MCI.POL_DISTRICT
+		AND MRI.SEQ = MCI.ROUTE_CD
+		AND MRI.DEL_DATE IS NULL
+		AND MCI.DEL_DATE IS NULL
+		ORDER BY MRI.POL_DISTRICT ASC
+			,MCI.SEQ ASC
+			<!-- ,CAST(MRI.ROUTE_NM AS UNSIGNED)
+			,MRI.ROUTE_NM ASC
+			,CAST(MCI.CROSSROAD_NM AS UNSIGNED)
+			,MCI.CROSSROAD_NM ASC -->
+	</select>
+	
+		<!-- 지도위 좌표 수정 실행  -->
+	<update id="updateCrossroadLatLngAjax"  parameterType="MainVo">
+		UPDATE MGMT_CROSSROAD_INFO
+			SET LAT = #{lat}
+			,LNG = #{lng}
+		WHERE SEQ = #{seq}
+	</update>
+	
+	<!-- 교차로 좌표 실시간 조회 -->
+	<select id="selectCrossroadLatLngAjax"  parameterType="MainVo" resultType="MainVo">
+		SELECT
+			MCI.SEQ
+			,MCI.ROUTE_CD
+			,MCI.LAT
+			,MCI.LNG
+			,MCI.CROSSROAD_NM
+			,(SELECT INSTALL_DATE FROM MGMT_REG_INSTALL WHERE DEL_DATE IS NULL AND CROSSROAD_CD = MCI.SEQ) AS INSTALL_DATE
+		FROM MGMT_CROSSROAD_INFO MCI
+		WHERE SEQ = #{seq}
+	</select>
+	
+	<!-- 선택 도로(국도) 시설물 조회 -->
+	<select id="selectCrossroadListAjax"  parameterType="MainVo" resultType="MainVo">
+		SELECT
+			MAX(LAT) OVER() AS MAX_LAT
+			,MAX(LNG) OVER() AS MAX_LNG
+			,MIN(LAT) OVER() AS MIN_LAT
+			,MIN(LNG) OVER() AS MIN_LNG
+			,MCI.SEQ
+			,MCI.POL_CD
+			,MCI.POL_DISTRICT
+			,MCI.ROUTE_CD
+			,MCI.CROSSROAD_NM
+			,MCI.ROAD_NM
+			,MCI.LAT
+			,MCI.LNG
+			,MCI.LINKED_SEQ
+			,(SELECT INSTALL_DATE FROM MGMT_REG_INSTALL WHERE DEL_DATE IS NULL AND CROSSROAD_CD = MCI.SEQ) AS INSTALL_DATE
+		FROM MGMT_CROSSROAD_INFO MCI
+		WHERE MCI.DEL_DATE IS NULL
+		AND MCI.LAT IS NOT NULL
+		AND MCI.LNG IS NOT NULL
+		AND MCI.ROUTE_CD = #{routeCd}
+	<if test='seq != null and seq !=""'>
+		AND MCI.SEQ = #{seq} 
+	</if>
+	</select>
+	
+	<!-- 교차로 좌표설정 -->
+	<select id="selectMatchingLatlngAjax"  parameterType="MainVo" resultType="MainVo">
+		SELECT
+			MAX(LAT) OVER() AS MAX_LAT
+			,MAX(LNG) OVER() AS MAX_LNG
+			,MIN(LAT) OVER() AS MIN_LAT
+			,MIN(LNG) OVER() AS MIN_LNG
+			,MCI.SEQ
+			,MCI.POL_CD
+			,MCI.POL_DISTRICT
+			,MCI.ROUTE_CD
+			,MCI.CROSSROAD_NM
+			,MCI.ROAD_NM
+			,MCI.LAT
+			,MCI.LNG
+			,MCI.LINKED_SEQ
+		FROM MGMT_CROSSROAD_INFO MCI
+		WHERE MCI.DEL_DATE IS NULL
+	<if test='polDistrict != null and polDistrict != ""'>
+		AND MCI.POL_DISTRICT = #{polDistrict}
+	</if>
+	<if test='routeCd != null and routeCd != ""'>
+		AND MCI.ROUTE_CD = #{routeCd}
+	</if>
+	<if test='keyWord != null and keyWord != ""'>
+		AND MCI.CROSSROAD_NM LIKE CONCAT('%',#{keyWord},'%')
+	</if>
+		ORDER BY IFNULL(MCI.LAT,0) ASC, IFNULL(MCI.LNG,0) ASC, MCI.SEQ ASC
+	</select>
+	
+	<!-- 지도위 좌표 지점에 교차로 등록 -->
+	<insert id="insertCrossroadLaglngAjax" parameterType="CrossroadInfoVo"  useGeneratedKeys="true" keyProperty="seq">
+		INSERT INTO MGMT_CROSSROAD_INFO (
+			POL_CD
+			,POL_DISTRICT
+			,ROUTE_CD
+			,CROSSROAD_NM
+			,ROAD_NM
+		<if test='lat != null and lat != ""'>
+			,LAT
+		</if>
+		<if test='lng != null and lng != ""'>
+			,LNG
+		</if>
+		<if test='linkedSeq != null and linkedSeq != ""'>
+			,LINKED_SEQ
+		</if>
+			,REG_USERID
+			,REG_DATE
+		) VALUES (
+			#{polCd}
+			,#{polDistrict}
+			,#{routeCd}
+			,#{crossroadNm}
+			,NULL
+		<if test='lat != null and lat != ""'>
+			,#{lat, jdbcType=DECIMAL}
+		</if>
+		<if test='lng != null and lng != ""'>
+			,#{lng, jdbcType=DECIMAL}
+		</if>
+		<if test='linkedSeq != null and linkedSeq != ""'>
+			,#{linkedSeq, jdbcType=VARCHAR}
+		</if>
+			,#{regUserid}
+			,NOW()
+		)
+	</insert>
+	
+	
+	
+	
+</mapper>
+
+
+
