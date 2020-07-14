@@ -32,7 +32,7 @@ public class StatisticsService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<StatisticsVo> selectRouteList(StatisticsVo vo) {
+	public List<StatisticsVo> selectRouteList(StatisticsVo vo) throws Exception{
 		return dao.list(NAMESPACE+"selectRouteList", vo);
 	}
 	
@@ -46,7 +46,7 @@ public class StatisticsService {
 	 * @throws Exception
 	 */
 	
-	public List<StatisticsVo> selectStatisticsList(StatisticsVo vo) {
+	public List<StatisticsVo> selectStatisticsList(StatisticsVo vo) throws Exception{
 		return dao.list(NAMESPACE+"selectStatisticsList", vo);
 	}
 	

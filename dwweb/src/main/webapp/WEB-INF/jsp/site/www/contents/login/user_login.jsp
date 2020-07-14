@@ -34,8 +34,7 @@ $(document).ready(function() {
 	})
 	
 	//로그인 처리
-	function loginAct(){
-		
+	function loginAct(){	
 		if(stringUtil.isEmpty($("#userId").val())){
 			alert('아이디를 입력하세요.');
 			$("#userId").focus();
@@ -60,11 +59,45 @@ $(window).on('load', function () {
 });	
 </script>
 
+<script>
+/* Get the element you want displayed in fullscreen */ 
+var elem = document.documentElement;
+
+/* Function to open fullscreen mode */
+function openFullscreen() {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.mozRequestFullScreen) { /* Firefox */
+    elem.mozRequestFullScreen();
+  } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE/Edge */
+    elem = window.top.document.body; //To break out of frame in IE
+    elem.msRequestFullscreen();
+  }
+}
+
+/* Function to close fullscreen mode */
+function closeFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) {
+    window.top.document.msExitFullscreen();
+  }
+}
+</script>
 </head>
 
 <body text="black" link="blue" vlink="purple" alink="red">
 <form name="frm" id="frm">
 <input type="hidden" name="seq" id="seq" value="${userVo.seq}"/>
+<div id="myP">
+
+</div>
 <table border="0" width="100%" cellpadding="0" cellspacing="0" height="100%">
     <tr>
         <td>
@@ -113,6 +146,7 @@ $(window).on('load', function () {
                                 <td width="123" height="28">
                                 	<a href="javascript:;" id="btnLogin">
                                 	<img src="${pageContext.request.contextPath}/images/img/login.png" width="73" height="28" border="0" style="border-style:none;" /></a>
+                                	<!-- <a href="javascript:openFullscreen();">full</a> -->
                                 </td>
                             </tr>
                             <tr>

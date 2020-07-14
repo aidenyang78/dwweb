@@ -74,24 +74,8 @@ $(document).ready(function(){
 	
 	//처음 접속 시 메뉴 오픈
 	//$(".menu:eq(0)>a").click();
-	$("#list1004").click();
+	$("#list1002").click();
 	//fnCallAjaxDistrictData('list1002');
-	
-});
-
-$(window).ready(function(){
-	/* if("txt" == "${param.listType}"){
-		var tbWidth = $("#dtTable").width();
-		var tbHeight = $("#dtTable").height();
-		
-		//alert(tbWidth + " // " + tbHeight);
-		
-		$("#viewData").width(tbWidth);
-		$("#viewData").height(tbHeight+20);
-		
-		$("#dtTable").width(tbWidth - 20);
-		$("#dtTable").height(tbHeight - 20);
-	} */
 	
 });
 
@@ -124,7 +108,10 @@ function fnCallAjaxRouteData(polDistrict, routeCd){
 	var keyKind = $("#keyKind").val();
 	var stdDate = $("#stdDate").val();
 	var endDate = $("#endDate").val();
-	var districtNm = "시설물 통계";
+	
+	var districtNm = "평택시";
+	var listTitle = "";
+	var subTitle = "";
 	
 	$("#polDistrict").val(polDistrict);
 	$("#routeCd").val(routeCd);
@@ -135,14 +122,21 @@ function fnCallAjaxRouteData(polDistrict, routeCd){
 	}
 	
 	if(polDistrict == '1002'){
-		districtNm = "평택시 서부 시설물 통계";
+		districtNm += " 서부";
 	}else if(polDistrict == '1003'){
-		districtNm = "평택시 남부 시설물 통계";
+		districtNm += " 남부";
 	}else if(polDistrict == '1004'){
-		districtNm = "평택시 북부 시설물 통계";
+		districtNm += " 북부";
 	}
 	
-	$("#districtTxt").text(districtNm);
+	if(routeCd == ''){
+		listTitle = districtNm;
+	}else{
+		subTitle = $(".sub_list_on").find('span').text().replace("■ ",""); 
+		listTitle = districtNm + " <span style='background-color:#c0c0c0'>" + subTitle + "</span>";
+	}
+	
+	$("#listTitle").html(listTitle + " 시설물 통계");
 	
 	var strMethod = "post";
 	var strUrl = "${pageContext.request.contextPath}/statistics/selectFcStatisticsHtml.do";
@@ -366,7 +360,7 @@ function fnPrint(type){
                                         -->
 <!-- //left drop down -->                                        
                                         <td background="${pageContext.request.contextPath}/images/img/content_bg_crop_middle_center.png" width="220px">
-											<div  style="min-height:900px;">
+											<div  style="min-height:926px;">
 											    <ul>
 											        <li class="menu">
 											            <a><span id="list1002" data-districtCd='1002' class="top_list_on">평택시 서부</span></a>
@@ -449,7 +443,7 @@ function fnPrint(type){
 													<th colspan="3"></th>
 												</tr>
 												<tr>
-													<th colspan="3" class="h2_title_b center"><span id="districtTxt">시설물 통계</span></th>
+													<th colspan="3" class="h2_title_b center"><span id="listTitle">시설물 통계</span></th>
 												</tr>
 												<tr>
 													<th colspan="3" style="height:20px;"></th>

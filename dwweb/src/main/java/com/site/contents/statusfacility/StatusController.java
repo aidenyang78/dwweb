@@ -16,7 +16,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.core.comm.annotation.LoginCheck;
 import com.core.comm.common.CommonService;
 import com.core.comm.util.PageingUtil;
 import com.core.comm.util.PropertiesUtil;
@@ -70,7 +69,6 @@ public class StatusController {
 	 * @return
 	 * @throws Exception
 	 */	
-	@LoginCheck("/login/login.do")
 	@RequestMapping(value = "/status/listStatus.do")
 	public String listStatus(@ModelAttribute StatusVo statusVo, HttpServletRequest request, HttpServletResponse response,
 			ModelMap model) throws Exception {

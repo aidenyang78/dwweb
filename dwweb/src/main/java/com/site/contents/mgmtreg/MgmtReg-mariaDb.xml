@@ -411,7 +411,9 @@
 		<if test='keyKind != null and keyKind == "crossroadCd"'>
 			AND MRI.CROSSROAD_CD = #{keyWord}
 		</if>
-		ORDER BY MRI.MGMT_SEQ DESC
+		ORDER BY MRI.POL_DISTRICT, MRI.MGMT_SEQ DESC 
+		<!-- CAST(MRI.ROUTE_NM AS UNSIGNED), MRI.ROUTE_NM ASC --> 
+		<!-- MRI.MGMT_SEQ DESC -->
 		LIMIT #{limitStart}, #{limitEnd}
 	</select>
 	

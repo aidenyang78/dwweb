@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.site.contents.crossroadInfo.CrossroadInfo">
 
-<!-- 도로명정보 조회 -->
+	<!-- 도로명정보 조회 Ajax -->
 	<select id="selectCrossroadListAjax" parameterType="CrossroadInfoVo" resultType="CrossroadInfoVo">
 		SELECT 
 			COUNT(MCI.SEQ) OVER() AS TOT_CNT
@@ -14,6 +14,7 @@
 			,MCI.ROAD_NM
 			,MCI.LAT
 			,MCI.LNG
+			,MCI.LINKED_SEQ
 		FROM MGMT_CROSSROAD_INFO MCI
 		WHERE MCI.DEL_DATE IS NULL
 		<if test='polCd != null and polCd != ""'>
@@ -25,6 +26,181 @@
 		<if test='routeCd != null and routeCd != ""'>
 			AND MCI.ROUTE_CD = #{routeCd}
 		</if>
+		<!-- ORDER BY MCI.CROSSROAD_NM ASC -->
+		ORDER BY MCI.POL_DISTRICT ASC ,MCI.SEQ ASC
+	</select>
+	
+	<select id="selectCrossroadNmCheckAjax" parameterType="CrossroadInfoVo" resultType="Integer">
+		SELECT
+			COUNT(*) AS CNT
+		FROM MGMT_CROSSROAD_INFO
+		WHERE DEL_DATE IS NULL
+		AND POL_DISTRICT = #{polDistrict}
+		AND ROUTE_CD = #{routeCd}
+		AND CROSSROAD_NM = #{crossroadNm}
+	</select>
+	
+	<!-- 도로명정보 조회 전체 카운트-->
+	<select id="selectTotCrossroad" parameterType="CrossroadInfoVo" resultType="Integer">
+		SELECT 
+			COUNT(*) AS TOT_CNT
+		FROM MGMT_CROSSROAD_INFO MCI
+		WHERE MCI.DEL_DATE IS NULL
+		<if test='polCd != null and polCd != ""'>
+			AND MCI.POL_CD = #{polCd}
+		</if>
+		<if test='polDistrict != null and polDistrict != ""'>
+			AND MCI.POL_DISTRICT = #{polDistrict}
+		</if>
+		<if test='routeCd != null and routeCd != ""'>
+			AND MCI.ROUTE_CD = #{routeCd}
+		</if>
+		<if test='crossroadNm != null and crossroadNm != ""'>
+			AND MCI.CROSSROAD_NM LIKE CONCAT('%',#{crossroadNm},'%')
+		</if>
 		ORDER BY MCI.CROSSROAD_NM ASC
 	</select>
+	
+	
+	<!-- 도로명정보 조회 -->
+	<select id="selectCrossroadList" parameterType="CrossroadInfoVo" resultType="CrossroadInfoVo">
+		SELECT 
+			MCI.SEQ
+			,MCI.POL_CD
+			,MCI.POL_DISTRICT
+			,MCI.ROUTE_CD
+			,FN_GET_ROUTE_NM(MCI.ROUTE_CD) AS ROUTE_NM
+			,MCI.CROSSROAD_NM
+			,MCI.ROAD_NM
+			,MCI.LAT
+			,MCI.LNG
+			,MCI.LINKED_SEQ
+		FROM MGMT_CROSSROAD_INFO MCI
+		WHERE MCI.DEL_DATE IS NULL
+		<if test='polCd != null and polCd != ""'>
+			AND MCI.POL_CD = #{polCd}
+		</if>
+		<if test='polDistrict != null and polDistrict != ""'>
+			AND MCI.POL_DISTRICT = #{polDistrict}
+		</if>
+		<if test='routeCd != null and routeCd != ""'>
+			AND MCI.ROUTE_CD = #{routeCd}
+		</if>
+		<if test='crossroadNm != null and crossroadNm != ""'>
+			AND MCI.CROSSROAD_NM LIKE CONCAT('%',#{crossroadNm},'%')
+		</if>
+		<!-- ORDER BY MCI.SEQ DESC -->
+		ORDER BY MCI.POL_DISTRICT ASC ,MCI.SEQ ASC
+		LIMIT #{limitStart}, #{limitEnd}
+	</select>
+	
+	<!-- 교차로정보 상세 조회 -->
+	<select id="selectCrossroadInfo" parameterType="CrossroadInfoVo" resultType="CrossroadInfoVo">
+		SELECT
+			MCI.SEQ
+			,MCI.POL_CD
+			,MCI.POL_DISTRICT
+			,MCI.ROUTE_CD
+			,FN_GET_ROUTE_NM(MCI.ROUTE_CD) AS ROUTE_NM
+			,MCI.CROSSROAD_NM
+			,MCI.ROAD_NM
+			,MCI.LAT
+			,MCI.LNG
+			,MCI.LINKED_SEQ
+			,MCI.REG_USERID
+			,MCI.REG_DATE
+			,MCI.UPDT_USERID
+			,MCI.UPDT_DATE
+		FROM MGMT_CROSSROAD_INFO MCI
+		WHERE SEQ = #{seq}
+	</select>
+	
+	<!-- 교차로정보 등록 실행 -->
+	<insert id="insertCrossroadInfo" parameterType="CrossroadInfoVo">
+		INSERT INTO MGMT_CROSSROAD_INFO (
+			POL_CD
+			,POL_DISTRICT
+			,ROUTE_CD
+			,CROSSROAD_NM
+			,ROAD_NM
+		<if test='lat != null and lat != ""'>
+			,LAT
+		</if>
+		<if test='lng != null and lng != ""'>
+			,LNG
+		</if>
+		<if test='linkedSeq != null and linkedSeq != ""'>
+			,LINKED_SEQ
+		</if>
+			,REG_USERID
+			,REG_DATE
+		) VALUES (
+			#{polCd}
+			,#{polDistrict}
+			,#{routeCd}
+			,#{crossroadNm}
+			,NULL
+		<if test='lat != null and lat != ""'>
+			,#{lat, jdbcType=DECIMAL}
+		</if>
+		<if test='lng != null and lng != ""'>
+			,#{lng, jdbcType=DECIMAL}
+		</if>
+		<if test='linkedSeq != null and linkedSeq != ""'>
+			,#{linkedSeq, jdbcType=VARCHAR}
+		</if>
+			,#{regUserid}
+			,NOW()
+		)
+	</insert>
+	
+	<!-- 교차로정보 수정 실행 -->
+	<update id="updateCrossroadInfo" parameterType="CrossroadInfoVo">
+		UPDATE MGMT_CROSSROAD_INFO SET
+			UPDT_DATE = NOW()
+			,UPDT_USERID = #{updtUserid}
+		<if test='polCd != null and polCd != ""'>
+			,POL_CD = #{polCd}
+		</if>
+		<if test='polDistrict != null and polDistrict != ""'>
+			,POL_DISTRICT = #{polDistrict}
+		</if>
+		<if test='routeCd != null and routeCd != ""'>
+			,ROUTE_CD = #{routeCd}
+		</if>
+		<if test='crossroadNm != null and crossroadNm != ""'>
+			,CROSSROAD_NM = #{crossroadNm}
+		</if>
+		<if test='roadNm != null and roadNm != ""'>
+			,ROAD_NM = #{roadNm}
+		</if>
+		<if test='lat != null and lat != ""'>
+			,LAT = #{lat, jdbcType=VARCHAR}
+		</if>
+		<if test='lng != null and lng != ""'>
+			,LNG = #{lng, jdbcType=VARCHAR}
+		</if>
+		<if test='linkedSeq != null and linkedSeq != ""'>
+			,LINKED_SEQ = #{linkedSeq}
+		</if>
+		WHERE SEQ = #{seq}
+	</update>
+	
+	<!-- 교차로정보 삭제 -->
+	<update id="deleteCrossroadInfo" parameterType="CrossroadInfoVo">
+		UPDATE MGMT_CROSSROAD_INFO
+			SET DEL_USERID = #{delUserid}
+				,DEL_DATE = NOW()
+		WHERE SEQ = #{seq}
+	</update>
+	
+	
+	<!-- 도로(국도) 삭제 시 교차로 삭제 -->
+	<update id="deleteAllCrossroadInfo" parameterType="CrossroadInfoVo">
+		UPDATE MGMT_CROSSROAD_INFO
+			SET DEL_USERID = #{delUserid}
+				,DEL_DATE = NOW()
+		WHERE ROUTE_CD = #{routeCd}
+	</update>
+	
 </mapper>

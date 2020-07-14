@@ -18,7 +18,8 @@
 	<if test='routeCd != null and routeCd != ""'>
 		AND MRI.SEQ = #{routeCd}
 	</if>
-		ORDER BY MRI.POL_DISTRICT ASC, MRI.ROUTE_NM ASC
+		<!-- ORDER BY MRI.POL_DISTRICT ASC, MRI.ROUTE_NM ASC -->
+		ORDER BY MRI.POL_DISTRICT ASC, CAST(MRI.ROUTE_NM AS UNSIGNED), MRI.ROUTE_NM ASC
 	</select>
 	
 	<!-- 통계 조회 -->
@@ -203,6 +204,7 @@
 		)DT
 		ON MRI.SEQ = DT.ROUTE_CD
 		WHERE 1=1
+		AND MRI.DEL_DATE IS NULL
 	<if test='polCd != null and polCd != ""'>
 		AND MRI.POL_CD = #{polCd}
 	</if>
@@ -212,7 +214,8 @@
 	<if test='routeCd != null and routeCd != ""'>
 		AND MRI.SEQ = #{routeCd}
 	</if>
-		ORDER BY MRI.ROUTE_NM
+		ORDER BY CAST(MRI.ROUTE_NM AS UNSIGNED), MRI.ROUTE_NM ASC
+		
 	</select>
 	
 </mapper>

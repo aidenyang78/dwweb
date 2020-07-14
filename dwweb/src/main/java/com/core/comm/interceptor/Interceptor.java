@@ -35,11 +35,7 @@ import com.core.comm.util.WebUtil;
 public class Interceptor extends HandlerInterceptorAdapter {
 
 	protected Log log = LogFactory.getLog(this.getClass());
-
-	/*@Resource(name = "logService")
-	private LogService logService;
-	 */
-
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		
@@ -49,14 +45,41 @@ public class Interceptor extends HandlerInterceptorAdapter {
 			//jsessionId 체크
 			HttpSession session = request.getSession();
 			
+			String currUri 		= request.getRequestURI();
+			String currUrl 		= request.getRequestURL().toString();
+			
+			String[] passtUri	= new String[] {
+					"/login/login.do"
+			};
+			
+			boolean isPass		= false;
+
+			for(int i=0; i<passtUri.length; i++) {
+				if(currUri.indexOf(passtUri[i]) >= 0) {
+					isPass = true;
+					break;
+				}
+			}
+			
+			if(!isPass) {
+				log.debug("################# isPass ################# ");
+				
+				if(currUri.indexOf("login") == -1) {
+					log.debug("################# login ################# ");
+					if(StringUtil.isEmpty(SessionUtil.getSession(request, "USER_ID"))) {
+						log.debug("################# auth ################# ");
+						WebUtil.ajaxPrintMsg(response, "로그인후 사용가능합니다.", "L",request.getContextPath()+"/login/login.do");
+						return false;
+					}
+				}
+			}
+
+/*
 			String conJsessionId = request.getSession().getId().toString();
 			String conIp = request.getRemoteAddr().toString();
 			String conAgent = request.getHeader("User-Agent").toString();
 			
-			
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>> preHandle : " + conIp);
-			
-			/*if(session.getAttribute("userJsessionId") != null){
+			if(session.getAttribute("userJsessionId") != null){
 				String userJsessionId = session.getAttribute("userJsessionId").toString(); 
 				String userIp =  session.getAttribute("userIp").toString();
 				String userAgent =  session.getAttribute("userAgent").toString();
@@ -89,29 +112,35 @@ public class Interceptor extends HandlerInterceptorAdapter {
 					log.debug("conJsessionId : " + conJsessionId);
 					log.debug("userJsessionId : " + userJsessionId);
 				}
-			}*/
+			}
+*/
+			
+			//로그인 체크
+			if(loginCheck != null) {
+				
+				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> loginCheck : " + loginCheck);
+				if(StringUtil.isEmpty(SessionUtil.getSession(request, "USER_ID"))) {
+					
+					if(StringUtil.isEmpty(loginCheck.value())) {
+						SessionUtil.setSession(request, "return_url", request.getRequestURI()+"?"+request.getQueryString());						
+					}
+					else {
+						SessionUtil.setSession(request, "return_url", loginCheck.value()+"?"+request.getQueryString());
+					}
+					
+					WebUtil.ajaxPrintMsg(response, "로그인후 사용가능합니다.", "L",request.getContextPath()+"/login/login.do");
+
+					return false;
+					
+				}
+			}
 		}catch(Exception e){
 			//e.printStackTrace();
 		}
 		
 		//로그인 체크
 		//로그인이 필요한 method에서 @LoginCheck를 사용한다.
-		if(loginCheck != null) {
-			if(StringUtil.isEmpty(SessionUtil.getSession(request, "SEQ"))) {
-				
-				if(StringUtil.isEmpty(loginCheck.value())) {
-					SessionUtil.setSession(request, "return_url", request.getRequestURI()+"?"+request.getQueryString());						
-				}
-				else {
-					SessionUtil.setSession(request, "return_url", loginCheck.value()+"?"+request.getQueryString());
-				}
-				
-				WebUtil.ajaxPrintMsg(response, "로그인후 사용가능합니다.", "L",request.getContextPath()+"/login/login.do");
-
-				return false;
-				
-			}
-		}
+		
 
 		return true;
 	}

@@ -532,6 +532,40 @@ getHtmlData = function(method, url, param, target, async, errorYn) {
 	}); //ajax end
 }
 
+getHtmlDataNoneTarget = function(method, url, param, async, errorYn) {
+	var htmlData = "";
+	
+	if(async == null ||  async == ''){
+		async = false;
+	}
+
+	$.ajax({
+		 type : method 		// 전송타입
+		,url : url 			// 액션
+		,data : param 		// 파라미터
+		,dataType : "html"	// 데이타타입은 html으로 설정
+		,async : async		// 동기형태로 실행
+		,cache : false		// 캐시저장안함
+		,success : function(data, textStatus) { //요청 성공하면
+
+			if(data.replace(/\s+/g,"") != ""){
+				
+				htmlData = data;
+			}
+
+		} //success end
+		,error : function(xhr, textStatus, errorThrown) { //요청 실패하면
+
+			if(errorYn == "Y") {
+				var e = "xhr : " + xhr + "\ntextStatus : " + textStatus + "\nerrorThrown : " + errorThrown;
+				alert(e);
+			}
+		} //error end
+	}); //ajax end
+	
+	return htmlData;
+}
+
 //캘린더 설정
 var datepickerSet = {
 		changeMonth: true,	//월 셀렉트박스 선택

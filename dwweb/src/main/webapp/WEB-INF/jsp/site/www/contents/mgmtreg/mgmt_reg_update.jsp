@@ -351,7 +351,7 @@ function fnSecSum(){
 															<th class="th">도로명</th>
 															<td colspan="3">
 																<span id="routeList">도로명 셀렉</span>
-																<input type="text" name="routeNm" id="routeNm" value="${listInst.routeNm }"/>
+																<input type="hidden" name="routeNm" id="routeNm" value="${listInst.routeNm }"/>
 															</td>
 														</tr>
 														
@@ -375,16 +375,16 @@ function fnSecSum(){
 																<ul>
 																	<li>
 																		<span id="crossroadList">설치위치 셀렉</span>
-																		<input type="text" name="crossroadNm" id="crossroadNm" value="${listInst.crossroadNm}"/>
+																		<input type="hidden" name="crossroadNm" id="crossroadNm" value="${listInst.crossroadNm}"/>
 																		
-																		<span style="margin-left:40px;">
-																		<label for="lat">위도</label>
-																		<input type="text" name="lat" id="lat" size="14" value="${listInst.lat}" accesskey="DCM"/>
-																		
-																		<label for="lng">X 경도</label>
-																		<input type="text" name="lng" id="lng" size="14" value="${listInst.lng}" accesskey="DCM"/>
-																		<a href="javascript:;" onclick="fnSelGeoCode();" class="btn_grayStyle02">좌표선택</a>
-																		</span>
+																		<%-- <span style="margin-left:40px;">
+																			<label for="lat">위도</label>
+																			<input type="text" name="lat" id="lat" size="14" value="${listInst.lat}" accesskey="DCM"/>
+																			
+																			<label for="lng">X 경도</label>
+																			<input type="text" name="lng" id="lng" size="14" value="${listInst.lng}" accesskey="DCM"/>
+																			<a href="javascript:;" onclick="fnSelGeoCode();" class="btn_grayStyle02">좌표선택</a>
+																		</span> --%>
 																	</li>
 																</ul>
 																<ul><li>&nbsp;</li></ul>

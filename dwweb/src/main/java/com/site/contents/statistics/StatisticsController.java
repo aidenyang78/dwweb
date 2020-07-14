@@ -16,7 +16,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.core.comm.annotation.LoginCheck;
 import com.core.comm.common.CommonService;
 import com.core.comm.util.EgovDateUtil;
 import com.core.comm.util.PropertiesUtil;
@@ -66,7 +65,6 @@ public class StatisticsController {
 	 * @return
 	 * @throws Exception
 	 */
-	@LoginCheck("/login/login.do")
 	@RequestMapping("/statistics/listStatistics.do")
 	public String listStatistics(@ModelAttribute StatisticsVo statisticsVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		

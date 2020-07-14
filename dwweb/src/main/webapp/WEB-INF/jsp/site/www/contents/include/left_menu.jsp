@@ -57,16 +57,15 @@ function fnSwapImage() { //v3.0
 			src="${pageContext.request.contextPath}/images/img/logo.png"
 			width="92" height="96"></td>
 	</tr>
-
 	<tr>
 		<td height="20px"></td>
 	</tr>
-
 	<tr valign="top" height="96">
 		<td>
 		<c:choose>
 			<c:when test='${param.menuSeq eq "1001" }'>
-				<img src="${pageContext.request.contextPath}/images/img/icon_map_over.png" width="92" height="96">
+				<a href="${pageContext.request.contextPath}/main/main.do?menuSeq=1001">
+					<img src="${pageContext.request.contextPath}/images/img/icon_map_over.png" width="92" height="96"></a>
 			</c:when>
 			<c:otherwise>
 				<a href="${pageContext.request.contextPath}/main/main.do?menuSeq=1001" onMouseOut="fnSwapImgRestore()"
@@ -146,4 +145,50 @@ function fnSwapImage() { //v3.0
 		</c:choose>
 		</td>
 	</tr>
+	<tr valign="top" height="96">
+		<td class="center">
+		<c:choose>
+			<c:when test='${param.menuSeq eq "1006"}'>
+				<h2 id="tmp" class="tmp_on">
+					<a href="${pageContext.request.contextPath}/crossroadinfo/listCrossroadInfo.do?menuSeq=1006">교차로<br/>관리</a>
+				</h2>
+			</c:when>
+			<c:otherwise>
+				<h2 id="tmp" class="tmp" onMouseOut="fnTmpOver();" onMouseOver="fnTmpOver('on')">
+					<a href="${pageContext.request.contextPath}/crossroadinfo/listCrossroadInfo.do?menuSeq=1006">교차로<br/>관리</a>
+				</h2>
+			</c:otherwise>
+		</c:choose>
+		</td>
+	</tr>
 </table>
+
+<script>
+function fnTmpOver(type){
+	
+	if("on" == type){
+		$("#tmp").removeClass("tmp");
+		$("#tmp").addClass("tmp_on");
+		
+	}else{
+		$("#tmp").removeClass("tmp_on");
+		$("#tmp").addClass("tmp");
+	}
+}
+
+</script>
+<style>
+.tmp{
+	color: #ffffff;
+}
+.tmp a{
+	color: #ffffff;
+}
+
+.tmp_on{
+	color: #f0f24b;
+}
+.tmp_on a{
+	color: #f0f24b;
+}
+</style>

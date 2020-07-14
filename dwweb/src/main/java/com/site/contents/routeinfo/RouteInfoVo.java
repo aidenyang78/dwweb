@@ -1,4 +1,7 @@
 package com.site.contents.routeinfo;
+
+import com.core.comm.vo.CommonVo;
+
 /**
  * @Class Name : RouteInfoVo
  * @Description : RouteInfoVo Class
@@ -25,6 +28,13 @@ public class RouteInfoVo {
 	public String updtDate;
 	public String delUserid;
 	public String delDate;
+	
+	
+	public String polNm;
+	public String keyKind;
+	public String keyWord;
+	public String stdDate;
+	public String endDate;
 	
 	public String totCnt;
 
@@ -114,6 +124,46 @@ public class RouteInfoVo {
 
 	public void setTotCnt(String totCnt) {
 		this.totCnt = totCnt;
+	}
+	
+	public String getPolNm() {
+		return polNm;
+	}
+
+	public void setPolNm(String polNm) {
+		this.polNm = polNm;
+	}
+
+	public String getKeyKind() {
+		return keyKind;
+	}
+
+	public void setKeyKind(String keyKind) {
+		this.keyKind = keyKind;
+	}
+
+	public String getKeyWord() {
+		return keyWord;
+	}
+
+	public void setKeyWord(String keyWord) {
+		this.keyWord = keyWord;
+	}
+
+	public String getStdDate() {
+		return stdDate;
+	}
+
+	public void setStdDate(String stdDate) {
+		this.stdDate = stdDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
 	

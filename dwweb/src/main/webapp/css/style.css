@@ -3,7 +3,8 @@ body {
 	background-size: cover;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
-	font-size: 75%;
+	/* font-size: 75%; */
+	font-size:12px;
 	font-family: "ng";
 	color: #666;
 	line-height: 1.5em

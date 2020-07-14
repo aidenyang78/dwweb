@@ -320,7 +320,7 @@ function fnSecSum(){
 																		<option value="">::::::: 지구를 선택해 주세요::::::: </option>
 																	</select>
 																</span>
-																<input type="text" name="routeNm" id="routeNm" size="62"/>
+																<input type="hidden" name="routeNm" id="routeNm" size="62"/>
 																
 															</td>
 														</tr>
@@ -349,16 +349,17 @@ function fnSecSum(){
 																				<option value="">::::::: 지구와 도로명을 선택해 주세요 :::::::</option>
 																			</select>
 																		</span>
-																		<input type="text" name="crossroadNm" id="crossroadNm"/>
+																		<input type="hidden" name="crossroadNm" id="crossroadNm"/>
 																		
-																		<span style="margin-left:40px;">
-																		<label for="lat">위도</label>
-																		<input type="text" name="lat" id="lat" size="14" accesskey="DCM"/>
 																		
-																		<label for="lng">X 경도</label>
-																		<input type="text" name="lng" id="lng" size="14" accesskey="DCM"/>
-																		<a href="javascript:;" onclick="fnSelGeoCode();" class="btn_grayStyle02">좌표선택</a>
-																		</span>
+																		<!-- <span style="margin-left:40px;">
+																			<label for="lat">위도</label>
+																			<input type="text" name="lat" id="lat" size="14" accesskey="DCM"/>
+																			
+																			<label for="lng">X 경도</label>
+																			<input type="text" name="lng" id="lng" size="14" accesskey="DCM"/>
+																			<a href="javascript:;" onclick="fnSelGeoCode();" class="btn_grayStyle02">좌표선택</a>
+																		</span> -->
 																	</li>
 																</ul>
 																<ul><li>&nbsp;</li></ul>

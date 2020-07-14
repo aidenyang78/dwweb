@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.site.contents.routeInfo.RouteInfo">
+
+	<!-- 도로(국도) 리스트 ajax -->
 	<select id="selectRouteListAjax" parameterType="RouteInfoVo" resultType="RouteInfoVo">
 		SELECT
 			COUNT(MRI.SEQ) OVER() AS TOT_CNT
@@ -12,6 +14,92 @@
 		WHERE MRI.DEL_DATE IS NULL
 		AND MRI.POL_CD = #{polCd}
 		AND MRI.POL_DISTRICT = #{polDistrict}
-		ORDER BY MRI.ROUTE_NM
+		<!-- ORDER BY MRI.ROUTE_NM -->
+		ORDER BY MRI.POL_DISTRICT ASC
+			,CAST(MRI.ROUTE_NM AS UNSIGNED)
+			,MRI.ROUTE_NM ASC
 	</select>
+	
+	<!-- 도로(국도)명 중복 체크 -->
+	<select id="selectRouteNmCheckAjax" parameterType="RouteInfoVo" resultType="Integer">
+		SELECT
+			COUNT(*) AS CNT
+		FROM MGMT_ROUTE_INFO
+		WHERE DEL_DATE IS NULL
+		AND POL_DISTRICT = #{polDistrict}
+		AND ROUTE_NM = #{routeNm}
+	</select>
+	
+	<select id="selectRouteInfo" parameterType="RouteInfoVo" resultType="RouteInfoVo">
+		SELECT
+			MRI.SEQ
+			,MRI.POL_CD
+			,MRI.POL_DISTRICT
+			,MRI.ROUTE_NM
+		FROM MGMT_ROUTE_INFO MRI
+		WHERE MRI.DEL_DATE IS NULL
+	<if test='polCd != null and polCd != ""'>
+		AND MRI.POL_CD = #{polCd}
+	</if>
+	<if test='polDistrict != null and polDistrict != ""'>
+		AND MRI.POL_DISTRICT = #{polDistrict}
+	</if>
+		AND MRI.SEQ = #{seq}
+	</select>
+	
+	
+	<!-- 도로(국도) 리스트 조회 -->
+	<select id="selectRouteList" parameterType="RouteInfoVo" resultType="RouteInfoVo">
+		SELECT
+			COUNT(POL_DISTRICT) OVER() AS TOT_CNT
+			,MRI.SEQ
+			,MRI.POL_CD
+			,MRI.POL_DISTRICT
+			,MRI.ROUTE_NM
+			FROM MGMT_ROUTE_INFO MRI
+		WHERE MRI.DEL_DATE IS NULL
+		AND MRI.POL_CD = #{polCd}
+	<if test='polDistrict != null and polDistrict != ""'>
+		AND MRI.POL_DISTRICT = #{polDistrict}
+	</if>
+		<!-- ORDER BY MRI.POL_DISTRICT ASC, MRI.ROUTE_NM ASC -->
+		ORDER BY MRI.POL_DISTRICT ASC, CAST(MRI.ROUTE_NM AS UNSIGNED), MRI.ROUTE_NM ASC
+	</select>
+	
+	<!-- 도로(국도) 등록 실행 -->
+	<insert id="insertRouteInfo" parameterType="RouteInfoVo" useGeneratedKeys="true" keyProperty="seq">
+		INSERT INTO MGMT_ROUTE_INFO(
+			POL_CD
+			,POL_DISTRICT
+			,ROUTE_NM
+			,REG_USERID
+			,REG_DATE
+		)VALUES(
+			#{polCd}
+			,#{polDistrict}
+			,#{routeNm}
+			,#{regUserid}
+			,NOW()
+		)
+	</insert>
+	
+	<!-- 도로(국도) 수정 실행 -->
+	<update id="updateRouteInfo"  parameterType="RouteInfoVo">
+		UPDATE MGMT_ROUTE_INFO SET UPDT_DATE = NOW()
+			,UPDT_USERID = #{updtUserid}
+		<if test='polDistrict != null and polDistrict != ""'>
+			,POL_DISTRICT = #{polDistrict}
+		</if>
+		<if test='routeNm != null and routeNm != ""'>
+			,ROUTE_NM = #{routeNm}
+		</if>
+		WHERE SEQ = #{seq}
+	</update>
+	
+	<!-- 도로(국도) 삭제 실행 -->
+	<update id="deleteRouteInfo"  parameterType="RouteInfoVo">
+		UPDATE MGMT_ROUTE_INFO SET DEL_DATE = NOW()
+			,DEL_USERID = #{delUserid}
+		WHERE SEQ = #{seq}
+	</update>
 </mapper>

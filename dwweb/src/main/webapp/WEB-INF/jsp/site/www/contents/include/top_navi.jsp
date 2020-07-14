@@ -16,6 +16,9 @@
 	<c:when test='${param.menuSeq eq "1005" }'>
 		<c:set var="naviText" value="설정"/>
 	</c:when>
+	<c:when test='${param.menuSeq eq "1006" }'>
+		<c:set var="naviText" value="교차로 관리"/>
+	</c:when>
 </c:choose>
 <table border="0" width="100%">
 	<tr>

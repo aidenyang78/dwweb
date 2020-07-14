@@ -18,7 +18,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.core.comm.annotation.LoginCheck;
 import com.core.comm.common.CommonService;
 import com.core.comm.util.EgovDateUtil;
 import com.core.comm.util.EgovStringUtil;
@@ -115,7 +114,6 @@ public class ConfigController {
 	 * @return
 	 * @throws Exception
 	 */
-	@LoginCheck("/login/login.do")
 	@RequestMapping(value = "/config/config.do")
 	public String authDivision(@ModelAttribute UserVo userVo, HttpServletRequest request, HttpServletResponse response,
 			ModelMap model) throws Exception {
@@ -145,7 +143,6 @@ public class ConfigController {
 	 * @return
 	 * @throws Exception
 	 */
-	@LoginCheck("/login/login.do")
 	@RequestMapping(value = "/config/listUser.do")
 	public String listUser(@ModelAttribute UserVo userVo, HttpServletRequest request, HttpServletResponse response,
 			ModelMap model) throws Exception {
@@ -234,7 +231,6 @@ public class ConfigController {
 	 * @return
 	 * @throws Exception
 	 */
-	@LoginCheck("/login/login.do")
 	@RequestMapping(value = "/config/insertUser.do")
 	public String insertUser(@ModelAttribute UserVo userVo, HttpServletRequest request, HttpServletResponse response,
 			ModelMap model) throws Exception {
@@ -267,7 +263,14 @@ public class ConfigController {
 		return "/site/www/contents/config/user_insert";
 	}
 	
-	@LoginCheck("/login/login.do")
+	/**
+	 * 사용자등록 실행
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/config/insertUserAct.do")
 	public String insertUserAct(@ModelAttribute UserVo userVo, HttpServletRequest request, HttpServletResponse response,
 			ModelMap model) throws Exception {
@@ -319,7 +322,14 @@ public class ConfigController {
 	}
 	
 	
-	@LoginCheck("/login/login.do")
+	/**
+	 * 사용자 삭제 실행
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/config/deleteUserAct.do")
 	public String deleteUserAct(@ModelAttribute UserVo userVo, HttpServletRequest request, HttpServletResponse response,
 			ModelMap model) throws Exception {
@@ -353,7 +363,14 @@ public class ConfigController {
 		
 	}
 	
-	@LoginCheck("/login/login.do")
+	/**
+	 * 사용자 수정
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/config/updateUser.do")
 	public String updateUser(@ModelAttribute UserVo userVo, HttpServletRequest request, HttpServletResponse response,
 			ModelMap model) throws Exception {
@@ -386,7 +403,14 @@ public class ConfigController {
 		return "/site/www/contents/config/user_update";
 	}
 	
-	@LoginCheck("/login/login.do")
+	/**
+	 * 사용자 수정 실행
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/config/updateUserAct.do")
 	public String updateUserAct(@ModelAttribute UserVo userVo, HttpServletRequest request, HttpServletResponse response,
 			ModelMap model) throws Exception {
@@ -429,7 +453,14 @@ public class ConfigController {
 		return null;
 	}
 	
-	@LoginCheck("/login/login.do")
+	/**
+	 * 내정보 수정
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/config/updateMyInfo.do")
 	public String updateMyInfo(@ModelAttribute UserVo userVo, HttpServletRequest request, HttpServletResponse response,
 			ModelMap model) throws Exception {
@@ -451,7 +482,14 @@ public class ConfigController {
 		return "/site/www/contents/config/my_info_update";
 	}
 	
-	@LoginCheck("/login/login.do")
+	/**
+	 * 내정보 수정 실행
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/config/updateMyInfoAct.do")
 	public String updateMyInfoAct(@ModelAttribute UserVo userVo, HttpServletRequest request, HttpServletResponse response,
 			ModelMap model) throws Exception {		

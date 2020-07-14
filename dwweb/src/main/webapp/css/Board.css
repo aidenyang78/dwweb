@@ -130,6 +130,12 @@ select{height:22px;}
 .btn_redStyle02:hover,
 .btn_redStyle02:active{text-decoration:none;color:#fff;} /* height:22px; */
 
+.btn_redStyle03{display:inline-block;color:#ffff;border:1px solid #cf2e2e;padding:0 40px;height:33px;text-align:center;font-weight:bold;line-height:2.75em;background-color:#dc6263;}
+.btn_redStyle03:link,
+.btn_redStyle03:visited,
+.btn_redStyle03:hover,
+.btn_redStyle03:active{text-decoration:none;color:#ffff;} /* height:35px */
+
 .btn_grayStyle01{display:inline-block;width:85px;margin:0 2px;padding:2px 0;font-size:0.95em;text-align:center;color:#fff;background-color:#aaa;}
 .btn_grayStyle01:link,
 .btn_grayStyle01:visited,

@@ -20,7 +20,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.core.comm.annotation.LoginCheck;
 import com.core.comm.common.CommonService;
 import com.core.comm.util.PageingUtil;
 import com.core.comm.util.PropertiesUtil;
@@ -72,7 +71,6 @@ public class MgmtRegController {
 	 * @return
 	 * @throws Exception
 	 */
-	@LoginCheck("/login/login.do")
 	@RequestMapping("/mgmtreg/listMgmtReg.do")
 	public String listMngReg(@ModelAttribute MgmtRegVo mgmtRegVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		
@@ -146,7 +144,6 @@ public class MgmtRegController {
 	 * @return
 	 * @throws Exception
 	 */	
-	@LoginCheck("/login/login.do")
 	@RequestMapping("/mgmtreg/insertMgmtReg.do")
 	public String insertMngReg(@ModelAttribute MgmtRegVo mgmtRegVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		
@@ -164,7 +161,6 @@ public class MgmtRegController {
 	 * @return
 	 * @throws Exception
 	 */	
-	@LoginCheck("/login/login.do")
 	@RequestMapping("/mgmtreg/insertMgmtRegAct.do")
 	public String insertMgmtRegAct(@ModelAttribute MgmtRegVo mgmtRegVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		
@@ -217,7 +213,6 @@ public class MgmtRegController {
 	 * @return
 	 * @throws Exception
 	 */	
-	@LoginCheck("/login/login.do")
 	@RequestMapping("/mgmtreg/updateMgmtReg.do")
 	public String updateMgmtReg(@ModelAttribute MgmtRegVo mgmtRegVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		
@@ -258,7 +253,6 @@ public class MgmtRegController {
 	 * @return
 	 * @throws Exception
 	 */	
-	@LoginCheck("/login/login.do")
 	@RequestMapping("/mgmtreg/updateMgmtRegAct.do")
 	public String updateMgmtRegAct(@ModelAttribute MgmtRegVo mgmtRegVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		
@@ -311,7 +305,6 @@ public class MgmtRegController {
 	 * @return
 	 * @throws Exception
 	 */	
-	@LoginCheck("/login/login.do")
 	@RequestMapping("/mgmtreg/deleteMgmtRegAct.do")
 	public String deleteMgmtRegAct(@ModelAttribute MgmtRegVo mgmtRegVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		
