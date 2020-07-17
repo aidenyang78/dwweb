@@ -26,6 +26,8 @@ public class StatusVo extends CommonVo{
 	
 	public String statusno;			//교차로 상태 코드
 	public String description;		//교차로 상태코드 설명
+	public String linkedCnt;
+	
 	
 	public String getNo() {
 		return no;
@@ -57,4 +59,12 @@ public class StatusVo extends CommonVo{
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public String getLinkedCnt() {
+		return linkedCnt;
+	}
+	public void setLinkedCnt(String linkedCnt) {
+		this.linkedCnt = linkedCnt;
+	}
+	
+	
 }

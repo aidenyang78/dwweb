@@ -24,6 +24,8 @@ import com.core.comm.util.SessionUtil;
 import com.core.comm.util.StringUtil;
 import com.site.contents.routeinfo.RouteInfoService;
 import com.site.contents.routeinfo.RouteInfoVo;
+import com.site.contents.statusfacility.StatusService;
+import com.site.contents.statusfacility.StatusVo;
 
 /**
  * @Class Name : CrossroadInfoController
@@ -53,6 +55,9 @@ public class CrossroadInfoController {
 	
 	@Resource(name = "routeInfoService")
 	protected RouteInfoService routeInfoService;
+	
+	@Resource(name = "statusService")
+	protected StatusService statusService;
 	
 	@Resource(name = "txManager")
 	protected DataSourceTransactionManager txManager;
@@ -216,15 +221,18 @@ public class CrossroadInfoController {
 	 * @param request
 	 * @param response
 	 * @param model
+	 * @param statusVo 
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/crossroadinfo/insertCrossroadInfo.do")
-	public String insertCrossroadInfo(CrossroadInfoVo crossroadInfoVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+	public String insertCrossroadInfo(@ModelAttribute CrossroadInfoVo crossroadInfoVo, StatusVo statusVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		
 		model.addAttribute("polCd", polCd);
 		model.addAttribute("polNm", polNm);
 		
+		List<StatusVo> listStatus = statusService.selectListStatusForMatching(statusVo);
+		model.addAttribute("listStatus", listStatus);
 		
 		
 		return "/site/www/contents/crossroadinfo/crossroad_info_insert";
@@ -239,7 +247,7 @@ public class CrossroadInfoController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/crossroadinfo/insertCrossroadInfoAct.do")
-	public String insertCrossroadInfoAct(CrossroadInfoVo crossroadInfoVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+	public String insertCrossroadInfoAct(@ModelAttribute CrossroadInfoVo crossroadInfoVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		
 		try {
 			crossroadInfoVo.setRegUserid(SessionUtil.getSession(request, "USER_ID").toString());
@@ -270,16 +278,18 @@ public class CrossroadInfoController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/crossroadinfo/updateCrossroadInfo.do")
-	public String updateCrossroadInfo(CrossroadInfoVo crossroadInfoVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+	public String updateCrossroadInfo(@ModelAttribute CrossroadInfoVo crossroadInfoVo, StatusVo statusVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+		
+		model.addAttribute("polNm", polNm);
 		
 		String seq = StringUtil.nullToBlank(request.getParameter("crossroadSeq"));
 		crossroadInfoVo.setSeq(seq);
 		
 		CrossroadInfoVo crossroadInfo = crossroadInfoService.selectCrossroadInfo(crossroadInfoVo);
-		
 		model.addAttribute("crossroadInfo", crossroadInfo);
 		
-		model.addAttribute("polNm", polNm);
+		List<StatusVo> listStatus = statusService.selectListStatusForMatching(statusVo);
+		model.addAttribute("listStatus", listStatus);
 		
 		return "/site/www/contents/crossroadinfo/crossroad_info_update";
 	}
@@ -293,7 +303,7 @@ public class CrossroadInfoController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/crossroadinfo/updateCrossroadInfoAct.do")
-	public String updateCrossroadInfoAct(CrossroadInfoVo crossroadInfoVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+	public String updateCrossroadInfoAct(@ModelAttribute CrossroadInfoVo crossroadInfoVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		
 		try {
 			String sRouteCd = StringUtil.nullToBlank(request.getParameter("s_routeCd"));
@@ -333,7 +343,7 @@ public class CrossroadInfoController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/crossroadinfo/deleteCrossroadInfo.do")
-	public String deleteCrossroadInfo(CrossroadInfoVo crossroadInfoVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+	public String deleteCrossroadInfo(@ModelAttribute CrossroadInfoVo crossroadInfoVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 				
 		try {
 			String seq = StringUtil.nullToBlank(request.getParameter("crossroadSeq"));

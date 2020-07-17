@@ -60,7 +60,8 @@ function fnKeywordSearch(){
 		resultHtml += "</table>";
 				
 	$("#keywordSearch").html(resultHtml);
-	$("#crossloadApplyBtn").html('');
+	//$("#crossloadApplyBtn").html('');
+	$("#crossloadApplyBtn").addClass('hide');
 }
 
 function fnChangeDistrict(){
@@ -100,6 +101,7 @@ function fnSetRouteList(){
 		alert('조회가능한 도로명이 없습니다.');
 	}
 	
+	$("#crossloadApplyBtn").removeClass('hide');
 	$("#routeList").html(inHtml);
 }
 
@@ -138,9 +140,6 @@ function fnSetCrossroadList(){
 			inHtml += "<option value='"+seq+"' data-lat='"+lat+"' data-lng='"+lng+"'>"+crossroadNm+"</option>";
 		}
 		inHtml += "</select>";
-		
-		inBtHtml = "&nbsp;<span class='btn_whiteStyle05 pointer' style='vertical-align:bottom;' onclick='fnUpdateLatlng(0);'>적용</span>";
-		
 	}else{
 		inHtml = " <select name='crdSeq' id='crdSeq' style='min-width:240px;'>";
 		inHtml += "<option value=''>:: 검색된 도로명이 없음 ::</option>";
@@ -149,8 +148,8 @@ function fnSetCrossroadList(){
 		alert('조회가능한 도로명이 없습니다.');
 	}
 	
+	$("#crossloadApplyBtn").removeClass('hide');
 	$("#crossroadList").html(inHtml);
-	$("#crossloadApplyBtn").html(inBtHtml);
 }
 
 
@@ -179,19 +178,12 @@ function fnUpdateLatlng(seq){
 	$result = $json.result;
 	if($result != 0){
 		//make crossroad info pop
+		$(".leaflet-popup").addClass('hide');
+		
 		$("#routeCd").val($result.routeCd);
 		$("#crossroadSeq").val($result.seq);
 		
-		/* $result.callType = 'info';
-		$result.zLevel = 16;
-		fnMakeCrossroadInfo($result); */
-		
-		//fnSelRoute($result.routeCd);
-		//map.setView([$result.lat, $result.lng], 16);
-		
-		fnSelRoute($result.routeCd);
-		map.panTo([$result.lat,$result.lng]);	//중심 이동
-		map.setZoom(16).openPopup();
+		fnSelRoute($result.routeCd, $result.lat, $result.lng, 15);
 		
 	}else{
 		alert('좌표 수정에 실패 했습니다.');
@@ -249,7 +241,9 @@ function fnUpdateLatlng(seq){
 			</tr>
 			<tr>
 				<td colspan="2" class="center" style="border:none;">
-					<span id="crossloadApplyBtn"></span>
+					<span id="crossloadApplyBtn">
+						&nbsp;<span class='btn_whiteStyle05 pointer' style='vertical-align:bottom;' onclick='fnUpdateLatlng(0);'>적용</span>
+					</span>
 				</td>
 			</tr>
 			</tbody>

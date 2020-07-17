@@ -45,6 +45,25 @@
 		LIMIT #{limitStart}, #{limitEnd}
 	</select>
 	
+	<!-- 교차로 매칭 대상 장애리스트 조회 -->
+	<select id="selectListStatusForMatching" parameterType="StatusVo" resultType="StatusVo">
+		SELECT
+			DT.NO
+			,DT.NAME
+			,DT.STATUS
+			,DT.DATE
+			,DT.LINKED_CNT
+		FROM(
+			SELECT
+				ST.NO
+				,ST.NAME
+				,ST.STATUS
+				,ST.DATE
+				,(SELECT COUNT(1) FROM DW_ITSWEB.MGMT_CROSSROAD_INFO WHERE LINKED_SEQ = ST.NO) AS LINKED_CNT
+			FROM STATUS ST
+		)DT
+		ORDER BY LINKED_CNT ASC, CAST(DT.NAME AS UNSIGNED) ,DT.NAME ASC
+	</select>
 	
 	<!-- 임의 데이터 기록 -->
 	<insert id="insertStatus" parameterType="StatusVo">

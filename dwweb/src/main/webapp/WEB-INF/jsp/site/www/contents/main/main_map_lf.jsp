@@ -23,9 +23,13 @@
 <!-- leaflet 지도 -->
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/leaflet/leaflet.css"/>
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/leaflet/leaflet.measure.css"/>
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/leaflet/leaflet.easybutton.css"/>
 <script src="${pageContext.request.contextPath}/js/leaflet/leaflet.js"></script>
 <script src="${pageContext.request.contextPath}/js/leaflet/leaflet.measure.js"></script>
+<script src="${pageContext.request.contextPath}/js/leaflet/leaflet.easybutton.js"></script>
 <script type="text/javascript" src="http://map.vworld.kr/js/vworldMapInit.js.do?version=2.0&apiKey=970E88E0-2536-3A55-8216-0B675CBC5FCD"></script>
+<%-- <jsp:include page="/WEB-INF/jsp/site/www/contents/main/function/leaflet_include.jsp"/> --%>
+
 <%-- 
 #########################################################
 # vWorld 키관리 정보 : http://www.vworld.kr/dev/v4api.do
@@ -97,6 +101,7 @@ $(function() {
 		str = str.substring(1, str.length);
 		alert(str);
 	}); */
+
 });
 
 $(window).on('load', function() {
@@ -111,22 +116,29 @@ $(window).keydown(function(e){
 		fnStopCalculationDistance();
 	}
 });
+
+$(window).keyup(function(e){
+	if(e.keyCode == '27'){
+		fnStopCalculationDistance();
+	}
+});
 </script>
 </head>
 <body onLoad="fnPreloadImages('${pageContext.request.contextPath}/images/img/icon_signal_over.png','${pageContext.request.contextPath}/images/img/icon_setting_over.png','${pageContext.request.contextPath}/images/img/icon_chart_over.png')">
-<form name="frm" id="frm" onsubmit="return false">
+<!-- <form name="frm" id="frm" onsubmit="return false"> -->
+<form name="frm" id="frm">
+<input type="hidden" name="fData" id="fData" />
+<input type="hidden" name="fNm" id="fNm"/>
+<input type="hidden" name="fExt" id="fExt"/>
 <input type="hidden" name="pageNo" id="pageNo" value="${param.pageNo}"/>
 <input type="hidden" name="menuSeq" id="menuSeq" value="${param.menuSeq}"/>
 <input type="hidden" name="polDistrict" id="polDistrict" />
 <input type="hidden" name="routeCd" id="routeCd" />
-<input type="hidden" name="fData" id="fData" />
-<input type="hidden" name="fNm" id="fNm"/>
-<input type="hidden" name="fExt" id="fExt"/>
 <input type="hidden" name="crossroadSeq" id="crossroadSeq"/>
 <input type="hidden" name="crossroadLat" id="crossroadLat"/>
 <input type="hidden" name="crossroadLng" id="crossroadLng"/>
-<input type="hidden" name="Latitude" id="Latitude"/>
-<input type="hidden" name="Longitude" id="Longitude"/>
+<!-- <input type="text" name="Latitude" id="Latitude"/>
+<input type="text" name="Longitude" id="Longitude"/> -->
 
 <div id="contentWrapper">
 	<div id="contentLeft">
@@ -200,11 +212,11 @@ $(window).keydown(function(e){
 														<ul>
 														<c:forEach var="route" items="${listroute}" varStatus="st1">
 															<c:if test='${district eq route.polDistrict }'>
-																<li onclick="fnSelRoute('${route.seq}')"><a href="#none">${route.routeNm}</a>
+																<li onclick="fnSelRoute('${route.seq}');"><a href="#none" onclick="fnRouteDataLoad('${route.seq}');">${route.routeNm}</a>
 																	<ul>
 																		<c:forEach var="crossroad" items="${listcrossroad}" varStatus="st2">
 																			<c:if test='${route.seq eq crossroad.routeCd}'>
-																				<li id="selcrossroad${crossroad.crossroadSeq}" onclick="fnSelCrossroad('${crossroad.crossroadSeq}','${crossroad.lat}','${crossroad.lng}');" <c:if test='${crossroad.lat eq null}'>class="noneLatLng"</c:if> >
+																				<li id="selcrossroad${crossroad.crossroadSeq}" onclick="fnSelCrossroad('${crossroad.routeCd}','${crossroad.crossroadSeq}','${crossroad.lat}','${crossroad.lng}');" <c:if test='${crossroad.lat eq null}'>class="noneLatLng"</c:if> >
 																					<a href="#none">└ ${crossroad.crossroadNm}</a>
 																				</li>
 																			</c:if>
@@ -297,47 +309,118 @@ var mgroup 	= L.layerGroup();	//marker group
 var cgroup 	= L.layerGroup();	//circle group
 var popup 	= L.popup();
 var url 	= 'http://api.vworld.kr/req/wmts/2.0.0/970E88E0-2536-3A55-8216-0B675CBC5FCD/Base/{z}/{y}/{x}.png';
+var timer	= null;
 
 //zoom level
 var ZoomViewer = L.Control.extend({
 	onAdd: function(){
-		var container= L.DomUtil.create('div');
-		var gauge = L.DomUtil.create('div');
+		var zoomViewer= L.DomUtil.create('div');
+		var zoomTxt = L.DomUtil.create('div');
 		
-		container.style.width = '120px';
-		container.style.background = 'rgba(255,255,255,0.8)';
-		container.style.textAlign = 'center';
-		map.on('zoomstart zoom zoomend', function(ev){
+		zoomViewer.style.width = '120px';
+		zoomViewer.style.background = 'rgba(255,255,255,0.8)';
+		zoomViewer.style.textAlign = 'center';
+		
+		map.on('zoomstart zoom zoomend', function(e){
 
-			gauge.innerHTML = 'Zoom level: ' + map.getZoom();
+			zoomTxt.innerHTML = 'Zoom level: ' + map.getZoom();
 			
 		})
-		container.appendChild(gauge);
+		zoomViewer.appendChild(zoomTxt);
 
-		return container;
+		return zoomViewer;
 	}
 });
 (new ZoomViewer).addTo(map);
 
 //pop all control
-map.on('zoomend', function(){
+var markersBounds;
+var markersDisplayed = false;
+//moveend
+map.on('zoomend', function(e){
 	var getZoom = map.getZoom();
+	var routeCd = $("#routeCd").val();
 	
-	if(getZoom < 15){
-		$('.leaflet-popup-content-wrapper').addClass('hide');
-		$('.leaflet-popup-tip-container').addClass('hide');
-	}else{
-		$('.leaflet-popup-content-wrapper').removeClass('hide');
-		$('.leaflet-popup-tip-container').removeClass('hide');
+	markersBounds = map.getBounds();
+	
+	if(getZoom > 14){
+		
+		$(".pop_tb_list").css('min-width','150px');
+		$(".custom-popup .leaflet-popup-content-wrapper").css('min-width','158px');
+		$(".aa").removeClass('hide');
+		
+		
+		mgroup.eachLayer(function (layer) {
+			if (markersBounds.contains(layer.getLatLng())) {
+				markersDisplayed = true;
+				layer.openPopup();
+	      	}
+		});
+		
+	}else if(markersDisplayed){
+		markersDisplayed = false;
+		
+		$(".pop_tb_list").css({'min-width':'50px','max-width':'73px'});
+		$(".custom-popup .leaflet-popup-content-wrapper").css({'min-width':'50px','max-width':'80px','left':'100px'});
+		$(".aa").addClass('hide');
+		
+		mgroup.eachLayer(function (layer) {
+			if (markersBounds.contains(layer.getLatLng())) {
+	    	    //layer.closePopup();
+			}
+		});
+	}
+	
+	if(routeCd != ""){
+		fnRealtimeDataLoad(routeCd);
 	}
 });
+
+map.on('moveend', function(e){
+	//alert(1);
+	var getZoom = map.getZoom();
+	markersBounds = map.getBounds();
+	
+	if(getZoom > 14){
+		
+		$(".pop_tb_list").css('min-width','150px');
+		$(".custom-popup .leaflet-popup-content-wrapper").css('min-width','158px');
+		$(".aa").removeClass('hide');
+		
+		mgroup.eachLayer(function (layer) {
+			if (markersBounds.contains(layer.getLatLng())) {
+				
+	    	    markersDisplayed = true;
+	    	    
+	    	    if(!layer._popup.isOpen()){
+					layer.openPopup();
+	    	    }
+			}
+		});
+	}else if(markersDisplayed){
+		markersDisplayed = false;
+		
+		$(".pop_tb_list").css({'min-width':'50px','max-width':'73px'});
+		$(".custom-popup .leaflet-popup-content-wrapper").css({'min-width':'50px','max-width':'80px','left':'100px'});
+		$(".aa").addClass('hide');
+		
+		mgroup.eachLayer(function (layer) {
+			if (markersBounds.contains(layer.getLatLng())) {
+				if(layer._popup.isOpen()){
+	    	    	//layer.closePopup();
+				}
+			}
+		});
+	}
+});
+	
 
 //user right mouse click function
 var contextmenu;
 map.on('contextmenu', function(e){	
 	var rMenuContent = '';
 		rMenuContent = '<context-menu>'
-			+'<div class="context-menu active" style="top: 0px; left: 0px;">'
+			+'<div class="context-menu active" style="top: 0px; left: 0px;" id="contextMenu">'
 			+'	<ul class="list_context">'
 			+'		<li class="item_context">'
 			+'			<button class="btn btn_context1" type="button" onclick="fnInsertCrossroadLatlng('+e.latlng.lat+','+e.latlng.lng+');">이 위치에 교차로 등록</button>'
@@ -358,7 +441,7 @@ map.on('contextmenu', function(e){
 			+'</div>'
 			+'</context-menu>';
 		
-	contextmenu = L.popup({offset: [46, 36], autoClose:true, closeButton:false } ).setLatLng(e.latlng).setContent(rMenuContent);
+	contextmenu = L.popup({offset: [90, 174], autoClose:true, closeButton:false } ).setLatLng(e.latlng).setContent(rMenuContent);
 	contextmenu.openOn(map);
 });
 
@@ -368,6 +451,7 @@ function fnCloseContextmenu(){
 		contextmenu.remove();
 	}
 }
+
 
 //distance calculation
 var plugin = L.control.measure({
@@ -395,9 +479,7 @@ var plugin = L.control.measure({
 
 //call measure plugin
 function fnCalculationDistance(){
-	
 	fnCloseContextmenu();
-	
 	plugin._startMeasuring();
 }
 
@@ -405,6 +487,33 @@ function fnCalculationDistance(){
 function fnStopCalculationDistance(){
 	plugin._stopMeasuring();
 }
+
+//custom button
+L.easyButton( '<strong>X</strong>', function(e){
+	//&odash;
+	markersBounds = map.getBounds();
+	markersDisplayed = false;
+	
+	mgroup.eachLayer(function (layer) {
+		if (markersBounds.contains(layer.getLatLng())) {
+    	    layer.closePopup();
+		}
+	});
+}).addTo(map);
+
+L.easyButton( '<strong>O</strong>', function(e){
+	
+	markersBounds = map.getBounds();
+	mgroup.eachLayer(function (layer) {
+		if (markersBounds.contains(layer.getLatLng())) {
+			markersDisplayed = true;
+			layer.openPopup();
+      	}
+	});
+    
+}).addTo(map);
+
+
 
 //insert Crossroad with Latlng
 function fnInsertCrossroadLatlng(lat,lng){
@@ -451,7 +560,7 @@ function leafletMaker(lat,lng,zLevel){
 	map.addLayer(mgroup);	//map에 layer 생성
 	map.addLayer(cgroup);	//circle group;
 	
-	mgroup.addLayer( marker = new L.marker([lat,lng], {draggable: true, riseOnHover: true}) );		//기본 marker 설정
+	mgroup.addLayer( marker = new L.marker([lat,lng], {draggable: false, riseOnHover: false}) );		//기본 marker 설정
 	
 	marker.bindPopup("<h1>[ 평택시 ]</h1>", {autoClose:false, closeButton:false }).openPopup();			//정보 표출	
 
@@ -460,17 +569,54 @@ function leafletMaker(lat,lng,zLevel){
 		
 		fnChangeLatLng(position.lat,position.lng);	//좌표 변경
 		
-	    $("#Latitude").val(position.lat);
-	    $("#Longitude").val(position.lng).keyup();
+	    /* $("#Latitude").val(position.lat);
+	    $("#Longitude").val(position.lng).keyup(); */
 	});
 }
 
 //select crossroad
-function fnSelCrossroad(crossroadSeq,crossroadLat,crossroadLng){
+function fnSelCrossroad(crossroadRouteCd, crossroadSeq,crossroadLat,crossroadLng){
 	var crossroadLat = crossroadLat;
 	var crossroadLng = crossroadLng;
 	var $result;
 	
+	$("#crossroadSeq").val(crossroadSeq);
+	
+	$("#selcrossroad"+crossroadSeq).siblings('li').removeClass('selcrossroad');
+	$("#selcrossroad"+crossroadSeq).addClass('selcrossroad');
+	
+	//실시간 좌표 조회
+	var strMethod = "post";
+	var strUrl = "${pageContext.request.contextPath}/main/selectCrossroadLatLngAjax.do";
+	var strParam = "crossroadSeq=" + crossroadSeq;
+	
+	var $json = getJsonData(strMethod, strUrl, strParam);
+	
+	$result = $json.result;
+	
+	if($result.lat != "" && $result.lng != ""){
+		crossroadLat = $result.lat
+		crossroadLng = $result.lng
+	}
+	
+	if(crossroadLat == "" || crossroadLng == ""){		
+		//make crossroad info pop
+		$result.seq = crossroadSeq;
+		$result.callType = 'none';
+		$result.lat = map.getCenter().lat;
+		$result.lng = map.getCenter().lng;
+		$result.zLevel = 15;
+		$result.crossroadNm = $("#selcrossroad"+crossroadSeq+" > a").text().replace('└ ','');
+		
+		fnMakeCrossroadInfo($result);		
+	}else{		
+		
+		fnSelRoute(crossroadRouteCd,crossroadLat,crossroadLng,16);
+		
+	} 
+	
+//20200715 : 선택 된 마커 처리 수정 진행 -> 해당 마커만 표시에서 도로전체 마커 중 해당 마커 줌인
+/* 
 	$("#crossroadSeq").val(crossroadSeq);
 	
 	$("#selcrossroad"+crossroadSeq).siblings('li').removeClass('selcrossroad');
@@ -504,10 +650,8 @@ function fnSelCrossroad(crossroadSeq,crossroadLat,crossroadLng){
 		$result.callType = 'info';
 		$result.zLevel = 16;
 		fnMakeCrossroadInfo($result);
-		
-		//map.panTo([crossroadLat,crossroadLng]);	//중심 이동
-		//map.setZoom(16).openPopup();
 	} 
+*/	
 }	
 
 //move marker realtime update latlng
@@ -532,10 +676,19 @@ function fnChangeLatLng(crossroadLat,crossroadLng){
 	
 	$result = $json.result;
 	if($result != 0){
-		//make crossroad info pop
+		//2020.07.15 : 좌표 변경 된 마커만 표출 -> 도로의 전체 표출 후 좌표 변경 마커 줌인
+		/* 
 		$result.callType = 'info';
 		$result.zLevel = zLevel;
-		fnMakeCrossroadInfo($result);	
+		fnMakeCrossroadInfo($result); 
+		map.setView([$result.lat,$result.lng],15);
+		*/
+		var routeCd = $result.routeCd;
+		var routeLat = $result.lat;
+		var routeLng = $result.lng;
+		var zLevel = 15;
+		
+		fnSelRoute(routeCd,routeLat,routeLng,zLevel);
 		
 		$("#selcrossroad"+crossroadSeq).removeClass('noneLatLng');
 	}else{
@@ -566,10 +719,6 @@ function fnMakeCrossroadInfo($result){
 				+"	<td>"+installDate+"</td>"
 				+"</tr>"
 				+"<tr>"
-				+"	<th class='center'>위/경도</th>"
-				+"	<td>"+crossroadLat+"<br/>"+crossroadLng+"</td>"
-				+"</tr>"
-				+"<tr>"
 				+"	<th class='center'>정보3</th>"
 				+"	<td>-</td>"
 				+"</tr>"
@@ -591,62 +740,123 @@ function fnMakeCrossroadInfo($result){
 		    
 			fnChangeLatLng(position.lat,position.lng);	//좌표 변경
 		    
-		    $("#Latitude").val(position.lat);
-		    $("#Longitude").val(position.lng).keyup();
+		    //$("#Latitude").val(position.lat);
+		    //$("#Longitude").val(position.lng).keyup();
 		});
 }
 
 //crossroad list of route : select all crossroad info
-function fnSelRoute(seq){
+function fnSelRoute(routeCd, routeLat, routeLng, zLevel){
 	//실시간 교차로 좌표 조회
 	var $result;
-	var maxLat, maxLng;
-	var minLat, minLng;
+	
+	//reset
+	$("#crossroadLat").val('');
+	$("#crossroadLng").val('');
+	$("#crossroadSeq").val('');
+	$("#routeCd").val(routeCd);	
 	
 	var strMethod = "post";
 	var strUrl = "${pageContext.request.contextPath}/main/selectCrossroadListAjax.do";
-	var strParam = "routeCd=" + seq;
+	var strParam = "routeCd=" + routeCd;
 	var $json = getJsonData(strMethod, strUrl, strParam);
 	
 	$result = $json.result;
-	
-	if($result.length > 0){
-		maxLat = $result[1].maxLat;
-		minLng = $result[1].minLng;
-	}
-	
+
 	mgroup.clearLayers();	//클리어
 	
-	//마커 전체 생성
-	$.each($result, function(key) {
-		mgroup.addLayer( marker = new L.marker([$result[key].lat, $result[key].lng], {draggable: 'true',riseOnHover: 'true'}) );
+	var arrLatLngs="";	
+	$result.forEach(function(result,index){
+		var markerSeq = result.seq;
+		var markerRouteCd = result.routeCd;
+		var markerLat = result.lat;
+		var markerLng = result.lng;
+		var popContent = fnSelMarker(markerSeq);
+		var marker = marker+"_"+markerSeq;
+	
+		mgroup.addLayer(  
+					marker = new L.marker([markerLat, markerLng], {draggable: 'true',riseOnHover: 'true'})
+					//.bindPopup(popContent, {autoClose:false, closeOnClick: true, closeButton:true }).openPopup()
+					//.setLatLng([markerLat,markerLng])
+		);
+		 marker.bindPopup(popContent, {autoClose:false, closeOnClick: false, closeButton:true });
+		 marker.setLatLng([markerLat,markerLng]);
+		 //marker.openPopup(); 
+		 
+		 //$('.leaflet-popup').addClass('hide');
+		 
+		//arrLatLngs		
+		if(index == 0){
+			arrLatLngs += "["+markerLat+","+markerLng+"]";
+		}else{
+			arrLatLngs += ",["+markerLat+","+markerLng+"]";	
+		}
 		
-		marker.on('click', function(e) {			//marker click event
-			var latlng = e.latlng.toString().split(',');
-			var lat = latlng[0].split('(');
-			var lng = latlng[1].split(')');
-			var position = marker.getLatLng();
+		
+		//marker hidden
+		//$(".leaflet-popup-content").addClass('hide');
+		//$(".leaflet-popup").addClass('hide');
+		
+		marker.on('click', function(e) {
 			
-			//set crossroadSeq
-			$("#crossroadSeq").val($result[key].seq);
+			$("#crossroadLat").val('');
+			$("#crossroadLng").val('');
+			$("#crossroadSeq").val(markerSeq);
+			$("#routeCd").val(markerRouteCd);
 			
-			var popContent = fnSelMarker($result[key].seq);
-			marker.bindPopup(popContent, {autoClose:false, closeButton:true }).openPopup().setLatLng(e.latlng);
+			//$(".leaflet-popup").removeClass('hide');
+			//$(".leaflet-popup").removeClass('hide');
+			//alert(e);
+			//$(".leaflet-popup").removeClass('hide');
+			//this.openPopup();
 		});
 		
-		marker.on('dragend', function(event) {
+		marker.on('dragend', function(e) {
+			var marker = e.target;
 		    var position = marker.getLatLng();
-		    
-			fnChangeLatLng(position.lat,position.lng);	//좌표 변경
-		    
-		    $("#Latitude").val(position.lat);
-		    $("#Longitude").val(position.lng).keyup();
+		 
+		    $("#crossroadLat").val('');
+			$("#crossroadLng").val('');
+			$("#crossroadSeq").val(markerSeq);
+			$("#routeCd").val(markerRouteCd);
+			
+			fnChangeLatLng(position.lat,position.lng);
 		});
 		
+		/*
+		marker.on('mouseover', function (e) {
+			//$(".leaflet-popup-content").removeClass('hide');
+			//this.removeClass('hide');
+            this.openPopup();
+        });
+		
+        marker.on('mouseout', function (e) {
+            this.closePopup();
+        });
+		*/
 	});
 	
-	//set center position
-	map.setView([maxLat,minLng], 13);
+	//$(".leaflet-popup-close-button").click();
+
+	
+	//check params
+	if(stringUtil.isNull(routeLat) && stringUtil.isNull(routeLng) && stringUtil.isNull(zLevel)){
+		map.fitBounds(JSON.parse("["+arrLatLngs+"]"));
+	}else{
+		//$('.leaflet-popup').removeClass('hide');
+		map.setView([routeLat,routeLng], zLevel);
+		 
+	}
+}
+
+//matching linkedSeq
+function fnMatchingLinkedSeq(seq){
+	//alert(seq);
+	
+	$("#crossroadSeq").val(seq);
+	$("#frm").attr("method","post");
+	$("#frm").attr("action","${pageContext.request.contextPath}/crossroadinfo/updateCrossroadInfo.do");
+	$("#frm").submit();
 }
 
 //make popContents for fnSelRoute
@@ -657,30 +867,107 @@ function fnSelMarker(seq){
 
 	var $json = getJsonData(strMethod, strUrl, strParam);
 	$result = $json.result;
+	$list = $json.list;
+	
+	
+	var facStatus = $result.facStatus;
+	var facStatusTxt = "";
+	
+	switch(facStatus){
+		case "1": facStatusTxt = "온라인"; break;
+		case "2": facStatusTxt = "트랜스"; break;
+		case "3": facStatusTxt = "오프라인"; break;
+		case "4": facStatusTxt = "수동제어"; break;
+		case "5": facStatusTxt = "통신두절"; break;
+		case "6": facStatusTxt = "점멸"; break;
+		case "7": facStatusTxt = "소등"; break;
+		/* default : facStatusTxt = "<button onclick='fnMatchingLinkedSeq("+seq+")'>시설물 상태 매칭</button>"; */
+		default : facStatusTxt = "-";
+	}
 	
 	//real-time data lookup
-	var popContent = "<table class='pop_tb_list' style='min-width:200px;' id='crossroadInfoDiv'>"
-		+"<colgroup>"
-		+"	<col width='40%'/>"
-		+"	<col width='60%'/>"
-       	+"</colgroup>"
-		+"<tr><th colspan='2' class='center'>"+$result.crossroadNm+"</th>"
-		+"<tr>"
-		+"	<th class='center'>설치일</th>"
-		+"	<td>"+$result.installDate+"</td>"
-		+"</tr>"
-		+"<tr>"
-		+"	<th class='center'>위/경도</th>"
-		+"	<td>"+$result.lat+"<br/>"+$result.lng+"</td>"
-		+"</tr>"
-		+"<tr>"
-		+"	<th class='center'>정보3</th>"
-		+"	<td>-</td>"
-		+"</tr>"
-	+"</table>";
+	var popContent = "";
+		popContent = "<table class='pop_tb_list' id='crossroadInfoDiv_"+seq+"'>"
+			+"<colgroup>"
+			+"	<col width='40%'/>"
+			+"	<col width='60%'/>"
+	       	+"</colgroup>"
+			+"<tr class='aa'><th colspan='2' class='center'>"+$result.crossroadNm+"</th>"
+			+"<tr class='aa'>"
+			+"	<th class='center'>설치일</th>"
+			+"	<td id='install_"+seq+"'>"+$result.installDate+"</td>"
+			+"</tr>"
+			+"<tr>"
+			+"	<td colspan='2' id='status_"+seq+"' class='center tb_status_"+facStatus+"'>"+facStatusTxt+"</td>"
+			+"</tr>"
+		+"</table>";
 	
 	return popContent;
 }
+
+//너무 위험해.....
+function fnRouteDataLoad(routeCd){
+	var repeatCnt = 0;
+	var interval = 5000;
+	
+	console.log(">>>>>>>>>>>>> start route data load >>> fnSelRouteCd() : " + routeCd);
+	
+	if(timer){
+		clearInterval(timer);
+	}
+	
+	timer = setInterval(function(){
+		fnRealtimeDataLoad(routeCd);
+	},interval);
+}
+
+var repeatCnt = 0;
+function fnRealtimeDataLoad(routeCd){
+	
+	var today = new Date();
+	var latlng = map.getCenter();
+	var zLevel = map.getZoom();
+	
+	var strMethod = "post";
+	var strUrl = "${pageContext.request.contextPath}/main/selectCrossroadListAjax.do";
+	var strParam = "routeCd=" + routeCd;
+	var $json = getJsonData(strMethod, strUrl, strParam);
+	
+	$result = $json.result;	
+	
+	//var arrLatLngs="";	
+	$result.forEach(function(result,index){
+		var seq = result.seq;
+		var installDate = result.installDate;				
+		var facStatus = result.facStatus;
+		var facStatusTxt = "";
+		
+		switch(facStatus){
+			case "1": facStatusTxt = "온라인"; break;
+			case "2": facStatusTxt = "트랜스"; break;
+			case "3": facStatusTxt = "오프라인"; break;
+			case "4": facStatusTxt = "수동제어"; break;
+			case "5": facStatusTxt = "통신두절"; break;
+			case "6": facStatusTxt = "점멸"; break;
+			case "7": facStatusTxt = "소등"; break;
+			/* default : facStatusTxt = "<button onclick='fnMatchingLinkedSeq("+seq+")'>시설물 상태 매칭</button>"; */
+			default : facStatusTxt = "-";
+		}
+		
+		$("#install_"+seq).html(installDate);
+		
+		$("#status_"+seq).removeClass();
+		$("#status_"+seq).addClass('center  tb_status_'+facStatus);
+		$("#status_"+seq).html(facStatusTxt);
+		
+		console.log(today.toLocaleString() + " >> seq : " + seq + " >> status : " + facStatus);
+		
+	});	
+	
+	repeatCnt += 1;
+	console.log(today.toLocaleString() + ">>>>>>>>>>>>> "+routeCd + " >> "+latlng+" >> " + zLevel +" >> repeat times : " + repeatCnt);
+}
 </script>
+
 
 

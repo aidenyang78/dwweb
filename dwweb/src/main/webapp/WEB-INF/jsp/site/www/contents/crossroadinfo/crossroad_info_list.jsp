@@ -128,16 +128,19 @@ function fnSearch(){
 	$("#frm").submit();
 }
 
-function fnUpdateCoordinates(seq){
-	var lat = $("#lat"+seq).val();
+function fnUpdateLatlng(seq){
+	
+	alert('지도 연동');
+	return;
+	
+	/* var lat = $("#lat"+seq).val();
 	var lng = $("#lng"+seq).val();
 	
-	
 	if(lat != "" && lng == ""){
-		var arrcoord = lat.split(",");
+		var latlng = lat.split(",");
 		
-		lat = arrcoord[0];
-		lng = arrcoord[1];
+		lat = latlng[0];
+		lng = latlng[1];
 	}
 	
 	
@@ -148,7 +151,7 @@ function fnUpdateCoordinates(seq){
 	
 	$("#frm").attr("method","post");
 	$("#frm").attr("action","${pageContext.request.contextPath}/crossroadinfo/updateCrossroadInfoAct.do");
-	$("#frm").submit();
+	$("#frm").submit(); */
 }
 
 </script>
@@ -338,8 +341,9 @@ function fnUpdateCoordinates(seq){
 													<col width="15%"/>
 													<col width="15%"/>
 													<col width="*"/>
-													<col width="13%"/>
-													<col width="13%"/>
+													<col width="15%"/>
+													<!-- <col width="13%"/>
+													<col width="13%"/> -->
 													<!-- <col width="14%"/> -->
 													<col width="20%"/>
 												</colgroup>
@@ -349,8 +353,9 @@ function fnUpdateCoordinates(seq){
 														<th>지구</th>
 														<th>도로명</th>
 														<th>교차로명</th>
-														<th>위도</th>
-														<th>경도</th>
+														<th>연계 교차로명</th>
+														<!-- <th>위도</th>
+														<th>경도</th> -->
 														<th>기능</th>
 													</tr>
 												<c:forEach var="list" items="${listcrossroad}" varStatus="st">
@@ -373,23 +378,24 @@ function fnUpdateCoordinates(seq){
 														<td>
 															<a href="javascript:fnUpdate('${list.seq}');" >${list.crossroadNm}</a>
 														</td>
-														<td>
-															<%-- ${list.lat} --%>
+														<%-- <td>
 															<input type="text" name="lat${list.seq}" id="lat${list.seq}" value="${list.lat}" />
 														</td>
 														<td>
-															<%-- ${list.lng} --%>
 															<input type="text" name="lng${list.seq}" id="lng${list.seq}" value="${list.lng}" />
+														</td> --%>
+														<td>
+															${list.linkedNm}
 														</td>
 														<td>
-															<a href="javascript:fnUpdateCoordinates('${list.seq}');" class="btn_grayStyle01">좌표수정</a>
+															<a href="javascript:fnUpdateLatlng('${list.seq}');" class="btn_grayStyle01">좌표수정</a>
 															<a href="javascript:fnUpdate('${list.seq}');" class="btn_grayStyle01">수정</a>
 															<a href="javascript:fnDelete('${list.seq}');" class="btn_redStyle01">삭제</a>
 														</td>
 													</tr>
 												</c:forEach>
 													<tr>
-														<td colspan="7" style="border:none;">
+														<td colspan="6" style="border:none;">
 															<div class="paging" style="padding:10px !important;">
 																${pageing}
 															</div>

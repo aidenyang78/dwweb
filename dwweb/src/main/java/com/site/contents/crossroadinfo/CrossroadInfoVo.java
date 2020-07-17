@@ -34,6 +34,7 @@ public class CrossroadInfoVo extends CommonVo{
 	public String delUserid;
 	public String delDate;
 	public String linkedSeq;			//외부 연동 키
+	public String linkedNm;
 	public String installDate;			//
 
 	public String totCnt;
@@ -166,14 +167,14 @@ public class CrossroadInfoVo extends CommonVo{
 		this.linkedSeq = linkedSeq;
 	}
 
-	public String getTotCnt() {
-		return totCnt;
+	public String getLinkedNm() {
+		return linkedNm;
 	}
 
-	public void setTotCnt(String totCnt) {
-		this.totCnt = totCnt;
+	public void setLinkedNm(String linkedNm) {
+		this.linkedNm = linkedNm;
 	}
-	
+
 	public String getInstallDate() {
 		return installDate;
 	}
@@ -181,5 +182,14 @@ public class CrossroadInfoVo extends CommonVo{
 	public void setInstallDate(String installDate) {
 		this.installDate = installDate;
 	}
+
+	public String getTotCnt() {
+		return totCnt;
+	}
+
+	public void setTotCnt(String totCnt) {
+		this.totCnt = totCnt;
+	}
+
 	
 }

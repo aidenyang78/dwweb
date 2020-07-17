@@ -472,7 +472,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-popup-content-wrapper {
 	padding: 1px;
 	text-align: left;
-	border-radius: 12px;
+	/* border-radius: 12px; */
+	/* 20200716:sjy */
+	border-radius: 0px;
 	}
 .leaflet-popup-content {
 	margin: 13px 19px;
@@ -639,3 +641,38 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	margin-left: -12px;
 	border-right-color: #fff;
 	}
+
+/* leaflet custom css */
+/* 지도검색 마커 팝업 */
+.custom-popup .left {
+	text-align: left;
+	padding: 4px 5px;
+}
+
+.custom-popup .right {
+	text-align: right;
+	padding: 4px 5px;
+}
+
+.custom-popup .center {
+	text-align: center;
+	padding: 4px 5px;
+}
+
+.custom-popup .leaflet-popup {
+	margin-bottom:10xp !important;
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+	border-radius: 0px !important;
+}
+
+.custom-popup .leaflet-popup-content-wrapper .leaflet-popup-content{
+	margin: 4px 4px !important;
+}
+
+.custom-popup a.leaflet-popup-close-button{  /* .leaflet-container a.leaflet-popup-close-button */
+	top: 4px !important;
+}
+
+/* leaflet custom css */

@@ -77,7 +77,7 @@ public class MainService extends AbstractService {
 	 * @author 양성진
 	 * @creation_date 2020.07.07
 	 * @description 지도위 좌표 실시간 조회
-	 * @history
+	 * @history : 외부 DB dw_its 와 연결 중 
 	 * @param vo
 	 * @return
 	 * @throws Exception

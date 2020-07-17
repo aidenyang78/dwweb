@@ -22,30 +22,7 @@ $(document).ready(
 		    $(this).addClass('on');
 		});
 		 */
-		/*
-		$("#gnbWrap .gnb li").removeClass('on');
-		var currentPath = window.location.pathname;
-		var lastIndex = currentPath.lastIndexOf("/");
-		var startIndex = currentPath.lastIndexOf("site/");
-		var category =currentPath.substring(startIndex+5,lastIndex);
-		switch (category) {
-//		홈페이지관리
-		case 'request':$("#gnbWrap .gnb li.menu_962").addClass('on');break;
-//		프로젝트관리
-		case 'project':$("#gnbWrap .gnb li.menu_103").addClass('on');break;
-//		인력투입관리
-		case 'manpower':$("#gnbWrap .gnb li.menu_104").addClass('on');break;
-//		지출관리
-		case 'expense':$("#gnbWrap .gnb li.menu_105").addClass('on');break;
-//		연차관리
-		case 'annual':$("#gnbWrap .gnb li.menu_106").addClass('on');break;
-//		운영관리
-		case 'member':$("#gnbWrap .gnb li.menu_102").addClass('on');break;
-//		사이트관리
-		case 'menu':$("#gnbWrap .gnb li.menu_101").addClass('on');break;
-		default:break;
-		}
-		*/
+
 		gfn_setbrowserTile();
 		
 		setCurrMenu();
@@ -858,6 +835,12 @@ var stringUtil = {
 			str = String(str);
 			str = str.replace(/\s+/g, '');
 			return str.length;
+		},
+		undefinedToBlank : function(str){
+			if(str == 'undefined'){
+				return '';
+			}
+			return str;
 		}
 	};
 

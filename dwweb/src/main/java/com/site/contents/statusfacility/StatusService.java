@@ -65,8 +65,20 @@ public class StatusService {
 		return dao.list(NAMESPACE+"selectListStatus", vo);
 	}
 	
+	/**
+	 * @author 양성진
+	 * @creation_date 2020.06.09
+	 * @description 교차로 매칭 대상 장애리스트 조회
+	 * @history	: *주의 dw_itsweb의 테이블과 외부 조인 중
+	 * @param vo
+	 * @return
+	 * @throws Exception
+	 */
+	public List<StatusVo> selectListStatusForMatching(StatusVo vo) throws Exception{
+		return dao.list(NAMESPACE+"selectListStatusForMatching", vo);
+	}
 	
-
+	
 	/*가상 데이터 생성*/
 	public int insertStatus(StatusVo tmpVo) {
 		// TODO Auto-generated method stub

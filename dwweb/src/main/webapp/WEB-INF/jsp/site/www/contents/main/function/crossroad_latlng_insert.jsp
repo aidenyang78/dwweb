@@ -95,15 +95,14 @@ function fnInsCrossroadLatlng(seq){
 	$result = $json.result;
 	if($result != 0){
 		//make crossroad info pop
+		$(".leaflet-popup").addClass('hide');
+		
 		$("#routeCd").val($result.routeCd);
 		$("#crossroadSeq").val($result.seq);
 		
-		/* $result.callType = 'info';
-		$result.zLevel = 16;
-		fnMakeCrossroadInfo($result); */
+		fnSelRoute($result.routeCd, $result.lat, $result.lng, 15);
 		
-		fnSelRoute($result.routeCd);
-		map.setView([$result.lat, $result.lng], 16);
+		/* 등록이 완료 되었을 때 도로리스트 실시간 반영 필요 */
 	}else{
 		alert('교차로 등록 실패.');
 	}

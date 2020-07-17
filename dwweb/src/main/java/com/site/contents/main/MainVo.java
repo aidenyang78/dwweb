@@ -47,6 +47,7 @@ public class MainVo{
 	public String minLng;
 	public String lat;					//위도
 	public String lng;					//경도
+	public String facStatus;			//시설물 상태
 	
 	/*검색 조건 추가*/
 	public String delDate;
@@ -58,6 +59,8 @@ public class MainVo{
 	public String linkedSeq;			//외부 연동 키
 	public String installDate;			//신호장비 설치일
 	public String totCnt;
+	
+	
 	public String getIdx() {
 		return idx;
 	}
@@ -184,6 +187,12 @@ public class MainVo{
 	public void setLng(String lng) {
 		this.lng = lng;
 	}
+	public String getFacStatus() {
+		return facStatus;
+	}
+	public void setFacStatus(String facStatus) {
+		this.facStatus = facStatus;
+	}
 	public String getDelDate() {
 		return delDate;
 	}
@@ -195,6 +204,12 @@ public class MainVo{
 	}
 	public void setKeyKind(String keyKind) {
 		this.keyKind = keyKind;
+	}
+	public String getKeyWord() {
+		return keyWord;
+	}
+	public void setKeyWord(String keyWord) {
+		this.keyWord = keyWord;
 	}
 	public String getStdDate() {
 		return stdDate;
@@ -232,15 +247,6 @@ public class MainVo{
 	public void setTotCnt(String totCnt) {
 		this.totCnt = totCnt;
 	}
-	public String getKeyWord() {
-		return keyWord;
-	}
-	public void setKeyWord(String keyWord) {
-		this.keyWord = keyWord;
-	}
-
 	
 	
-	
-
 }

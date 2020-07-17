@@ -576,7 +576,7 @@
 }
 
 
-.hide {display:none;}
+.hide {display:none; !important;}
 
 .strong{
 	font-size:13px;
@@ -1162,13 +1162,12 @@ a {
 	color: #ff0080 !important;
 }
 
-
-/* 지도검색 마커 팝업 */
-.custom-popup .leaflet-popup-content-wrapper {
-	border-radius: 0px !important;
+.pop_tb_list {
+	table-layout: fixed;
+	width: 100%;
+	min-width:150px;
 }
 
-.pop_tb_list {table-layout:fixed;width:100%;}
 .pop_tb_list th {
 	/* padding: 10px 0; */
 	font-size:12px;
@@ -1219,15 +1218,15 @@ a {
 }
 
 
-
+/* 마우스 우클릭 context-menu */
 .context-menu{
     display: none;
-    position: absolute;
+    /* position: absolute; */
     width: 174px;
     background-color: #ffffff;
-    border: 1px solid rgba(0,0,0,.2);
-    border-radius: 2px;
-    box-shadow: 0 2px 3px 0 rgba(0,0,0,.1);
+    /* border: 1px solid rgba(0,0,0,.2); */
+    /* border-radius: 2px; */
+    /* box-shadow: 0 2px 3px 0 rgba(0,0,0,.1); */
     box-sizing: border-box;
     background-clip: padding-box;
 }
@@ -1271,8 +1270,16 @@ a {
 	border:none;
 }
 
+/* 마우스 우클릭 context-menu */
+
 .input_red {
 	outline: 2px solid #ff0080;
 	background-color: #ffbbbb;
 	
+}
+
+/* 2020.07.17. 이미 사용중인 교차로 색상 처리 */
+select .used{
+	color:#ffffff;
+	background-color:#808080;
 }

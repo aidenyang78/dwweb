@@ -9,7 +9,6 @@ import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,10 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.core.comm.common.CommonService;
 import com.core.comm.util.EgovDateUtil;
 import com.core.comm.util.PropertiesUtil;
+import com.core.comm.util.SessionUtil;
 import com.core.comm.util.StringUtil;
 import com.site.contents.crossroadinfo.CrossroadInfoVo;
 import com.site.contents.statistics.StatisticsService;
-import com.site.contents.statistics.StatisticsVo;
+import com.site.contents.statusfacility.StatusService;
+import com.site.contents.statusfacility.StatusVo;
 
 /**
  * @Class Name : MainController
@@ -58,6 +59,9 @@ public class MainController {
 	
 	@Resource(name = "statisticsService")
 	protected StatisticsService statisticsService;
+	
+	@Resource(name = "statusService")
+	protected StatusService statusService;
 	
 	@Resource(name = "txManager")
 	protected DataSourceTransactionManager txManager;
@@ -143,6 +147,7 @@ public class MainController {
 			mainVo.setSeq(seq);
 			mainVo.setLat(lat);
 			mainVo.setLng(lng);
+			mainVo.setUpdtUserid(SessionUtil.getSession(request, "USER_ID"));
 			
 			int rslt = mainService.updateCrossroadLatLngAjax(mainVo);
 			
@@ -171,15 +176,20 @@ public class MainController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/main/selectCrossroadLatLngAjax.do")
-	public String selectCrossroadLatLngAjax(MainVo mainVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+	public String selectCrossroadLatLngAjax(MainVo mainVo, StatusVo statusVo, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		
 		MainVo result = null;
+//		List<StatusVo> listStatus = null;
 		
 		try {
 			String seq = StringUtil.nullToBlank(request.getParameter("crossroadSeq"));
 			mainVo.setSeq(seq);
 			
 			result = mainService.selectCrossroadLatLngAjax(mainVo);
+			
+			/*아래 바로 연동 시 조회 느려짐*/
+//			listStatus = statusService.selectListStatusForMatching(statusVo);
+//			model.addAttribute("listStatus", listStatus);
 		
 		}catch(Exception e) {
 			
@@ -328,13 +338,5 @@ public class MainController {
 		
 		
 		return "jsonView";
-	}
-	
-	
-	
-	@RequestMapping(value = "/main/userControl.do")
-	public String userControl(@ModelAttribute MainVo mainVo, CrossroadInfoVo crossroadInfoVo,HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
-		
-		return "/site/www/contents/main/function/user_control";
 	}
 }

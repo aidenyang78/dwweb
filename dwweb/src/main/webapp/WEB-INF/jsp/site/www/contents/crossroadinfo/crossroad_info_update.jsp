@@ -121,6 +121,20 @@ function fnUpdateAct(){
 	$("#frm").attr("action","${pageContext.request.contextPath}/crossroadinfo/updateCrossroadInfoAct.do");
 	$("#frm").submit();
 }
+
+//linked check
+function fnLinkedCheck(){
+	var linkedCnt = $("#linkedSeq option:selected").attr('data-linked');
+	var linkedNm = $("#linkedSeq option:selected").text();
+	var linkedSeq = "${crossroadInfo.linkedSeq}";
+	var selLinkedSeq = $("#linkedSeq").val();
+	
+	if(linkedSeq != selLinkedSeq && linkedCnt > 0 ){
+		alert(linkedNm+'은(는) 이미 연계 된 교차로 입니다.');
+		$("#linkedSeq").val(linkedSeq);
+		return;
+	}
+}
 </script>
 
 </head>
@@ -246,8 +260,15 @@ function fnUpdateAct(){
 														<tr>
 															<th>외부 연계(SEQ)</th>
 															<td colspan="3">
-																<input type="text" name="linkedSeq" id="linkedSeq" value="${crossroadInfo.linkedSeq}"/>
-																<strong class="icon_must">*</strong>외부 DB 키와 연동이 필요할 경우에만 입력.
+																<select name="linkedSeq" id="linkedSeq" onchange="fnLinkedCheck();">
+																	<option value="">:: 선택 ::</option>
+																	<c:forEach var="listSt" items="${listStatus}" varStatus="st">
+																		<option value="${listSt.no}" 
+																			<c:if test='${crossroadInfo.linkedSeq eq listSt.no}'>selected</c:if>
+																			<c:if test='${listSt.linkedCnt gt 0}'>class="used"</c:if>
+																			data-linked="${listSt.linkedCnt}" >${listSt.name}</option>
+																	</c:forEach>
+																</select>
 															</td>
 														</tr>
 													</tbody>

@@ -26,7 +26,7 @@
                  <td width="60" align="right" class="authorityText" >
                  	<span class="pointer" onclick="fnGoMyInfo();">${NAME}</span> | </td>
 		<td width="60" class="naviText" align="right">
-			<a href="${pageContext.request.contextPath}/logout/logout.do" onMouseOut="MM_swapImgRestore()" onMouseOver="fnSwapImage('Image7','','${pageContext.request.contextPath}/images/img/logout_over.png',1)">
+			<a href="${pageContext.request.contextPath}/logout/logout.do" onMouseOut="fnSwapImgRestore()" onMouseOver="fnSwapImage('Image7','','${pageContext.request.contextPath}/images/img/logout_over.png',1)">
 				<img src="${pageContext.request.contextPath}/images/img/logout_nor.png" name="Image7" width="66" height="22" border="0"></a>
 		</td>
 		<td width="30"></td>

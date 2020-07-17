@@ -16,7 +16,7 @@
     <bean id="statusDataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
         <property name="driverClass" value="org.mariadb.jdbc.Driver"/>
         <!-- <property name="url" value="jdbc:mariadb://10.40.1.163:3306/dw_its" /> -->
-        <property name="url" value="jdbc:mariadb://127.0.0.1:3306/dw-its" />        
+        <property name="url" value="jdbc:mariadb://127.0.0.1:3306/dw_its" />        
         <property name="username" value="itsweb"/>
         <property name="password" value="itsweb"/>
     </bean>
