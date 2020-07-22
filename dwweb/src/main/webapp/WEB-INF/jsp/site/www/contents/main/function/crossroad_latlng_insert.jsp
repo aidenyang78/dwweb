@@ -145,7 +145,7 @@ function fnInsCrossroadNmCheck(){
 
 <div id="insertCrossroadContent" >
 	<div id="selectSearch">
-		<table class="pop_tb_list">
+		<table class="pop_reg_tb_list">
 			<colgroup>
 				<col width="80px"/>
 				<col width="*"/>

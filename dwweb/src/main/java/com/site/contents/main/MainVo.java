@@ -37,6 +37,7 @@ public class MainVo{
 	public String delUserid;
 	
 	/*교차로정보 조회*/
+	public String mgmtSeq;				//신호관리대장 관시순번
 	public String routeCd;				//도로코드
 	public String crossroadSeq;			//교차로 순번
 	public String crossroadNm;			//교차로명
@@ -57,6 +58,7 @@ public class MainVo{
 	public String endDate;
 	public String listType;				//리스트 형태 : 텍스트 / gui	
 	public String linkedSeq;			//외부 연동 키
+	public String installYn;			//관리대장 등록 여부
 	public String installDate;			//신호장비 설치일
 	public String totCnt;
 	
@@ -126,6 +128,12 @@ public class MainVo{
 	}
 	public void setDelUserid(String delUserid) {
 		this.delUserid = delUserid;
+	}
+	public String getMgmtSeq() {
+		return mgmtSeq;
+	}
+	public void setMgmtSeq(String mgmtSeq) {
+		this.mgmtSeq = mgmtSeq;
 	}
 	public String getRouteCd() {
 		return routeCd;
@@ -235,6 +243,12 @@ public class MainVo{
 	public void setLinkedSeq(String linkedSeq) {
 		this.linkedSeq = linkedSeq;
 	}
+	public String getInstallYn() {
+		return installYn;
+	}
+	public void setInstallYn(String installYn) {
+		this.installYn = installYn;
+	}
 	public String getInstallDate() {
 		return installDate;
 	}
@@ -247,6 +261,5 @@ public class MainVo{
 	public void setTotCnt(String totCnt) {
 		this.totCnt = totCnt;
 	}
-	
 	
 }

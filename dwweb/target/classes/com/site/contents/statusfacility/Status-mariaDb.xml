@@ -32,14 +32,21 @@
 			,ST.NAME
 			,ST.STATUS
 			,(SELECT DESCRIPTION FROM STATUS_GROUP WHERE STATUSNO = ST.STATUS) AS DESCRIPTION
-		FROM STATUS ST
+			,MCI.POL_DISTRICT
+			,MCI.ROUTE_CD
+			,MCI.SEQ AS CROSSROAD_SEQ
+			,CASE WHEN MCI.SEQ IS NULL THEN 'N' ELSE 'Y' END AS LINKED_YN
+			,MCI.LAT
+			,MCI.LNG
+		FROM STATUS ST LEFT OUTER JOIN DW_ITSWEB.MGMT_CROSSROAD_INFO MCI
+			ON ST.NO = MCI.LINKED_SEQ
 		WHERE 1=1
 		<if test='status != null and status !="" '>
 			AND ST.STATUS = #{status}
 		</if>
 		<if test='keyKind != null and keyKind != "" and keyKind == "name" and keyWord != null and keyWord != ""'>
 			<!-- AND ST.NAME = #{keyWord} -->
-			AND NAME LIKE CONCAT('%',#{keyWord},'%')
+			AND ST.NAME LIKE CONCAT('%',#{keyWord},'%')
 		</if> 
 		ORDER BY ST.NO DESC
 		LIMIT #{limitStart}, #{limitEnd}

@@ -109,7 +109,7 @@ public class MainController {
 		if(mainVo.getStdDate() == null && mainVo.getEndDate() == null) {
 			
 			String endDate = EgovDateUtil.getCurrentDate("");
-			String stdDate = EgovDateUtil.addYear(endDate, -1);
+			String stdDate = EgovDateUtil.addYear(endDate, -20);
 			
 			mainVo.setStdDate(stdDate);
 			mainVo.setEndDate(endDate);

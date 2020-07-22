@@ -29,7 +29,7 @@ function fnKeywordSearch(){
 	var totCnt = Object.keys($json.result).length;
 
 	resultHtml = ""
-		+"<table class='pop_tb_list'>"
+		+"<table class='pop_reg_tb_list'>"
 		+"<colgroup>"
 		+"	<col width='*'/>"
 		+"	<col width='68px'/>"
@@ -198,7 +198,7 @@ function fnUpdateLatlng(seq){
 <input type="hidden" name="crdPolNm" id="crdPolNm" value="${param.crdPolNm}"/>
 <div id="LatlngUpdateContent" >
 	<div id="selectSearch">
-		<table class="pop_tb_list">
+		<table class="pop_reg_tb_list">
 			<colgroup>
 				<col width="80px"/>
 				<col width="*"/>

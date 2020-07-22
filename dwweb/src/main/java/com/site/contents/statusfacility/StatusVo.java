@@ -28,6 +28,12 @@ public class StatusVo extends CommonVo{
 	public String description;		//교차로 상태코드 설명
 	public String linkedCnt;
 	
+	public String polDistrict;
+	public String routeCd;
+	public String crossroadSeq;
+	public String linkedYn;
+	public String lat;
+	public String lng;
 	
 	public String getNo() {
 		return no;
@@ -64,6 +70,42 @@ public class StatusVo extends CommonVo{
 	}
 	public void setLinkedCnt(String linkedCnt) {
 		this.linkedCnt = linkedCnt;
+	}
+	public String getPolDistrict() {
+		return polDistrict;
+	}
+	public void setPolDistrict(String polDistrict) {
+		this.polDistrict = polDistrict;
+	}
+	public String getRouteCd() {
+		return routeCd;
+	}
+	public void setRouteCd(String routeCd) {
+		this.routeCd = routeCd;
+	}
+	public String getCrossroadSeq() {
+		return crossroadSeq;
+	}
+	public void setCrossroadSeq(String crossroadSeq) {
+		this.crossroadSeq = crossroadSeq;
+	}
+	public String getLinkedYn() {
+		return linkedYn;
+	}
+	public void setLinkedYn(String linkedYn) {
+		this.linkedYn = linkedYn;
+	}
+	public String getLat() {
+		return lat;
+	}
+	public void setLat(String lat) {
+		this.lat = lat;
+	}
+	public String getLng() {
+		return lng;
+	}
+	public void setLng(String lng) {
+		this.lng = lng;
 	}
 	
 	

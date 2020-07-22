@@ -19,12 +19,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/common.js"></script>
 <script src="${pageContext.request.contextPath}/common/plugins/jquery-ui-1.12.1/jquery-ui.min.js"></script>
 <script src="${pageContext.request.contextPath}/common/plugins/jquery-ui-1.12.1/datepicker-ko.js"></script>
-<script src="${pageContext.request.contextPath}/common/plugins/printThis.js"></script>
-
-<script src="${pageContext.request.contextPath}/common/plugins/html2canvas/bluebird.min.js"></script> 			<!-- ie에서 promise를 사용하기 위해 --> 
-<script src="${pageContext.request.contextPath}/common/plugins/html2canvas/FileSaver.min.js"></script>
-<script src="${pageContext.request.contextPath}/common/plugins/html2canvas/html2canvas.js"></script>
-
 
 <!-- leaflet 지도 -->
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/leaflet/leaflet.css"/>
@@ -48,34 +42,6 @@
 --%>
 <!-- leaflet 지도 -->
 <script type="text/javascript">
-//document ready
-$(document).ready(function(){
-//달력 처리
-$.datepicker.setDefaults(datepickerSet);
-$.datepicker.setDefaults({
-	dateFormat: "yymmdd",
-    showMonthAfterYear:true,
-    changeMonth: true,
-	changeYear: true,
-	firstDay: 0,
-    showAnim: "slideDown", //show, fadeIn, slideDown
-    yearRange: "-100:+0", // last hundred years
-    duration: 300
-});
-//검색 시작일
-$('#stdDate').datepicker();
-
-$("#imgStdDate").click(function(){
-	$('#stdDate').datepicker('show');	
-});
- 
-//검색 종료일
-$('#endDate').datepicker();
-
-$("#imgEndDate").click(function(){
-	$('#endDate').datepicker('show');
-})
-	
 var lnbUI = {
 	click : function(target, speed) {
 		var _self = this, $target = $(target);
@@ -120,62 +86,37 @@ var lnbUI = {
 	activeOn : function($target) {
 		$target.parent().addClass('on');
 	}
-}; // Call lnbUI
+}; // Call lnbUI 
 
-//Activation Menu UI
-lnbUI.click('#lnb li', 150);
-
-
-/* $("#calcDistance").on('click',function(obj){
-	console.log(">>>>>>>>>>>>>>>>>> click_event : " + objToStr(obj));
-}); */
-
-//$(function() {
-	/* lnbUI.click('#lnb li', 300) */	
+$(function() {
+	/* lnbUI.click('#lnb li', 300) */
+	lnbUI.click('#lnb li', 150);
 	
+	/* $("#calcDistance").on('click',function(obj){
+		  
+		var str = "";
+		for ( var i in obj) {
+			str += ", " + i + " : '" + obj[i] + "'";
+		}
+		str = str.substring(1, str.length);
+		alert(str);
+	}); */
 
-//});
 });
 
-//window onload
 $(window).on('load', function() {
+	$("#list_1004").click();
+
 	//기본 지도 생성 : 평택 시청
 	leafletMaker(36.992232, 127.112551, 13);
-	
-	
-	//check from status list param
-	var referer = '${param.referer}';
-	var refPolDistrict = '${param.polDistrict}';
-	var refRouteCd = '${param.routeCd}';
-	var refCrossroadSeq = '${param.crossroadSeq}';
-	var refLat = '${param.lat}';
-	var refLng = '${param.lng}';
-	
-	if("status" == referer){
-		var ePolDistrict = $("#list_${param.polDistrict}").trigger('click');
-		var eRoute = $("#route_${param.routeCd}").trigger('click');
-		var eCrossroad = $("#selcrossroad_${param.crossroadSeq}").trigger('click');
-		
-		if(ePolDistrict){
-			if(eRoute){
-				if(eCrossroad){
-				}
-			}
-		}
-	}else{
-		$("#list_1002").click();
-	}
-	
 });
 
-//window keydown event
 $(window).keydown(function(e){
 	if(e.keyCode == '27'){
 		fnStopCalculationDistance();
 	}
 });
 
-//window keyup event
 $(window).keyup(function(e){
 	if(e.keyCode == '27'){
 		fnStopCalculationDistance();
@@ -189,15 +130,13 @@ $(window).keyup(function(e){
 <input type="hidden" name="fData" id="fData" />
 <input type="hidden" name="fNm" id="fNm"/>
 <input type="hidden" name="fExt" id="fExt"/>
-<input type="text" name="pageNo" id="pageNo" value="${param.pageNo}"/>
-<input type="text" name="menuSeq" id="menuSeq" value="${param.menuSeq}"/>
-<input type="text" name="polDistrict" id="polDistrict" />
-<input type="text" name="routeCd" id="routeCd" />
-<input type="text" name="crossroadSeq" id="crossroadSeq"/>
-<input type="text" name="crossroadLat" id="crossroadLat"/>
-<input type="text" name="crossroadLng" id="crossroadLng"/>
-<input type="text" name="notRegSeq" id="notRegSeq"/>
-<input type="text" name="mgmtSeq" id="mgmtSeq" />
+<input type="hidden" name="pageNo" id="pageNo" value="${param.pageNo}"/>
+<input type="hidden" name="menuSeq" id="menuSeq" value="${param.menuSeq}"/>
+<input type="hidden" name="polDistrict" id="polDistrict" />
+<input type="hidden" name="routeCd" id="routeCd" />
+<input type="hidden" name="crossroadSeq" id="crossroadSeq"/>
+<input type="hidden" name="crossroadLat" id="crossroadLat"/>
+<input type="hidden" name="crossroadLng" id="crossroadLng"/>
 <!-- <input type="text" name="Latitude" id="Latitude"/>
 <input type="text" name="Longitude" id="Longitude"/> -->
 
@@ -211,10 +150,10 @@ $(window).keyup(function(e){
 			<tr>
 	  			<td colspan="4" align="center">
 	      			<table border="0" width="582" height="53">
-          				<tr>
-							<td valign="middle" colspan="2" width="90%" align="center" background="${pageContext.request.contextPath}/images/img/title_name.png" class="mainTotleText"></td>
-              			</tr>
-         			</table>
+	          			<tr>
+								<td valign="middle" colspan="2" width="90%" align="center" background="${pageContext.request.contextPath}/images/img/title_name.png" class="mainTotleText"></td>
+	              			</tr>
+	         			</table>
 	     		</td>
 			</tr>
 	        
@@ -254,7 +193,7 @@ $(window).keyup(function(e){
 												<ul>
 												 <c:forEach var='district' begin="1002" end="1004">
 													<li>
-														<a href="#none" onclick='$("#polDistrict").val("${district}");' id="list_${district}">
+														<a href="#none" id="list_${district}">
 															<c:choose>
 												            	<c:when test='${district eq "1002" }'>
 												            		평택시 서부
@@ -273,15 +212,16 @@ $(window).keyup(function(e){
 														<ul>
 														<c:forEach var="route" items="${listroute}" varStatus="st1">
 															<c:if test='${district eq route.polDistrict }'>
-																<li onclick="fnSelRoute('${route.seq}');"><a href="#none" id="route_${route.seq}" onclick="fnRouteDataLoad('${route.seq}');">${route.routeNm}</a>
+																<li onclick="fnSelRoute('${route.seq}');"><a href="#none" onclick="fnRouteDataLoad('${route.seq}');">${route.routeNm}</a>
 																	<ul>
 																		<c:forEach var="crossroad" items="${listcrossroad}" varStatus="st2">
 																			<c:if test='${route.seq eq crossroad.routeCd}'>
 																				<li id="selcrossroad${crossroad.crossroadSeq}" onclick="fnSelCrossroad('${crossroad.routeCd}','${crossroad.crossroadSeq}','${crossroad.lat}','${crossroad.lng}');" <c:if test='${crossroad.lat eq null}'>class="noneLatLng"</c:if> >
-																					<a href="#none" id="selcrossroad_${crossroad.crossroadSeq}">└ ${crossroad.crossroadNm}</a>
+																					<a href="#none">└ ${crossroad.crossroadNm}</a>
 																				</li>
 																			</c:if>
 																		</c:forEach>
+																		
 																	</ul>
 																</li>
 															</c:if>
@@ -310,37 +250,8 @@ $(window).keyup(function(e){
 	                                    <tr align="left" valign="top">
 	                                        <td width="21" height="53" background="${pageContext.request.contextPath}/images/img/content_bg_right_crop_top_left.png"></td>
 	                                        <td height="53" background="${pageContext.request.contextPath}/images/img/content_bg_right_crop_top_center.png" valign="middle">
-	                                        
-<!-- 검색영역 -->	                                        
-<table style="width:100%;">
-	<colgroup>
-		<col width="50%"/>
-		<col width="50%"/>
-	</colgroup>
-	<tbody>
-		<tr>
-			<td class="left">
-				<span style="color:#ffffff;font-size:12px;font-weight:bold;">검색어 </span>
-				<input type="text" name="keyWord" id="keyWord" size="40"/>
-				
-				<span style="color:#ffffff;font-size:12px;font-weight:bold;">설치일 </span>
-				<input type="text" name="stdDate" id="stdDate"  size="10" value="${mainVo.stdDate}"/>
-				<img id="imgStdDate" src="${pageContext.request.contextPath}/images/common/calendar.gif" class="pointer cal_img_center"/>
-				<span style="color:#ffffff;font-size:12px;font-weight:bold;">~</span>
-				<input type="text" name="endDate" id="endDate"  size="10" value="${mainVo.endDate}"/>
-				<img id="imgEndDate" src="${pageContext.request.contextPath}/images/common/calendar.gif" class="pointer cal_img_center"/>
-																		
-				<a href="javascript:;" id="search" class="btn_search_map">검색</a>
-			</td>
-			<td class="right">
-				<a href="javascript:;" onclick="fnImgDownload();" class=btn_attach_map><span>이미지</span></a>
-				<a href="javascript:;" onclick="fnPrint();" class="btn_print_map"><span>인쇄</span></a>
-			</td>
-		</tr>
-	</tbody>
-</table>
-<!-- 검색영역 -->
-	                                               <%-- <h1 class="white"><a href='${pageContext.request.contextPath}/main/main.do?menuSeq=${param.menuSeq}&mapType=ol'>openLayers</a></h1> --%>
+<!-- right 제목 입니다. -->
+	                                               <h1 class="white"><a href='${pageContext.request.contextPath}/main/main.do?menuSeq=${param.menuSeq}&mapType=ol'>openLayers</a></h1>
 	                                        </td>
 	                                        <td width="17" height="53" background="${pageContext.request.contextPath}/images/img/content_bg_crop_top_right.png"></td>
 	                                    </tr>
@@ -398,8 +309,6 @@ var mgroup 	= L.layerGroup();	//marker group
 var cgroup 	= L.layerGroup();	//circle group
 var popup 	= L.popup();
 var url 	= 'http://api.vworld.kr/req/wmts/2.0.0/970E88E0-2536-3A55-8216-0B675CBC5FCD/Base/{z}/{y}/{x}.png';
-var timer	= null;
-var timerCnt = 0;
 
 //zoom level
 var ZoomViewer = L.Control.extend({
@@ -425,47 +334,66 @@ var ZoomViewer = L.Control.extend({
 
 //pop all control
 var markersBounds;
+var markersDisplayed = false;
+//moveend
 map.on('zoomend', function(e){
-	var zLevel = map.getZoom();
-	var latlng = map.getCenter();
+	var getZoom = map.getZoom();
 	var routeCd = $("#routeCd").val();
-	var notRegSeq = $("#notRegSeq").val();
 	
 	markersBounds = map.getBounds();
 	
-	if(routeCd != "" && notRegSeq == ""){
-		if(zLevel > 14){
-			mgroup.eachLayer(function (layer) {
-				if (markersBounds.contains(layer.getLatLng())) {
-					layer.openPopup();
-		      	}
-			});
-			
-			fnBigPopup();
-		//}else if(markersDisplayed){
-		}else{
-			if(zLevel < 13){
-				mgroup.eachLayer(function (layer) {
-					if (markersBounds.contains(layer.getLatLng())) {
-			    	    layer.closePopup();
-					}
-				});
-			}else{
-				mgroup.eachLayer(function (layer) {
-					if (markersBounds.contains(layer.getLatLng())) {
-						layer.openPopup();
-			      	}
-				});
-				
-				fnSmallPopup();
+	if(getZoom > 14){
+		mgroup.eachLayer(function (layer) {
+			if (markersBounds.contains(layer.getLatLng())) {
+				markersDisplayed = true;
+				layer.openPopup();
+	      	}
+		});
+		
+	}else if(markersDisplayed){
+		markersDisplayed = false;
+		
+		mgroup.eachLayer(function (layer) {
+			if (markersBounds.contains(layer.getLatLng())) {
+	    	    layer.closePopup();
 			}
-		}
-		//data load
+		});
+	}
+	
+	if(routeCd != ""){
 		fnRealtimeDataLoad(routeCd);
 	}
 });
 
-
+map.on('moveend', function(e){
+	//alert(1);
+	var getZoom = map.getZoom();
+	markersBounds = map.getBounds();
+	
+	if(getZoom > 14){
+		mgroup.eachLayer(function (layer) {
+			if (markersBounds.contains(layer.getLatLng())) {
+				
+	    	    markersDisplayed = true;
+	    	    
+	    	    if(!layer._popup.isOpen()){
+					layer.openPopup();
+	    	    }
+			}
+		});
+	}else if(markersDisplayed){
+		markersDisplayed = false;
+		
+		mgroup.eachLayer(function (layer) {
+			if (markersBounds.contains(layer.getLatLng())) {
+				if(layer._popup.isOpen()){
+	    	    	layer.closePopup();
+				}
+			}
+		});
+	}
+});
+	
 
 //user right mouse click function
 var contextmenu;
@@ -566,6 +494,7 @@ L.easyButton( '<strong>O</strong>', function(e){
 }).addTo(map);
 
 
+
 //insert Crossroad with Latlng
 function fnInsertCrossroadLatlng(lat,lng){
 	var latlng = map.getCenter();
@@ -611,18 +540,17 @@ function leafletMaker(lat,lng,zLevel){
 	map.addLayer(mgroup);	//map에 layer 생성
 	map.addLayer(cgroup);	//circle group;
 	
-	mgroup.addLayer( marker = new L.marker([lat,lng], {draggable: true, riseOnHover: true}) );		//기본 marker 설정
+	mgroup.addLayer( marker = new L.marker([lat,lng], {draggable: false, riseOnHover: false}) );		//기본 marker 설정
 	
 	marker.bindPopup("<h1>[ 평택시 ]</h1>", {autoClose:false, closeButton:false }).openPopup();			//정보 표출	
 
-	marker.on('dragend', function(e) {
-	    var latlng = marker.getLatLng();
+	marker.on('dragend', function(event) {
+	    var position = marker.getLatLng();
 		
-		fnMoveLatLng(latlng.lat,latlng.lng);	//좌표 변경
-	});
-	
-	marker.on('click', function(e) {
-	    //alert('평택시 시설물 관리시스템 입니다.');
+		fnChangeLatLng(position.lat,position.lng);	//좌표 변경
+		
+	    /* $("#Latitude").val(position.lat);
+	    $("#Longitude").val(position.lng).keyup(); */
 	});
 }
 
@@ -633,7 +561,6 @@ function fnSelCrossroad(crossroadRouteCd, crossroadSeq,crossroadLat,crossroadLng
 	var $result;
 	
 	$("#crossroadSeq").val(crossroadSeq);
-	$("#notRegSeq").val('');
 	
 	$("#selcrossroad"+crossroadSeq).siblings('li').removeClass('selcrossroad');
 	$("#selcrossroad"+crossroadSeq).addClass('selcrossroad');
@@ -661,23 +588,60 @@ function fnSelCrossroad(crossroadRouteCd, crossroadSeq,crossroadLat,crossroadLng
 		$result.zLevel = 15;
 		$result.crossroadNm = $("#selcrossroad"+crossroadSeq+" > a").text().replace('└ ','');
 		
-		fnMakeRegLatlng($result);		
+		fnMakeCrossroadInfo($result);		
 	}else{		
 		
 		fnSelRoute(crossroadRouteCd,crossroadLat,crossroadLng,16);
 		
+	} 
+	
+//20200715 : 선택 된 마커 처리 수정 진행 -> 해당 마커만 표시에서 도로전체 마커 중 해당 마커 줌인
+/* 
+	$("#crossroadSeq").val(crossroadSeq);
+	
+	$("#selcrossroad"+crossroadSeq).siblings('li').removeClass('selcrossroad');
+	$("#selcrossroad"+crossroadSeq).addClass('selcrossroad');
+	
+	//실시간 좌표 조회
+	var strMethod = "post";
+	var strUrl = "${pageContext.request.contextPath}/main/selectCrossroadLatLngAjax.do";
+	var strParam = "crossroadSeq=" + crossroadSeq;
+
+	var $json = getJsonData(strMethod, strUrl, strParam);
+	
+	$result = $json.result;
+	
+	if($result.lat != "" && $result.lng != ""){
+		crossroadLat = $result.lat
+		crossroadLng = $result.lng
 	}
+	
+	if(crossroadLat == "" || crossroadLng == ""){		
+		//make crossroad info pop
+		$result.seq = crossroadSeq;
+		$result.callType = 'none';
+		$result.lat = map.getCenter().lat;
+		$result.lng = map.getCenter().lng;
+		$result.zLevel = 15;
+		$result.crossroadNm = $("#selcrossroad"+crossroadSeq+" > a").text().replace('└ ','');
+		
+		fnMakeCrossroadInfo($result);		
+	}else{		
+		$result.callType = 'info';
+		$result.zLevel = 16;
+		fnMakeCrossroadInfo($result);
+	} 
+*/	
 }	
 
 //move marker realtime update latlng
-function fnMoveLatLng(crossroadLat,crossroadLng){
+function fnChangeLatLng(crossroadLat,crossroadLng){
 	var $result;
 	var crossroadSeq = $("#crossroadSeq").val();
 	var zLevel = map.getZoom();
 	
 	$("#crossroadLat").val(crossroadLat);
 	$("#crossroadLng").val(crossroadLng);
-	$("#notRegSeq").val('');
 	
 	if(crossroadSeq == ""){
 		alert('교차로를 선택해 주세요.');
@@ -692,10 +656,17 @@ function fnMoveLatLng(crossroadLat,crossroadLng){
 	
 	$result = $json.result;
 	if($result != 0){
+		//2020.07.15 : 좌표 변경 된 마커만 표출 -> 도로의 전체 표출 후 좌표 변경 마커 줌인
+		/* 
+		$result.callType = 'info';
+		$result.zLevel = zLevel;
+		fnMakeCrossroadInfo($result); 
+		map.setView([$result.lat,$result.lng],15);
+		*/
 		var routeCd = $result.routeCd;
 		var routeLat = $result.lat;
 		var routeLng = $result.lng;
-		//var zLevel = 15;
+		var zLevel = 15;
 		
 		fnSelRoute(routeCd,routeLat,routeLng,zLevel);
 		
@@ -705,42 +676,53 @@ function fnMoveLatLng(crossroadLat,crossroadLng){
 	}
 }
 
-//register latlng for balnk crossroad info
-function fnMakeRegLatlng($result){
+//crossroad information : select crossroad
+function fnMakeCrossroadInfo($result){
 	
-	var crossroadSeq 	= $result.seq;
-	var callType 		= $result.callType;
-	var crossroadNm 	= $result.crossroadNm;
-	var installDate 	= $result.installDate;
-	var crossroadLat 	= $result.lat;
-	var crossroadLng 	= $result.lng;
-	var zLevel			= $result.zLevel
-	var popContent		= "";
-	
-	if(callType == "none"){
-		
-		$("#notRegSeq").val(crossroadSeq);
-		
-		popContent = "<div class='center red strong'>["+crossroadNm+"] 좌표 미등록</div><div class='center strong'>마커를 이동하면 좌표가 자동 등록 됩니다.</div>";
+		var callType 		= $result.callType;
+		var crossroadNm 	= $result.crossroadNm;
+		var installDate 	= $result.installDate;
+		var crossroadLat 	= $result.lat;
+		var crossroadLng 	= $result.lng;
+		var zLevel			= $result.zLevel
+		var popContent		= "";
+
+		if(callType == "info"){
+			popContent = "<table class='pop_tb_list' style='min-width:200px;' id='crossroadInfoDiv'>"
+				+"<colgroup>"
+				+"	<col width='40%'/>"
+				+"	<col width='60%'/>"
+		       	+"</colgroup>"
+				+"<tr><th colspan='2' class='center'>"+crossroadNm+"</th>"
+				+"<tr>"
+				+"	<th class='center'>설치일</th>"
+				+"	<td>"+installDate+"</td>"
+				+"</tr>"
+				+"<tr>"
+				+"	<th class='center'>정보3</th>"
+				+"	<td>-</td>"
+				+"</tr>"
+			+"</table>";
+		}else if(callType == "none"){
+			popContent = "<div class='center red strong'>["+crossroadNm+"] 좌표 미등록</div><div class='center strong'>마커를 이동하면 좌표가 자동 등록 됩니다.</div>";
+		}
 		
 		mgroup.clearLayers();	//클리어
 		
-		mgroup.addLayer( marker = new L.marker([crossroadLat,crossroadLng], {draggable: true, riseOnHover: true}) );			//기본 marker 설정
+		mgroup.addLayer( marker = new L.marker([crossroadLat,crossroadLng], {draggable: 'true',riseOnHover: 'true'}) );			//기본 marker 설정
 	
 		marker.bindPopup(popContent, {autoClose:false, closeButton:false }).openPopup();
 		
 		map.setView([crossroadLat, crossroadLng], zLevel);
 	
-		marker.on('dragend', function(e) {
-		    var latlng = marker.getLatLng();
+		marker.on('dragend', function(event) {
+		    var position = marker.getLatLng();
 		    
-			fnMoveLatLng(latlng.lat,latlng.lng);	//좌표 변경
+			fnChangeLatLng(position.lat,position.lng);	//좌표 변경
+		    
+		    //$("#Latitude").val(position.lat);
+		    //$("#Longitude").val(position.lng).keyup();
 		});
-		
-		marker.on('click', function(e) {
-		    //alert(objToStr(e));
-		});
-	}
 }
 
 //crossroad list of route : select all crossroad info
@@ -752,7 +734,6 @@ function fnSelRoute(routeCd, routeLat, routeLng, zLevel){
 	$("#crossroadLat").val('');
 	$("#crossroadLng").val('');
 	$("#crossroadSeq").val('');
-	$("#notRegSeq").val('');
 	$("#routeCd").val(routeCd);	
 	
 	var strMethod = "post";
@@ -774,13 +755,15 @@ function fnSelRoute(routeCd, routeLat, routeLng, zLevel){
 		var marker = marker+"_"+markerSeq;
 	
 		mgroup.addLayer(  
-					marker = new L.marker([markerLat, markerLng], {draggable: true, riseOnHover: true})
+					marker = new L.marker([markerLat, markerLng], {draggable: 'true',riseOnHover: 'true'})
 					//.bindPopup(popContent, {autoClose:false, closeOnClick: true, closeButton:true }).openPopup()
 					//.setLatLng([markerLat,markerLng])
 		);
-		 marker.bindPopup(popContent, {autoClose:false, closeOnClick: false, closeButton:true, riseOnHover: true });
+		 marker.bindPopup(popContent, {autoClose:false, closeOnClick: false, closeButton:true });
 		 marker.setLatLng([markerLat,markerLng]);
-		 marker.openPopup(); 
+		 //marker.openPopup(); 
+		 
+		 //$('.leaflet-popup').addClass('hide');
 		 
 		//arrLatLngs		
 		if(index == 0){
@@ -789,35 +772,53 @@ function fnSelRoute(routeCd, routeLat, routeLng, zLevel){
 			arrLatLngs += ",["+markerLat+","+markerLng+"]";	
 		}
 		
+		
+		//marker hidden
+		//$(".leaflet-popup-content").addClass('hide');
+		//$(".leaflet-popup").addClass('hide');
+		
 		marker.on('click', function(e) {
-			var zLevel = map.getZoom();
 			
 			$("#crossroadLat").val('');
 			$("#crossroadLng").val('');
 			$("#crossroadSeq").val(markerSeq);
 			$("#routeCd").val(markerRouteCd);
 			
-			if(zLevel > 14){
-				fnBigPopup();
-			}else{
-				fnSmallPopup();
-			}
+			//$(".leaflet-popup").removeClass('hide');
+			//$(".leaflet-popup").removeClass('hide');
+			//alert(e);
+			//$(".leaflet-popup").removeClass('hide');
+			//this.openPopup();
 		});
 		
 		marker.on('dragend', function(e) {
 			var marker = e.target;
-		    var latlng = marker.getLatLng();
+		    var position = marker.getLatLng();
 		 
 		    $("#crossroadLat").val('');
 			$("#crossroadLng").val('');
 			$("#crossroadSeq").val(markerSeq);
 			$("#routeCd").val(markerRouteCd);
 			
-			fnMoveLatLng(latlng.lat,latlng.lng);
+			fnChangeLatLng(position.lat,position.lng);
 		});
 		
+		/*
+		marker.on('mouseover', function (e) {
+			//$(".leaflet-popup-content").removeClass('hide');
+			//this.removeClass('hide');
+            this.openPopup();
+        });
+		
+        marker.on('mouseout', function (e) {
+            this.closePopup();
+        });
+		*/
 	});
+	
+	//$(".leaflet-popup-close-button").click();
 
+	
 	//check params
 	if(stringUtil.isNull(routeLat) && stringUtil.isNull(routeLng) && stringUtil.isNull(zLevel)){
 		map.fitBounds(JSON.parse("["+arrLatLngs+"]"));
@@ -840,9 +841,6 @@ function fnMatchingLinkedSeq(seq){
 
 //make popContents for fnSelRoute
 function fnSelMarker(seq){
-	
-	$("#notRegSeq").val('');
-	
 	var strMethod = "post";
 	var strUrl = "${pageContext.request.contextPath}/main/selectCrossroadLatLngAjax.do";
 	var strParam = "crossroadSeq=" + seq;
@@ -863,84 +861,44 @@ function fnSelMarker(seq){
 		case "5": facStatusTxt = "통신두절"; break;
 		case "6": facStatusTxt = "점멸"; break;
 		case "7": facStatusTxt = "소등"; break;
-		default : facStatusTxt = "<button onclick='fnMatchingLinkedSeq("+seq+")'>장애 매칭</button>";
-		
+		default : facStatusTxt = "<button onclick='fnMatchingLinkedSeq("+seq+")'>시설물 상태 매칭</button>";
 	}
-
+	
 	//real-time data lookup
 	var popContent = "";
-		popContent = "<table class='pop_tb_list' id='crossroadInfoDiv_"+seq+"' alt='"+$result.crossroadNm+"' title='"+$result.crossroadNm+"'>";
-		popContent += "<colgroup>";
-		popContent += "	<col width='40%'/>";
-		popContent += "	<col width='60%'/>";
-		popContent += "</colgroup>";
-		popContent += "<tr class='displaydata'><th colspan='2' class='center'>"+$result.crossroadNm+"</th>";
-			
-		popContent += "<tr class='displaydata'>";
-		popContent += "	<th class='center'>설치일</th>";
-		popContent += "	<td id='install_"+seq+"'>"+$result.installDate+"</td>";
-		popContent += "</tr>";
-		
-		if($result.installYn == 'N' ){
-			popContent += "<tr class='displaydata'>";
-			popContent += "	<th class='center'>관리대장</th>";
-			popContent += "	<td class='center'><button onclick=\"fnInsertMgmtReg('"+$result.routeCd+"','"+$result.seq+"');return false;\">관리대장 등록</button></td>";
-			popContent += "</tr>";
-		}else if($result.installYn == 'Y' ){
-			popContent += "<tr class='displaydata'>";
-			popContent += "	<th class='center'>관리대장</th>";
-			popContent += "	<td class='center'><button onclick=\"fnGoUpdateMgmtReg('"+$result.mgmtSeq+"');return false;\">관리대장 확인</button></td>";
-			popContent += "</tr>";
-		}
-		
-		popContent += "<tr>";
-		popContent += "	<td colspan='2' id='status_"+seq+"' class='center tb_status_"+facStatus+"'>"+facStatusTxt+"</td>";
-		popContent += "</tr>";
-		popContent += "</table>";
-		
+		popContent = "<table class='pop_tb_list' style='min-width:200px;' id='crossroadInfoDiv_"+seq+"'>"
+			+"<colgroup>"
+			+"	<col width='40%'/>"
+			+"	<col width='60%'/>"
+	       	+"</colgroup>"
+			+"<tr><th colspan='2' class='center'>"+$result.crossroadNm+"</th>"
+			+"<tr>"
+			+"	<th class='center'>설치일</th>"
+			+"	<td id='install_"+seq+"'>"+$result.installDate+"</td>"
+			+"</tr>"
+			+"<tr>"
+			+"	<td colspan='2' id='status_"+seq+"' class='center tb_status_"+facStatus+"'>"+facStatusTxt+"</td>"
+			+"</tr>"
+		+"</table>";
+	
 	return popContent;
-}
-
-function fnInsertMgmtReg(routeCd, seq){
-	var polDistrict = $("#polDistrict").val();
-	var url = "${pageContext.request.contextPath}/mgmtreg/insertMgmtReg.do";
-	
-	$("#routeCd").val(routeCd);
-	$("#crossroadSeq").val(seq);
-	
-	$("#frm").attr("method","post");
-	$("#frm").attr("action",url);
-	$("#frm").submit();
-}
-
-function fnGoUpdateMgmtReg(mgmtSeq){
-	var polDistrict = $("#polDistrict").val();
-	var url = "${pageContext.request.contextPath}/mgmtreg/updateMgmtReg.do";
-	
-	$("#mgmtSeq").val(mgmtSeq);
-	$("#menuSeq").val('1002');
-	
-	$("#frm").attr("method","post");
-	$("#frm").attr("action",url);
-	$("#frm").submit();
 }
 
 //너무 위험해.....
 function fnRouteDataLoad(routeCd){
+	var repeatCnt = 0;
 	var interval = 5000;
 	
-	//console.log(">>>>>>>>>>>>> start route data load >>> fnSelRouteCd() : " + routeCd);
+	console.log(">>>>>>>>>>>>> start route data load >>> fnSelRouteCd() : " + routeCd);
 	
-	if(timer){
-		clearInterval(timer);
-	}
-	
-	timer = setInterval(function(){
+	setInterval(function(){
 		fnRealtimeDataLoad(routeCd);
 	},interval);
 }
 
+var repeatCnt = 0;
 function fnRealtimeDataLoad(routeCd){
+	
 	var today = new Date();
 	var latlng = map.getCenter();
 	var zLevel = map.getZoom();
@@ -967,7 +925,7 @@ function fnRealtimeDataLoad(routeCd){
 			case "5": facStatusTxt = "통신두절"; break;
 			case "6": facStatusTxt = "점멸"; break;
 			case "7": facStatusTxt = "소등"; break;
-			default : facStatusTxt = "<button onclick='fnMatchingLinkedSeq("+seq+")' >장애 매칭</button>";
+			default : facStatusTxt = "<button onclick='fnMatchingLinkedSeq("+seq+")'>시설물 상태 매칭</button>";
 		}
 		
 		$("#install_"+seq).html(installDate);
@@ -976,84 +934,13 @@ function fnRealtimeDataLoad(routeCd){
 		$("#status_"+seq).addClass('center  tb_status_'+facStatus);
 		$("#status_"+seq).html(facStatusTxt);
 		
-		//console.log(today.toLocaleString() + " >> seq : " + seq + " >> status : " + facStatus);
+		console.log(today.toLocaleString() + " >> seq : " + seq + " >> status : " + facStatus);
 		
 	});	
 	
-	timerCnt += 1;
-	//console.log(today.toLocaleString() + ">>>>>>>>>>>>> "+routeCd + " >> "+latlng+" >> " + zLevel +" >> repeat times : " + timerCnt);
+	repeatCnt += 1;
+	console.log(today.toLocaleString() + ">>>>>>>>>>>>> "+routeCd + " >> "+latlng+" >> " + zLevel +" >> repeat times : " + repeatCnt);
 }
-
-function fnBigPopup(){
-	$("#notRegSeq").val('');
-	$(".leaflet-popup.leaflet-zoom-animated").css({'bottom':'-7px','left':'-81px'});
-	$(".custom-popup .leaflet-popup-content-wrapper").css('min-width','158px');		
-	$(".pop_tb_list_min").addClass('pop_tb_list');
-	$(".pop_tb_list_min").removeClass('pop_tb_list_min');
-	$(".displaydata").removeClass('hide');
-}
-
-function fnSmallPopup(){
-	$("#notRegSeq").val('');
-	$(".leaflet-popup.leaflet-zoom-animated").css({'bottom':'-12px','left':'-42px'});
-	$(".custom-popup .leaflet-popup-content-wrapper").css({'min-width':'50px','max-width':'80px','left':'100px'});
-	$(".pop_tb_list").addClass('pop_tb_list_min');
-	$(".pop_tb_list").removeClass('pop_tb_list');
-	$(".displaydata").addClass('hide');
-}
-
-function fnPrint(){
-	//$("#leafletmap").printThis();
-	
-	/* var inbody = document.body.innerHTML; // 이전 body 영역 저장
-
-	window.onbeforeprint = function(){ // 프린트 화면 호출 전 발생하는 이벤트
-	    document.body.innerHTML = document.getElementById('leafletmap').innerHTML; // 원하는 영역 지정
-	}
-
-	window.onafterprint = function(){ // 프린트 출력 후 발생하는 이벤트
-	    document.body.innerHTML = inbody; // 이전 body 영역으로 복구
-	}
-
-	window.print(); */
-	
-	$("#leafletmap").printThis({
-		debug: true,
-		importCss: true,
-		printContainer: true,
-		pageTitme: "시설물_지도_출력",
-		removeInline: false
-		/* loadCss: */
-	});
-
-}
-
-function fnImgDownload(){
-	var polDistrict = $("#polDistrict").val();
-	var fNm = "시설물_지도";
-	var fExt = ".png";
-
-	$("#fNm").val(fNm);
-	$("#fExt").val(fExt);
-	
-	//이미지 잘림 방지
-	window.scrollTo(0,0);
-	
-	html2canvas($('#leafletmap')[0]).then(function(canvas) {
-	    if (typeof FlashCanvas != "undefined") {
-        	FlashCanvas.initElement(canvas);
-        }
-	    
-		var fData = canvas.toDataURL("images/png");
-		
-	    $("#fData").val(fData);
-	    
-	    $("#frm").attr("method","post");
-		$("#frm").attr("action","${pageContext.request.contextPath}/common/downloadHtmlToImg.do");
-		$("#frm").submit();
-	});	
-}
-
 </script>
 
 

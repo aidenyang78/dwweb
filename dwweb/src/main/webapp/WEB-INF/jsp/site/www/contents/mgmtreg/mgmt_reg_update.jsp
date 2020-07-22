@@ -176,7 +176,7 @@ function fnChangeCrossroadCd(){
 	if(crossroadCd != ""){
 		$("#crossroadNm").val(crossroad);
 	}
-	
+
 	if(lat != "" || lng != ""){
 		$("#lat").val(lat);
 		$("#lng").val(lng);	
@@ -376,15 +376,8 @@ function fnSecSum(){
 																	<li>
 																		<span id="crossroadList">설치위치 셀렉</span>
 																		<input type="hidden" name="crossroadNm" id="crossroadNm" value="${listInst.crossroadNm}"/>
-																		
-																		<%-- <span style="margin-left:40px;">
-																			<label for="lat">위도</label>
-																			<input type="text" name="lat" id="lat" size="14" value="${listInst.lat}" accesskey="DCM"/>
-																			
-																			<label for="lng">X 경도</label>
-																			<input type="text" name="lng" id="lng" size="14" value="${listInst.lng}" accesskey="DCM"/>
-																			<a href="javascript:;" onclick="fnSelGeoCode();" class="btn_grayStyle02">좌표선택</a>
-																		</span> --%>
+																		<input type="hidden" name="lat" id="lat" size="14" value="${listInst.lat}" />
+																		<input type="hidden" name="lng" id="lng" size="14" value="${listInst.lng}" />
 																	</li>
 																</ul>
 																<ul><li>&nbsp;</li></ul>

@@ -23,6 +23,10 @@
 <script src="${pageContext.request.contextPath}/common/plugins/jquery-ui-1.12.1/datepicker-ko.js"></script>
 
 <script type="text/javascript">
+var paramPolDistrict = '${param.polDistrict}';
+var paramRouteCd = '${param.routeCd}';
+var paramCrossroadSeq = '${param.crossroadSeq}';
+
 $(document).ready(function(){
 	
 	$.datepicker.setDefaults(datepickerSet);
@@ -84,7 +88,13 @@ $(document).ready(function(){
 		
 		$("#crossroadList").html(inputHtml);		
 	});
-})
+	
+	
+	//check parameters : from map
+	if(paramPolDistrict != ""){
+		$("#polDistrict").val(paramPolDistrict).change();
+	}
+});
 
 //도로명 변경 정보 기록 및 교차로 정보 조회 호출
 function fnChangeRouteCd(){
@@ -133,7 +143,11 @@ function fnSetRouteList(){
 			var seq = $json.listRoute[i].seq;
 			var routeNm = $json.listRoute[i].routeNm;
 			
-			inputHtml += "<option value='"+seq+"'>"+routeNm+"</option>";
+			if(paramRouteCd == seq){
+				inputHtml += "<option value='"+seq+"' selected>"+routeNm+"</option>";
+			}else{
+				inputHtml += "<option value='"+seq+"'>"+routeNm+"</option>";	
+			}
 		}
 		inputHtml += "</select>";
 	}else{
@@ -144,7 +158,13 @@ function fnSetRouteList(){
 		alert('조회가능한 도로명이 없습니다.');
 	}
 	
+	
 	$("#routeList").html(inputHtml);
+	if(paramRouteCd != ""){
+		setTimeout(function(){
+			$("#routeCd").change();
+		},50)
+	}
 }
 
 function fnChangeCrossroadCd(){
@@ -162,7 +182,6 @@ function fnChangeCrossroadCd(){
 
 //교차로명
 function fnSetCrossroadList(){
-
 	var polCd = $("#polCd").val();
 	var polDistrict = $("#polDistrict").val();
 	var routeCd = $("#routeCd").val();
@@ -183,18 +202,22 @@ function fnSetCrossroadList(){
 	if(totCnt > 0){
 		inputHtml = "<select name='crossroadCd' id='crossroadCd' onchange='fnChangeCrossroadCd()' style='min-width:452px;'>";
 		inputHtml += "<option value=''>:::::::::: 선택 ::::::::::</option>";
-		
 		for(var i=0;i<totCnt;i++){
 			var seq = $json.listCrossroad[i].seq;
 			var crossroadNm = $json.listCrossroad[i].crossroadNm;
 			var lat = $json.listCrossroad[i].lat;
 			var lng = $json.listCrossroad[i].lng;
 			
-			inputHtml += "<option value='"+seq+"' data-lat='"+lat+"' data-lng='"+lng+"'>"+crossroadNm+"</option>";
+			if(paramCrossroadSeq == seq){
+				inputHtml += "<option value='"+seq+"' data-lat='"+lat+"' data-lng='"+lng+"' selected>"+crossroadNm+"</option>";
+			}else{
+				inputHtml += "<option value='"+seq+"' data-lat='"+lat+"' data-lng='"+lng+"'>"+crossroadNm+"</option>";	
+			}
 		}
 		inputHtml += "</select>";
 		
 	}else{
+		alert(0);
 		inputHtml = "<select name='crossroadCd' id='crossroadCd' onchange='fnChangeCrossroadCd()' style='min-width:452px;'>";
 		inputHtml += "<option value=''>::::: 검색된 도로명이 없음 :::::</option>";
 		inputHtml += "</select>";
@@ -203,6 +226,13 @@ function fnSetCrossroadList(){
 	}
 	
 	$("#crossroadList").html(inputHtml);
+	
+	if(paramCrossroadSeq != ""){
+		setTimeout(function(){
+			$("#crossroadCd").change();
+		},50)
+	}
+			
 }
 
 //위/경도 선택
@@ -350,16 +380,8 @@ function fnSecSum(){
 																			</select>
 																		</span>
 																		<input type="hidden" name="crossroadNm" id="crossroadNm"/>
-																		
-																		
-																		<!-- <span style="margin-left:40px;">
-																			<label for="lat">위도</label>
-																			<input type="text" name="lat" id="lat" size="14" accesskey="DCM"/>
-																			
-																			<label for="lng">X 경도</label>
-																			<input type="text" name="lng" id="lng" size="14" accesskey="DCM"/>
-																			<a href="javascript:;" onclick="fnSelGeoCode();" class="btn_grayStyle02">좌표선택</a>
-																		</span> -->
+																		<input type="hidden" name="lat" id="lat" size="14" />
+																		<input type="hidden" name="lng" id="lng" size="14" />
 																	</li>
 																</ul>
 																<ul><li>&nbsp;</li></ul>

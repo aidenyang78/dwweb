@@ -22,10 +22,6 @@ $(document).ready(
 		    $(this).addClass('on');
 		});
 		 */
-
-		gfn_setbrowserTile();
-		
-		setCurrMenu();
 	}
 	
 	
@@ -594,11 +590,6 @@ function fnGetKeyCode(e)
 	}
 
 	return result;
-}
-
-//게시판 첨부 파일 다운로드
-function fnFileDownAction(file_seq){
-	location.href=contextPath+"board/boardFileDownAct.do?fileSeq=" + file_seq;
 }
 
 //페이징
@@ -1177,11 +1168,11 @@ function getYearComboBox(objComboBox, strDefaultData, strStartYear) {
 
 	if(typeof(strStartYear) == "undefined") {
 
-		strStartYear = 2015;
+		strStartYear = 1900;
 
 	}
 
-	for(var i=strStartYear; i<=2020; i++) {
+	for(var i=strStartYear; i<=2099; i++) {
 
 		if(strDefaultData == i) {
 
@@ -1278,67 +1269,6 @@ function tableRowSpanning(tbObj, eleNm, spanning_row_index) {
 	$(rowspanTd).attr('rowspan', rowspanCount);
 }
 
-/**
- * PAR-Q 출력 레포트를 조회한다.
- * strParq_gbn :	1 - 예약화면 PAR-Q
- 					2 - 체력측정화면 PAR-Q
- * strCenter_cd : 센터코드
- * strAge_gbn : 측정기구분
- * strMemb_seq : 회원순번
- * strTest_seq : 측정순번
- * strRes_ymd : 예약일
- * strTest_res_seq : 예약순번
-**/
-function openParqReport(strParq_gbn, strCenter_cd, strAge_gbn, strMemb_seq, strTest_seq, strRes_ymd, strTest_res_seq) {
-	
-	var url = "";
-		url = "/admin/oz/oz_parq.do";
-	
-	//패러미터 설정
-	url += "?parq_gbn=" + strParq_gbn;
-	url += "&center_cd=" + strCenter_cd;
-	url += "&age_gbn=" + strAge_gbn;
-	url += "&memb_seq=" + strMemb_seq;
-	url += "&test_seq=" + strTest_seq;
-	url += "&res_ymd=" + strRes_ymd;
-	url += "&test_res_seq=" + strTest_res_seq;
-	
-	//레포트를 팝업으로 호출한다.
-	var pop = window.open(url, 'oz' + strParq_gbn, 'location=no,directions=no,resizable=yes,status=no,toolbar=no,menubar=no,width=1000,height=800,scrollbars=no,top=100,left=100');
-	
-	pop.focus();
-	
-}
-
-
-//운동처방 가이드 이미지 팝업을 호출한다.
-function openGuidePopup(strMovie_seq) {
-	
-	var strUrl = "/admin/movie/moviePresGuidePopup.do";
-		strUrl += "?movie_seq=" + strMovie_seq;
-	
-	window.open(strUrl, 'guide', 'top=50px,left=50px,width=700px,height=800,resizable=0,status=0,scrollbars=1,menubar=0');
-	
-}
-
-//운동처방 가이드 동영상 팝업을 호출한다.
-function openGuideMoviePopup(strMovie_seq, strMovie_nm_kor) {
-	
-	var chk = "";
-		chk += strMovie_seq;
-		chk += "::";
-		chk += "rtmp://nfastr.sports.re.kr/vod/mp4:/" + strMovie_seq + ".mp4";
-		chk += "::";
-		chk += "/common/site/www/front/images/movie_img/" + strMovie_seq + ".jpg";
-		chk += "::";
-		chk += strMovie_nm_kor;
-	
-	var strUrl = "/admin/movie/moviePresGuideMoviePopup.do";
-		strUrl += "?chk=" + chk;
-	
-	window.open(strUrl, 'guideMovie', 'top=50px,left=50px,width=820px,height=600,resizable=0,status=0,scrollbars=1,menubar=0');
-	
-}
 
 //비밀번호 유효성체크(pwd: 비밀번호Value, pwdChk:비밀번호확인Value, id: 아이디value)
 function passwordValidateCheck(pwd, pwdChk, id){
@@ -1408,161 +1338,39 @@ function passwordValidateCheck(pwd, pwdChk, id){
 	}
 	
 	if(pwd.length < 9 || 20 < pwd.length || !pwd.match(/([a-zA-Z0-9].*[!,@,#,$,*,_,~])|([!,@,#,$,*,_,~].*[a-zA-Z0-9])/)){
-    	alert("비밀번호는 영문,숫자,특수문자 조합 9~20자리로 입력 하십시오.");
+    	alert("비밀번호는 영문,숫자,특수문자 조합 9~20자리로 입력 하세요.");
     }else if(pwd != pwdChk){
-    	alert("입력하신 비밀번호가 일치하지 않습니다. 다시 입력 하십시오.");
+    	alert("입력하신 비밀번호가 일치하지 않습니다. 다시 입력 하세요.");
     }else if(passwordCheck1 > 2){
-		alert("동일한 문자, 숫자 3자 이상 연속됩니다. 다시 입력 하십시오.");
+		alert("동일한 문자, 숫자 3자 이상 연속됩니다. 다시 입력 하세요.");
 	}else if(passwordCheck2 > 1 || passwordCheck3 > 1){
-		alert("연속된 문자, 숫자 3자 이상 연속됩니다. 다시 입력 하십시오.");
+		alert("연속된 문자, 숫자 3자 이상 연속됩니다. 다시 입력 하세요.");
 	}else if(passwordCheck4 > 2){
-		alert("아이디와 동일한 문자, 숫자 3자 이상 연속됩니다. 다시 입력 하십시오.");
+		alert("아이디와 동일한 문자, 숫자 3자 이상 연속됩니다. 다시 입력 하세요.");
 	}else{
 		chkReturn = true;
 	}
   	
   	return chkReturn;
 }
-  	
-  	/**
-  	 * 레포트를 조회한다.
-  	 * type :	1 - 분석보고서_개인
-  	 * seq : 순번(분석보고서:분석순번, 체력측정카드:측정순번)
-  	 * strMenuSeq : 메뉴순번(권한체크용)
-  	**/
-  	function openReport(type, seq) {
-  		
-  		var url = "";
-  		
-  		if(type == "1") {
-
-  			url = "/front/report/analyzeReportIndPdf.do";
-  			url += "?analSeq=" + seq;
-  			
-  		}else if(type == "8"){
-  			url = "/front/report/analyzeReportPreIndPdf.do";
-  			url += "?analSeq=" + seq;
-  		}	
-  		//레포트를 팝업으로 호출한다.
-  		var pop = window.open(url, 'oz', 'location=no,directions=no,resizable=yes,status=no,toolbar=no,menubar=no,width=1000,height=800,scrollbars=no,top=100,left=100');
-  		pop.focus();
-  		
-  	}
-
-  	function setCurrMenu() {
-  		var title = document.title;
-
-		currMenuDepth1 = -1;
-  		currMenuDepth2 = -1;
-  			
-  		if(title.indexOf("인사말") > -1) {
-  			currMenuDepth1 = 0;
-  			currMenuDepth2 = 0;	
-  		}
-  		else if(title.indexOf("사업소개") > -1) {
-  			currMenuDepth1 = 0;
-  			currMenuDepth2 = 1;	
-  		}
-  		else if(title.indexOf("사업배경") > -1) {
-  			currMenuDepth1 = 0;
-  			currMenuDepth2 = 2;	
-  		}
-  		else if(title.indexOf("연혁") > -1) {
-  			currMenuDepth1 = 0;
-  			currMenuDepth2 = 3;	
-  		}
-  		else if(title.indexOf("지역센터안내") > -1) {
-  			currMenuDepth1 = 0;
-  			currMenuDepth2 = 4;	
-  		}
-  		else if(title.indexOf("체력측정 이용안내") > -1) {
-  			currMenuDepth1 = 1;
-  			currMenuDepth2 = 0;	
-  		}
-  		else if(title.indexOf("체력측정 절차") > -1) {
-  			currMenuDepth1 = 1;
-  			currMenuDepth2 = 1;	
-  		}
-  		else if(title.indexOf("기자재") > -1) {
-  			currMenuDepth1 = 1;
-  			currMenuDepth2 = 2;	
-  		}
-  		else if(title.indexOf("체력측정 예약안내") > -1) {
-  			currMenuDepth1 = 2;
-  			currMenuDepth2 = 0;	
-  		}
-  		else if(title.indexOf("체력측정 예약신청") > -1) {
-  			currMenuDepth1 = 2;
-  			currMenuDepth2 = 1;	
-  		}
-  		else if(title.indexOf("훈련가이드 안내") > -1) {
-  			currMenuDepth1 = 3;
-  			currMenuDepth2 = 0;	
-  		}
-  		else if(title.indexOf("훈련 목록") > -1) {
-  			currMenuDepth1 = 3;
-  			currMenuDepth2 = 1;	
-  		}
-  		else if(title.indexOf("공지사항") > -1) {
-  			currMenuDepth1 = 4;
-  			currMenuDepth2 = 0;	
-  		}
-  		else if(title.indexOf("자주하는 질문") > -1) {
-  			currMenuDepth1 = 4;
-  			currMenuDepth2 = 1;	
-  		}
-  	}
-	// 화면에 상에있는 location 영역에 현재페이지 정보를 타이틀로 변경처리
-	// 웹접근성 처리사항
-	function gfn_setbrowserTile(){		
-		
-		var _glocalTitle = "";
-		var _glocalTleDlimter = "";
-		$(".location_wrap .location > section > ul > li").each(function(index){	
-			var locText = $(this).find(">span").html();
-			if(index == 0){
-				locText = "스포츠과학센터";
-			}
-			if(locText != ""){
-				_glocalTitle = locText+" "+_glocalTleDlimter+" "+_glocalTitle;
-				_glocalTleDlimter = "<";
-			}
-			
-		});		
-		
-		if(_glocalTitle != ""){
-			document.title = _glocalTitle;
-		}
-		
-		
-		// 화면에 상에있는 location 영역에 현재페이지 부모창 정보를 팝업창 타이틀로 변경처리
-		var _glocalPopTitle = "";
-		
-		if($(opener).length != 0) {
-			
-			if(typeof opener.document != 'undefined' ){
-				if(typeof opener.document.title != 'undefined' ){
-					_glocalPopTitle = opener.document.title;
-					
-					var _gPopTitle = "";
-					
-					if(typeof $(".pop_header > h1 ").html() == 'undefined'){
-						_gPopTitle = document.title;
-					}else{
-						_gPopTitle = $(".pop_header > h1 ").html();
-					}
-					if(_glocalPopTitle != ""){
-						document.title = _gPopTitle + " < " + _glocalPopTitle;
-					}
-				}
-			}
-		}	
-	}
-	
-	
 	
 function fnGoMyInfo(){
 	document.location.href = contextPath + '/config/updateMyInfo.do?menuSeq=1005';
+}
+
+//call : bojToString(object);
+/*$("#aa").click(function(obj){
+	console.log("objToString_result : " + objToString(obj));
+}*/
+function objToStr(obj){
+	var str = "";
+	
+	for ( var i in obj) {
+		str += ", " + i + " : '" + obj[i] + "'";
+	}
+	str = str.substring(1, str.length);
+	
+	return str;	
 }
 
 	

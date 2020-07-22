@@ -23,8 +23,8 @@ $(document).ready(function(){
 //검색
 function fnSearch(){
 	$("#pageNo").val('');
-	$("#frm").attr("actoin","${pageContext.request.contextPath}/management/listUser.do");
 	$("#frm").attr("method","get");
+	$("#frm").attr("actoin","${pageContext.request.contextPath}/management/listUser.do");
 	$("#frm").submit();
 }
 
@@ -35,12 +35,21 @@ function fnQuickSearch(stat){
 	fnSearch();
 }
 
-//GIS맵 이동
-function fnGoMap(strRoadNm){
+//goto map
+function fnGoMap(polDistrict,routeCd,crossroadSeq,lat,lng){	
+	var url = "${pageContext.request.contextPath}/main/main.do";
 	
-	alert('연동 가능 할 경우  map으로 이동');	
+	$("#polDistrict").val(polDistrict);
+	$("#routeCd").val(routeCd);
+	$("#crossroadSeq").val(crossroadSeq);
+	$("#lat").val(lat);
+	$("#lng").val(lng);
+	$("#menuSeq").val('1001');
+	
+	$("#frm").attr("method","post");
+	$("#frm").attr("action",url);
+	$("#frm").submit();
 }
-
 </script>
 
 </head>
@@ -49,6 +58,12 @@ function fnGoMap(strRoadNm){
 <form name="frm" id="frm">
 <input type="hidden" name="pageNo" id="pageNo" value="${param.pageNo}"/>
 <input type="hidden" name="menuSeq" id="menuSeq" value="${param.menuSeq}"/>
+<input type="hidden" name="polDistrict" id="polDistrict"/>
+<input type="hidden" name="routeCd" id="routeCd"/>
+<input type="hidden" name="crossroadSeq" id="crossroadSeq"/>
+<input type="hidden" name="lat" id="lat"/>
+<input type="hidden" name="lng" id="lng"/>
+<input type="hidden" name="referer" id="referer" value="status"/>
 <div id="contentWrapper">
 	<div id="contentLeft">
 		<jsp:include page="/WEB-INF/jsp/site/www/contents/include/left_menu.jsp"/> 
@@ -154,15 +169,34 @@ function fnGoMap(strRoadNm){
 											<table width="100%" class="tb_list">
 												<tr>
 													<th width="4%" class="th">No</th>
-													<th width="6%"  class="th">장애상태</th>
+													<th width="6%" class="th">장애상태</th>
 													<th width="*"  class="th">교차로명</th>
+													<th width="7%" class="th">기능</th>
 												</tr>
 											<c:forEach var="list" items="${listStatus}" varStatus="status">
 												<tr>
 													<td class="td center">${cntNo-status.index}</td>
 													<td class="center tb_status_${list.status}">${list.description}</td>
 													<td class="td">
-														<a href="javascript:;" onclick="fnGoMap('${list.name}');">${list.name}</a></td>
+														<c:choose>
+															<c:when test='${list.linkedYn eq "Y"}'>
+																<a href="javascript:;" onclick="fnGoMap(${list.polDistrict},${list.routeCd},${list.crossroadSeq},${list.lat},${list.lng});">${list.name}</a>
+															</c:when>
+															<c:otherwise>
+																${list.name}
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td class="center">
+														<c:choose>
+															<c:when test='${list.linkedYn eq "Y"}'>
+																<a href="javascript:;" class="btn_round_type_2" onclick="fnGoMap(${list.polDistrict},${list.routeCd},${list.crossroadSeq},${list.lat},${list.lng});">지도이동</a>
+															</c:when>
+															<c:otherwise>
+																미연동
+															</c:otherwise>
+														</c:choose>
+													</td>
 												</tr>
 											</c:forEach>
 											</table>
