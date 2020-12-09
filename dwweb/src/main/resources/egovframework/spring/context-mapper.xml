@@ -9,7 +9,7 @@
 		<property name="configLocation" value="classpath:/egovframework/sqlmap/sql-mapper-config.xml" />
 		<property name="mapperLocations">
 			<list>
-				<value>classpath:/com/core/**/*-mariaDb.xml</value>
+				<value>classpath:/com/cmm/**/*-mariaDb.xml</value>
 				<value>classpath:/com/site/contents/**/*-mariaDb.xml</value>
 			</list>
 		</property>
@@ -20,7 +20,7 @@
 		<property name="configLocation" value="classpath:/egovframework/sqlmap/sql-mapper-config.xml" />
 		<property name="mapperLocations">
 			<list>
-				<value>classpath:/com/core/**/*-mariaDb.xml</value>
+				<value>classpath:/com/cmm/**/*-mariaDb.xml</value>
 				<value>classpath:/com/site/contents/**/*-mariaDb.xml</value>
 			</list>
 		</property>

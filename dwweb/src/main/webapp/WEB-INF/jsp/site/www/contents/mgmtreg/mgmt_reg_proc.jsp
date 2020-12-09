@@ -13,6 +13,7 @@
 /* 
 rtnCd
 1000 : 등록 성공
+1001 : 중복
 2000 : 수정 성공
 3000 : 삭제 성공
 9999 : 처리 오류
@@ -23,6 +24,10 @@ $(document).ready(function(){
 	//등록
 	if('${rtnCd}' == '1000'){
 		msg = '등록 되었습니다.';
+	}else if('${rtnCd}' == '1001'){		//중복
+		alert('신호관리 대장이 이미 등록 되어 있습니다.');
+		history.back();
+		return;
 	}else if('${rtnCd}' == '2000'){		//수정
 		msg = '수정 되었습니다.';
 		url = '/mgmtreg/updateMgmtReg.do';
@@ -30,7 +35,7 @@ $(document).ready(function(){
 		msg = '삭제 되었습니다.';
 	}else{
 		alert('처리 중 오류가 발생 했습니다.');
-		document.history.back();
+		history.back();
 		return;
 	}
 	alert(msg);

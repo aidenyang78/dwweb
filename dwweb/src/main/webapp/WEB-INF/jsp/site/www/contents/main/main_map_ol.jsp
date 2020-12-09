@@ -22,9 +22,11 @@
 
 <!-- ol 지도 -->
 <link href="${pageContext.request.contextPath}/common/plugins/openlayers/ol.css"rel="stylesheet"/>
-<script type="text/javascript" src="http://map.vworld.kr/js/vworldMapInit.js.do?version=2.0&apiKey=970E88E0-2536-3A55-8216-0B675CBC5FCD"></script>
+
 <script src="${pageContext.request.contextPath}/common/plugins/openlayers/ol.js"></script>
-<script src="${pageContext.request.contextPath}/js/openlayers/proj4.js"></script>
+<script src="${pageContext.request.contextPath}/common/plugins/openlayers/proj4.js"></script>
+
+<script type="text/javascript" src="http://map.vworld.kr/js/vworldMapInit.js.do?version=2.0&apiKey=970E88E0-2536-3A55-8216-0B675CBC5FCD"></script>
 <%-- 
 #########################################################
 # vWorld 키관리 정보 : http://www.vworld.kr/dev/v4api.do

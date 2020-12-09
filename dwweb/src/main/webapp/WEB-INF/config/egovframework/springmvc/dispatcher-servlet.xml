@@ -7,7 +7,7 @@
                 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
                 http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
                 
-    <context:component-scan base-package="egovframework,com.core,com.site">
+    <context:component-scan base-package="egovframework,com.cmm,com.site">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
@@ -21,14 +21,14 @@
 			<mvc:mapping path="/**"/>
 			<!-- 제외목록 -->
 			<mvc:exclude-mapping path="/login/login.do"/>
-			<bean id="interceptor" class="com.core.comm.interceptor.Interceptor"/>
+			<bean id="interceptor" class="com.cmm.interceptor.Interceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
 	
 	
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="webBindingInitializer">
-            <bean class="com.core.comm.web.EgovBindingInitializer"/>
+            <bean class="com.cmm.web.EgovBindingInitializer"/>
         </property>
     </bean>
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
@@ -54,7 +54,7 @@
 	</bean> -->
 	
     <!-- For Pagination Tag -->
-    <bean id="imageRenderer" class="com.core.comm.web.EgovImgPaginationRenderer"/>
+    <bean id="imageRenderer" class="com.cmm.web.EgovImgPaginationRenderer"/>
 
     <bean id="paginationManager" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
         <property name="rendererType">

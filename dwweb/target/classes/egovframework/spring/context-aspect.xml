@@ -61,7 +61,7 @@
 	<!-- <bean id="egovHandler" class="egovframework.example.cmmn.EgovSampleExcepHndlr" />
 	<bean id="otherHandler" class="egovframework.example.cmmn.EgovSampleOthersExcepHndlr" /> -->
 	
-	<bean id="egovHandler" class="com.core.comm.hndlr.EgovSampleExcepHndlr" />
-	<bean id="otherHandler" class="com.core.comm.hndlr.EgovSampleOthersExcepHndlr" />	
+	<bean id="egovHandler" class="com.cmm.hndlr.EgovSampleExcepHndlr" />
+	<bean id="otherHandler" class="com.cmm.hndlr.EgovSampleOthersExcepHndlr" />	
 	
 </beans>

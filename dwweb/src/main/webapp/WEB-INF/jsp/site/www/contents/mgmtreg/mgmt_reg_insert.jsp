@@ -63,11 +63,19 @@ $(document).ready(function(){
 
 	//등록 하기
 	$("#insertMgmtReg, #insertMgmtReg2").click(function(){
+		
+		var docStatus = $("input[name='docStatus']:checked").val();
+		var statusMsg = $("#statusMsg"+docStatus).text();
+		
 		if(stringUtil.isEmpty($("#polDistrict").val())){
 			alert('지구를 선택해 주세요.');
 			$("#polDistrict").focus();
 			return;
 		}
+		
+		if(!confirm("신호관리대장을 [" + statusMsg + "] 상태로 등록 하시겠습니까?")){
+			return;
+		}	
 		
 		$("#frm").attr("method","post");
 		$("#frm").attr("action","${pageContext.request.contextPath}/mgmtreg/insertMgmtRegAct.do");
@@ -251,7 +259,324 @@ function fnSecSum(){
 	$("#signalSecTot").val(secTot);
 }
 </script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#moveHeader").mouseover(function(){
+		var lay_pop = $('#signalMap');
+		lay_pop.draggable({disabled:false});
+	});
 
+
+	$("#moveHeader").mouseleave(function(){
+		var lay_pop = $('#signalMap');
+		lay_pop.draggable({disabled:true});
+	});
+})
+//신호주기 선택 화면 호출
+function fnSignalMapShow(selId){
+	var lay_pop = $('#signalMap');
+	var selTop = $("#"+selId).offset().top - 150;
+	var selLeft = $("#"+selId).offset().left - 100;
+	
+ 	lay_pop.css('top', (selTop) + 'px');    // 레이어 위치 지정
+	lay_pop.css('left', (selLeft) + 'px');
+
+ 	$("#rtnId").val(selId);
+ 	
+ 	if(!stringUtil.isEmpty($("#"+selId).val())){
+ 		$("#rtnVal").val($("#"+selId).val());	
+ 	}
+ 	
+ 	lay_pop.fadeIn();
+	lay_pop.focus();
+}
+
+//신호주기 선택 닫기
+function fnSignalMapClose(){
+	
+	$('#signalMap').fadeOut(150,function(){
+		$('#signalMap').hide();
+		$("#erase").click();
+	});
+	
+	//목록 닫기
+	if(!$("#addIcons").hasClass('hide')){
+		$("#addIcons").addClass('hide');
+	}
+	
+	$("#rtnVal").val('');
+	$("#rtnId").val('');
+}
+
+//선택 신호주시 값 설정
+function fnSelData(strVal){
+	var rtnVal = $("#rtnVal").val();
+	
+		if(stringUtil.isEmpty(rtnVal)){
+			rtnVal = strVal;
+		}else{
+			rtnVal = rtnVal + "," + strVal;
+		}
+	 $("#rtnVal").val(rtnVal);
+}
+
+//신호주기 다시 선택
+function fnResetSignal(type){
+	var selId = $("#"+$("#rtnId").val());
+	
+	if(type == "restore"){
+		$("#rtnVal").val(selId.val());	
+	}else{
+		$("#rtnVal").val('');
+	}
+}
+
+//신호주기 선택
+function fnSetSignal(){
+	var rtnId = $("#"+$("#rtnId").val());
+	var rtnVal =  $("#rtnVal").val();
+	
+	rtnId.val(rtnVal);
+	
+	//창 닫기
+	fnSignalMapClose();
+}
+
+
+function fnDisplayAddIcons(){
+	var showTitle = "";
+	
+	if($("#addIcons").hasClass('hide')){
+		$("#addIcons").removeClass('hide');
+		
+		showTitle = "[ 추가 된 신호주기 아이콘 감추기 ]" 
+	}else{
+		$("#addIcons").addClass('hide');
+		showTitle = "[ 추가 된 신호주기 아이콘 더보기 ]"
+		
+	}
+	
+	//아이콘 목록 조회
+	fnListAddIcons();
+	
+	$("#showTitle").text(showTitle);
+}
+
+//등록 완료 후 icons 실시간 조회
+function fnListAddIcons(){
+	
+	var $json = getJsonData(strMethod, strUrl, strParam);
+	
+	var strMethod = "post";
+	var strUrl = "${pageContext.request.contextPath}/common/listSignalIconsHtml.do";
+	var strParam = "";
+	
+	var $json = getHtmlData(strMethod, strUrl, strParam, $("#addIconsTd"));	
+}
+
+function fnDelIcon(iconSeq,iconNm,iconExt){
+	
+	console.log("iconseq : " + iconSeq);
+	console.log("iconNm : " + iconNm);
+	console.log("iconExt : " + iconExt);
+	
+
+	
+	if(confirm('삭제 하시겠습니까?')){
+		var strMethod = "post";
+		var strUrl = "${pageContext.request.contextPath}/common/deleteSignalIcons.do";
+		var strParam = "iconFilePath=icons&seq="+iconSeq+"&iconNm="+iconNm+"&iconExt="+iconExt;
+		
+		var $json = getJsonData(strMethod, strUrl, strParam);
+		
+		console.log("delete_result : " + $json.result);
+		
+		if($json.result){
+			//다시 리스트 조회
+			fnListAddIcons();
+		}
+	}
+	
+}
+
+</script>
+<script type="text/javascript">
+$(function () {
+	draw();
+});
+
+function draw() {
+    var clickCnt = 0;
+    var lineType = "line";
+    var create_dot_arr = [];
+    var ctx;
+   	var canvas = document.getElementById("canvas");
+
+    if (canvas.getContext) {
+        ctx = canvas.getContext("2d");
+    }
+
+    $(canvas).on("click", function (e) {
+        if (canvas.getContext) {
+            var x = e.offsetX;
+            var y = e.offsetY;
+            var r = 1;	//지점 굵기
+            //var c = "rgb(29, 219, 22)";
+            var c = "#c0c0c0";
+
+            dotDrawing(ctx, x, y, r, c);
+
+            clickCnt++;
+            if (clickCnt % 2 == 0) {
+                var beforeDot = create_dot_arr[0];
+                var beforeX = beforeDot.x;
+                var beforeY = beforeDot.y;
+                lineDrawing(ctx, beforeX, beforeY, x, y, '#000000');
+                arrowDrawing(ctx, beforeX, beforeY, x, y, '#000000');
+                create_dot_arr = [];
+            } else {
+                var obj = {};
+                obj.color = c;
+                obj.x = x;
+                obj.y = y;
+                obj.r = r;
+                create_dot_arr.push(obj);
+            }
+        }
+    });
+
+    function dotDrawing(ctx, x, y, r, color) {
+        if (ctx != null) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.arc(x, y, r, 0, Math.PI * 2, true);
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    function lineDrawing(ctx, sx, sy, ex, ey, color) {
+        if (ctx != null) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 6;	//선 굵기
+            ctx.moveTo(sx, sy);
+            
+            if(lineType == "dotted"){
+            	ctx.setLineDash([5, 12]);	//점선 간격
+            }else{
+            	ctx.setLineDash([0, 0]);
+            }
+            
+            ctx.lineTo(ex, ey);  
+            ctx.stroke();
+            ctx.restore();
+        }
+    }
+
+    function arrowDrawing(ctx, sx, sy, ex, ey, color) {
+        if (ctx != null) {
+            var aWidth = 24;	//화살표 머리
+            var aLength = 12;
+            var dx = ex - sx;
+            var dy = ey - sy;
+            var angle = Math.atan2(dy, dx);
+            var length = Math.sqrt(dx * dx + dy * dy);
+
+            //두점 선긋기
+            ctx.translate(sx, sy);
+            ctx.rotate(angle);
+            ctx.fillStyle = color;
+            ctx.beginPath();
+
+            //화살표 모양 만들기
+            ctx.moveTo(length - aLength, -aWidth);
+            ctx.lineTo(length, 0);
+            ctx.lineTo(length - aLength, aWidth);
+
+            ctx.fill();
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+        }
+    }
+    
+    
+    
+/*     document.getElementById("erase").addEventListener("click", function (e) {
+        if (ctx != null) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    }) */
+    
+    $("#erase").click(function(){
+    	if (ctx != null) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }	
+    });
+    
+	$("#line").click(function(){
+    	lineType = "line";
+    });
+    
+    $("#dotted").click(function(){
+    	lineType = "dotted";
+    });
+    
+    
+    $("#reg").click(function(){
+    	console.log("====================reg2==============================");
+    	
+    	//cavas data encording to url
+    	var dataURL = canvas.toDataURL("images/png");
+    	
+    	console.log("isnull : " + isCanvasBlank(canvas));
+   	    
+    	if(isCanvasBlank(canvas)){
+    		alert('등록할 이미지를 그려 주세요.');
+    		return;
+    	}
+
+    	var strMethod = "post";
+    	var strUrl = "${pageContext.request.contextPath}/common/saveSignalIcons.do";
+    	var strParam = "iconFilePath=icons&iconNm=siginalIcon&iconExt=png&fileData="+dataURL;
+    	
+    	var $json = getJsonData(strMethod, strUrl, strParam);
+    	
+    	/* console.log("result : " + $json.result);
+    	console.log("saveUrl : " + $json.saveUrl); */
+    	
+    	if($json.result){
+    		//다시 리스트 조회
+    		fnListAddIcons();
+    		
+    		//목록 열기
+    		if($("#addIcons").hasClass('hide')){
+    			$("#addIcons").removeClass('hide');	
+    		}
+    		
+    	}else{
+    		alert("등록 실패");
+    	}
+    	console.log("====================reg2 end ==============================");
+    });
+    
+   
+    function isCanvasBlank(canvas) {
+   	  //return !canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data.some(channel => channel !== 0);
+   	  
+   	  const blank = document.createElement('canvas');
+
+   	  blank.width = canvas.width;
+   	  blank.height = canvas.height;
+
+   	  return canvas.toDataURL("images/png") == blank.toDataURL("images/png");
+   	}
+
+//===================================================================================
+}
+
+</script>	
 </head>
 <body onLoad="fnPreloadImages('${pageContext.request.contextPath}/images/img/icon_map_over.png','${pageContext.request.contextPath}/images/img/icon_signal_over.png','${pageContext.request.contextPath}/images/img/icon_chart_over.png')">
 <form name="frm" id="frm">
@@ -309,6 +634,15 @@ function fnSecSum(){
 											<th width="60px;"></th>
 											<th class="h2_title_b center">
 												신호관리대장
+											</th>
+											<th width="60px;"></th>
+										</tr>
+										<th width="60px;"></th>
+											<th class="left">
+												<div style="font-size:14px;">
+													모순검지 <label for="detectOff">OFF</label><input type="radio" name="contradictionDetection" id="detectOff" value="0" checked/>
+														<label for="detectOn">ON</label><input type="radio" name="contradictionDetection" id="detectOn" value="1"/>
+												</div>
 											</th>
 											<th width="60px;"></th>
 										</tr>
@@ -595,7 +929,7 @@ function fnSecSum(){
 																		<input type="text" name="kindTrafficLight1" id="kindTrafficLight1" size="4" accesskey="NUM"/>
 																		<input type="text" name="kindTrafficLight2" id="kindTrafficLight2" size="4" accesskey="NUM"/>
 																		<input type="text" name="kindTrafficLight3" id="kindTrafficLight3" size="4" accesskey="NUM"/>
-																		<input type="text" name="kindTrafficLight4" id="kindTrafficLight4" size="4" accesskey="NUM"/>
+																		<input type="text" name="kindTrafficLight4" id="kindTrafficLight4" size="4" accesskey="NUM" class="hidden" alt="미사용"/>
 																	</li>
 																</ul>
 																<ul>
@@ -603,7 +937,7 @@ function fnSecSum(){
 																		<input type="text" name="kindTrafficLight5" id="kindTrafficLight5" size="4" accesskey="NUM"/>
 																		<input type="text" name="kindTrafficLight6" id="kindTrafficLight6" size="4" accesskey="NUM"/>
 																		<input type="text" name="kindTrafficLight7" id="kindTrafficLight7" size="4" accesskey="NUM"/>
-																		<input type="text" name="kindTrafficLight8" id="kindTrafficLight8" size="4" accesskey="NUM"/>
+																		<input type="text" name="kindTrafficLight8" id="kindTrafficLight8" size="4" accesskey="NUM" class="hidden" alt="미사용"/>
 																	</li>
 																</ul>
 																
@@ -612,7 +946,7 @@ function fnSecSum(){
 																		<input type="text" name="kindTrafficLight9" id="kindTrafficLight9" size="4" accesskey="NUM"/>
 																		<input type="text" name="kindTrafficLight10" id="kindTrafficLight10" size="4" accesskey="NUM"/>
 																		<input type="text" name="kindTrafficLight11" id="kindTrafficLight11" size="4" accesskey="NUM"/>
-																		<input type="text" name="kindTrafficLight12" id="kindTrafficLight12" size="4" accesskey="NUM"/>
+																		<input type="text" name="kindTrafficLight12" id="kindTrafficLight12" size="4" accesskey="NUM" class="hidden" alt="미사용"/>
 																	</li>
 																</ul>
 																
@@ -621,7 +955,7 @@ function fnSecSum(){
 																		<input type="text" name="kindTrafficLight13" id="kindTrafficLight13" size="4" accesskey="NUM"/>
 																		<input type="text" name="kindTrafficLight14" id="kindTrafficLight14" size="4" accesskey="NUM"/>
 																		<input type="text" name="kindTrafficLight15" id="kindTrafficLight15" size="4" accesskey="NUM"/>
-																		<input type="text" name="kindTrafficLight16" id="kindTrafficLight16" size="4" accesskey="NUM"/>
+																		<input type="text" name="kindTrafficLight16" id="kindTrafficLight16" size="4" accesskey="NUM" class="hidden" alt="미사용"/>
 																	</li>
 																</ul>
 															</td>
@@ -1382,6 +1716,18 @@ function fnSecSum(){
 										</tr>
 <!-- 신호 제어기// -->
 										<tr>
+											<th colspan="3" style="height:20px;"></th>
+										</tr>
+										<tr>
+											<th colspan="3">
+												<div class="text_red">신호관리대장 등록 상태를 선택해 주세요.</div>
+												<div>
+													<label for="docStatus1" id="statusMsg1">등록 중</label><input type="radio" name="docStatus" id="docStatus1" value="1" checked/>
+													&nbsp;<label for="docStatus0" id="statusMsg0">등록 완료</label><input type="radio" name="docStatus" id="docStatus0" value="0"/>
+												</div>
+											</th>
+										</tr>
+										<tr>
 											<th colspan="3" style="height:40px;"></th>
 										</tr>
 										<tr>
@@ -1412,73 +1758,24 @@ function fnSecSum(){
 
 	</div>
 </form>
-</body>
-</html>
 
-<script type="text/javascript">
-//신호주기 선택 화면 호출
-function fnSignalMapShow(selId){
-	var lay_pop = $('#signalMap');
-	var selTop = $("#"+selId).offset().top - 150;
-	var selLeft = $("#"+selId).offset().left - 100;
-	
- 	lay_pop.css('top', (selTop) + 'px');    // 레이어 위치 지정
-	lay_pop.css('left', (selLeft) + 'px');
-
- 	$("#rtnId").val(selId);
- 	
- 	if(!stringUtil.isEmpty($("#"+selId).val())){
- 		$("#rtnVal").val($("#"+selId).val());	
- 	}
- 	
- 	lay_pop.draggable();
- 	lay_pop.fadeIn();
-	lay_pop.focus();
-}
-
-//신호주기 선택 닫기
-function fnSignalMapClose(){
-	$('#signalMap').fadeOut(350,function(){
-		$('#signalMap').hide();
-	});
-	
-	$("#rtnVal").val('');
-	$("#rtnId").val('');
-}
-
-//선택 신호주시 값 설정
-function fnSelData(strVal){
-	var rtnVal = $("#rtnVal").val();
-	
-		if(stringUtil.isEmpty(rtnVal)){
-			rtnVal = strVal;
-		}else{
-			rtnVal = rtnVal + "," + strVal;
-		}
-	 $("#rtnVal").val(rtnVal);
-}
-
-//신호주기 선택
-function fnResetSignal(){
-	$("#rtnVal").val('');
-}
-
-//신호주기 다시 선택
-function fnSetSignal(){
-	var rtnId = $("#"+$("#rtnId").val());
-	var rtnVal =  $("#rtnVal").val();
-	
-	rtnId.val(rtnVal);
-	
-	fnSignalMapClose();
-}
-</script>
-<div id="signalMap" style="display:none; position:absolute; cursor:move;">
-<table class="tb_list7" style="width:500px;height:200px;">
-	<tr>
-		<th colspan="7" class="right">
+<div id="signalMap" style="display:none; position:absolute;">
+<form name="signalFm" id="signalFm">
+<table class="tb_list" style="broder:solid 2px red; width:608px;height:492px;background-color:#ffffff;">
+	<colgroup>
+		<col width="13%"/>
+		<col width="10%"/>
+		<col width="10%"/>
+		<col width="10%"/>
+		<col width="10%"/>
+		<col width="10%"/>
+		<col width="10%"/>
+		<col width="*"/>
+	</colgroup>
+	<tr id="moveHeader" style="cursor:move;">
+		<th colspan="8" class="right">
 			<a href="javascript:fnSignalMapClose();" style="margin-right:10px;">
-			<img src="${pageContext.request.contextPath}/images/icons/close2.png" width="24px" height="24px" alt="닫기"/></a>
+			<img src="${pageContext.request.contextPath}/images/icons/close2.png" width="20px" height="20px" alt="닫기"/></a>
 		</th>
 	</tr>
 	<tr>
@@ -1489,25 +1786,46 @@ function fnSetSignal(){
 		<td class="center">5</td>
 		<td class="center">17</td>
 		<td class="center">18</td>
+		<td rowspan="4">
+			<ul>
+				<li>
+					<canvas id="canvas" width="150" height="150" class="border_gray"></canvas>
+					<input type="hidden" name="cnvimg" id="cnvimg" value=""/>
+				</li>
+			</ul>
+			<ul>
+				<li style="text-align:center;">
+	        		<span id="line" class="btn_whiteStyle03 pointer">직선</span>
+	        		<span id="dotted" class="btn_whiteStyle03 pointer">점선</span>
+	        		
+				</li>
+			</ul>	
+			<ul>
+				<li style="text-align:center;">
+					<span id="erase" class="btn_redStyle04 pointer">다시</span>
+	        		<span id="reg" class="btn_blueStyle03 pointer">등록</span>
+				</li>
+			</ul>
+		</td>
 	</tr>
 	<tr class="pointer">
-		<td onclick="fnSelData('8');">
-			<img src="${pageContext.request.contextPath}/images/icons/8.png" class="center" alt="위"/>
+		<td onclick="fnSelData('8');" class="center">
+			<img src="${pageContext.request.contextPath}/upload/icons/8.png" alt="위"/>
 		</td>
-		<td onclick="fnSelData('7');">
-			<img src="${pageContext.request.contextPath}/images/icons/7.png" class="center" alt="아래 오른쪽"/>
+		<td onclick="fnSelData('7');" class="center">
+			<img src="${pageContext.request.contextPath}/upload/icons/7.png" alt="아래 오른쪽"/>
 		</td>
-		<td onclick="fnSelData('6');">
-			<img src="${pageContext.request.contextPath}/images/icons/6.png" class="center" alt="왼쪽"/>
+		<td onclick="fnSelData('6');" class="center">
+			<img src="${pageContext.request.contextPath}/upload/icons/6.png" alt="왼쪽"/>
 		</td>
-		<td onclick="fnSelData('5');">
-			<img src="${pageContext.request.contextPath}/images/icons/5.png" class="center" alt="오른쪽 위"/>
+		<td onclick="fnSelData('5');" class="center">
+			<img src="${pageContext.request.contextPath}/upload/icons/5.png" alt="오른쪽 위"/>
 		</td>
-		<td onclick="fnSelData('17');">
-			<img src="${pageContext.request.contextPath}/images/icons/17.png" class="center" alt="양방향 점선"/>
+		<td onclick="fnSelData('17');" class="center">
+			<img src="${pageContext.request.contextPath}/upload/icons/17.png" alt="양방향 점선"/>
 		</td>
-		<td onclick="fnSelData('18');">
-			<img src="${pageContext.request.contextPath}/images/icons/18.png" class="center" alt="양방향 점선"/>
+		<td onclick="fnSelData('18');" class="center">
+			<img src="${pageContext.request.contextPath}/upload/icons/18.png" alt="양방향 점선"/>
 		</td>
 	</tr>
 	<tr>
@@ -1520,33 +1838,43 @@ function fnSetSignal(){
 		<td class="center">18</td>
 	</tr>
 	<tr class="pointer">
-		<td onclick="fnSelData('4');">
-			<img src="${pageContext.request.contextPath}/images/icons/4.png" class="center" alt="아래"/>
+		<td onclick="fnSelData('4');" class="center">
+			<img src="${pageContext.request.contextPath}/upload/icons/4.png" alt="아래"/>
 		</td>
-		<td onclick="fnSelData('3');">
-			<img src="${pageContext.request.contextPath}/images/icons/3.png" class="center" alt="위 왼쪽"/>
+		<td onclick="fnSelData('3');" class="center">
+			<img src="${pageContext.request.contextPath}/upload/icons/3.png" alt="위 왼쪽"/>
 		</td>
-		<td onclick="fnSelData('2');">
-			<img src="${pageContext.request.contextPath}/images/icons/2.png" class="center" alt="오른쪽"/>
+		<td onclick="fnSelData('2');" class="center">
+			<img src="${pageContext.request.contextPath}/upload/icons/2.png" alt="오른쪽"/>
 		</td>
-		<td onclick="fnSelData('1');">
-			<img src="${pageContext.request.contextPath}/images/icons/1.png" class="center" alt="왼쪽 아래"/>
+		<td onclick="fnSelData('1');" class="center">
+			<img src="${pageContext.request.contextPath}/upload/icons/1.png" alt="왼쪽 아래"/>
 		</td>
-		<td onclick="fnSelData('17');">
-			<img src="${pageContext.request.contextPath}/images/icons/17.png" class="center" alt="양방향 점선"/>
+		<td onclick="fnSelData('17');" class="center">
+			<img src="${pageContext.request.contextPath}/upload/icons/17.png" alt="양방향 점선"/>
 		</td>
-		<td onclick="fnSelData('18');">
-			<img src="${pageContext.request.contextPath}/images/icons/18.png" class="center" alt="양방향 점선"/>
+		<td onclick="fnSelData('18');" class="center">
+			<img src="${pageContext.request.contextPath}/upload/icons/18.png" alt="양방향 점선"/>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="7" class="center">
+		<td colspan="8" class="center">
 			<input type="text" name="rtnVal" id="rtnVal" size="60" readonly/>
 			<input type="hidden" name="rtnId" id="rtnId" size="20"/>
 		</td>
 	</tr>
+<c:if test="${listSignalIcons > 0 }">
 	<tr>
-		<td colspan="7">
+		<td colspan="8" style="text-align:right;">
+			<span id="showTitle" class="pointer strong right" onclick="fnDisplayAddIcons();">[ 추가 된 신호주기 아이콘 더보기 ]</span>
+		</td>
+	</tr>
+	<tr id="addIcons" class="hide">
+		<td colspan="8" id="addIconsTd"></td>
+	</tr>
+</c:if>
+	<tr>
+		<td colspan="8">
 		<strong class="icon_must">*</strong>이동류 번호 중,<br/>
 		차량신호 없이 보행신호만 나올 경우 17번으로 사용하고<br/>
 		차량신호와 보행신호가 함께 표출될 경우 18번으로 사용<br/>
@@ -1554,10 +1882,17 @@ function fnSetSignal(){
 		</td>
 	</tr>
 	<tr>
-		<td colspan="7" class="center">
-			<a href="javascript:fnResetSignal();" id="resetSignal" class="btn_redStyle02">다시</a>
-			<a href="javascript:fnSetSignal();" id="setSignal" class="btn_grayStyle02">적용</a>
+		<td colspan="8" class="center">
+			<a href="javascript:fnResetSignal('');" id="resetSignal" class="btn_redStyle02">선택 초기화</a>
+			<a href="javascript:fnResetSignal('restore');" id="resetSignal2" class="btn_redStyle02">다시 선택</a>
+			<a href="javascript:fnSetSignal();" id="setSignal" class="btn_grayStyle02">선택 적용</a>
 		</td>
 	</tr>
 </table>
+</form>
 </div>
+</body>
+</html>
+
+
+

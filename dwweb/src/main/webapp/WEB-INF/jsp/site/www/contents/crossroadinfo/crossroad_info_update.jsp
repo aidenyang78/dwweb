@@ -23,9 +23,46 @@
 <script src="${pageContext.request.contextPath}/common/plugins/jquery-ui-1.12.1/datepicker-ko.js"></script>
 
 <script type="text/javascript">
+var positionMapOpen = false;
+
 $(document).ready(function(){
 	//실행
-	fnSetRouteList();	
+	fnSetRouteList();
+	
+	//fnPositionMapClose
+	$(this).keydown(function(e){
+		//alert(e.keyCode);
+		if(positionMapOpen && e.keyCode == "27"){
+			fnPositionMapClose();
+		}
+		
+	});
+	
+	$("#moveHeader").mouseover(function(){
+		var lay_pop = $('#positionMap');
+		lay_pop.draggable({disabled:false});
+	});
+
+
+	$("#moveHeader").mouseleave(function(){
+		var lay_pop = $('#positionMap');
+		lay_pop.draggable({disabled:true});
+	});
+	
+	$("input:radio[id=mapType]").click(function(e){
+		var mapType = $("input:radio[id=mapType]:checked").val();
+		var lat = stringUtil.nullToBlank($("#lat").val());
+		var lng = stringUtil.nullToBlank($("#lng").val());
+		
+		if(lat == "" && lng == ""){
+			lat = 37.001138915620714;
+			lng = 127.12219655513765;	
+		}
+
+		//기본 지도 생성 : 평택시 스마트도시통합센터
+		var ifrm = document.getElementById('latlngIfrm').contentWindow; 
+     	ifrm.fnMakeLeafletMap(lat,lng,15,mapType);		
+	});
 });
 
 //도로(국도)명 조회 생성
@@ -135,6 +172,93 @@ function fnLinkedCheck(){
 		return;
 	}
 }
+
+function fnGoMap(polDistrict,routeCd,crossroadSeq,lat,lng){	
+	var url = "${pageContext.request.contextPath}/main/main.do";
+	var strParam = "?polDistrict="+polDistrict+"&routeCd="+routeCd+"&crossroadSeq="+crossroadSeq+"&lat="+lat+"&lng="+lng+"&menuSeq=1001&referer=status";
+	
+	location.href=url+strParam;
+	
+}
+
+function fnPositionMapOpen(){
+	
+	var ifrm 	= document.getElementById('latlngIfrm').contentWindow;
+	var lay_pop = $('#positionMap');
+	var selTop 	= 100;
+	var selLeft = 510;
+	var mapType = "osm";
+	var zLevel 	= 14;
+	var lat = $("#lat").val();
+	var lng = $("#lng").val();
+	
+	positionMapOpen = true;
+	
+	$("#crossroadSeq").val(seq);
+	
+	if(stringUtil.nullToBlank(lat) == "" && stringUtil.nullToBlank(lng) == ""){
+		lat = 37.001138915620714;
+		lng = 127.12219655513765;	
+	}
+
+	//기본 지도 생성 : 평택시 스마트도시통합센터	 
+ 	ifrm.fnMakeLeafletMap(lat,lng,zLevel,mapType); 
+ 	
+ 	
+ 	lay_pop.css('top', (selTop) + 'px');
+	lay_pop.css('left', (selLeft) + 'px');
+
+ 	lay_pop.fadeIn();
+	lay_pop.focus();
+}
+
+function fnPositionMapClose(){
+	
+	$('#positionMap').fadeOut(350,function(){
+		$('#positionMap').hide();
+		
+		positionMapOpen = false;
+	});
+}
+
+function fnSetPosition(lat,lng){
+
+	$("#mapLat").val(lat);
+	$("#mapLng").val(lng);
+}
+
+function fnUpdateLatlngAct(){
+	var lat = $("#mapLat").val();
+	var lng = $("#mapLng").val();
+	var seq = $("#seq").val();	
+	
+	if(lat == "" || lng == ""){
+		alert('마커를 이동하여 변경할 위치를 지정해 주세요.');
+		return;
+	}
+	
+	//update ajax
+	var strMethod = "post";
+	var strUrl = "${pageContext.request.contextPath}/crossroadinfo/updateCrossroadInfoActAjax.do";
+	var strParam = "seq="+seq+"&lat="+lat+"&lng="+lng;
+	var $json = getJsonData(strMethod, strUrl, strParam);
+	
+	$result = $json.result;
+	
+	if($result > 0){
+		
+		$("#lat").val(lat);
+		$("#lng").val(lng);
+		
+		alert('좌표 수정이 완료 되었습니다.');
+		
+	}else{
+		alert('좌표 수정 중 오류가 발생 했습니다.\n잠시 후 다시 시도해 주세요.');
+	}
+	
+	fnPositionMapClose();
+}
+
 </script>
 
 </head>
@@ -254,10 +378,13 @@ function fnLinkedCheck(){
 																
 																<label for="lng">X 경도</label>
 																<input type="text" name="lng" id="lng" size="14" value="${crossroadInfo.lng}" accesskey="DCM"/>
-																<a href="javascript:;" onclick="fnSelGeoCode();" class="btn_grayStyle02">좌표선택</a>
+																<a href="javascript:;" onclick="fnPositionMapOpen();" class="btn_grayStyle02">좌표선택</a>
+																<c:if test='${crossroadInfo.lat ne null and crossroadInfo.lng ne null}'>
+																	<a href="javascript:;" onclick="fnGoMap('${crossroadInfo.polDistrict}','${crossroadInfo.routeCd}','${crossroadInfo.seq}','${crossroadInfo.lat}','${crossroadInfo.lng}');" class="btn_grayStyle02">지도이동</a>
+																</c:if>
 															</td>
 														</tr>
-														<tr>
+														<%-- <tr>
 															<th>외부 연계(SEQ)</th>
 															<td colspan="3">
 																<select name="linkedSeq" id="linkedSeq" onchange="fnLinkedCheck();">
@@ -270,7 +397,7 @@ function fnLinkedCheck(){
 																	</c:forEach>
 																</select>
 															</td>
-														</tr>
+														</tr> --%>
 													</tbody>
 												</table>
 											</td>			
@@ -309,5 +436,36 @@ function fnLinkedCheck(){
 
 	</div>
 </form>
+<!-- 교차로 좌표 수정 -->
+<div id="positionMap" style="background:#ffffff; display:none; position:absolute; cursor:move;">
+<table id="positionMap2" class="tb_list" style="width:820px; height: 600px; border:0;">
+<colgroup>
+	<col width="*"/>
+	<col width="5%"/>
+</colgroup>
+<tbody>
+	<tr id="moveHeader">
+		<th class="left">
+			<span class="" style="padding-left:10px;">OSM</span>
+			<input type="radio" name="mapType" id="mapType" value="osm" checked/>
+			<span class="">&nbsp;VWORLD</span>
+			<input type="radio" name="mapType" id="mapType" value="vworld"/>
+			<input type="text" name="mapLat" id="mapLat" size="20" value="${crossroadInfo.lat}" readonly/>
+			<input type="text" name="mapLng" id="mapLng" size="20" value="${crossroadInfo.lng}" readonly/>
+			<span class="pointer btn_copy_latlng" onclick="fnUpdateLatlngAct();">적용</span>
+		</th>
+		<th class="right">
+			<a href="javascript:fnPositionMapClose();" style="margin-right:10px;"><img src="${pageContext.request.contextPath}/images/icons/close2.png" width="16px" height="16px" alt="닫기"/></a>
+		</th>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<iframe name="latlngIfrm" id="latlngIfrm" src="${pageContext.request.contextPath}/common/commonPositionMap.do?lat=${crossroadInfo.lat}&lng=${crossroadInfo.lng}&mapWidth=800&mapHeight=600" title="position map" style="width:800px;height:600px;border:0;margin:0;padding:0;"></iframe>
+		</td>
+	</tr>
+</tbody>	
+</table>
+</div>
+<!-- 교차로 좌표 수정 -->
 </body>
 </html>

@@ -14,14 +14,18 @@
 	<select id="selectTotStatus" parameterType="StatusVo" resultType="Integer">
 		SELECT
 			COUNT(*) AS TOTCNT
-		FROM STATUS
+		FROM STATUS ST LEFT OUTER JOIN DW_ITSWEB.MGMT_CROSSROAD_INFO MCI
+			ON ST.NO = MCI.LINKED_SEQ
 		WHERE 1=1
 		<if test='status != null and status !="" '>
-			AND STATUS = #{status}
+			AND ST.STATUS = #{status}
 		</if>
 		<if test='keyKind != null and keyKind != "" and keyKind == "name" and keyWord != null and keyWord != ""'>
-			<!-- AND NAME = #{keyWord} -->
-			AND NAME LIKE CONCAT('%',#{keyWord},'%')
+			<!-- AND ST.NAME = #{keyWord} -->
+			AND ST.NAME LIKE CONCAT('%',#{keyWord},'%')
+		</if>
+		<if test='linkedYn != null and linkedYn == "Y"'>
+			AND (CASE WHEN MCI.SEQ IS NULL THEN 'N' ELSE 'Y' END) = 'Y'
 		</if>
 	</select>
 	
@@ -47,7 +51,10 @@
 		<if test='keyKind != null and keyKind != "" and keyKind == "name" and keyWord != null and keyWord != ""'>
 			<!-- AND ST.NAME = #{keyWord} -->
 			AND ST.NAME LIKE CONCAT('%',#{keyWord},'%')
-		</if> 
+		</if>
+		<if test='linkedYn != null and linkedYn == "Y"'>
+			AND (CASE WHEN MCI.SEQ IS NULL THEN 'N' ELSE 'Y' END) = 'Y'
+		</if>
 		ORDER BY ST.NO DESC
 		LIMIT #{limitStart}, #{limitEnd}
 	</select>

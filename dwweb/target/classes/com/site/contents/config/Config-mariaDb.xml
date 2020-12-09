@@ -24,6 +24,10 @@
 			COUNT(*) AS TOT
 			FROM USER_DETAIL UD
 			WHERE UD.DEL_DATE IS NULL
+		<!-- <if test="dwAdminYn != null and dwAdminYn !='Y'">
+			AND UD.USER_ID != 'dwadmin'
+		</if> -->
+		
 	<if test='keyKind != null and keyKind != ""'> 		
 		<if test='keyKind == "user_id" and keyWord != null and keyWord != ""'>
 			AND UD.USER_ID LIKE CONCAT('%',#{keyWord},'%')
@@ -51,6 +55,10 @@
 			,REG_DESC
 		FROM USER_DETAIL UD
 		WHERE UD.DEL_DATE IS NULL
+		<!-- <if test="dwAdminYn != null and dwAdminYn !='Y'">
+			AND UD.USER_ID != 'dwadmin'
+		</if> -->
+
 	<if test='keyKind != null and keyKind != ""'> 		
 		<if test='keyKind == "user_id" and keyWord != null and keyWord != ""'>
 			AND UD.USER_ID LIKE CONCAT('%',#{keyWord},'%')

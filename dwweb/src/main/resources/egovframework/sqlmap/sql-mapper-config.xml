@@ -11,7 +11,7 @@
 		
 		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>		
 		<package name="com.site"/>
-		<package name="com.core"/>
+		<package name="com.cmm"/>
 	</typeAliases>
 	
 	<typeHandlers>

@@ -189,6 +189,25 @@
 	
 	chart1.height = 240;
 	window.myPie = new Chart(chart1, config1);
+	
+	
+	var myPieChart = new Chart(chart1, config1);
+	
+	$("#chart1").click(function(e){
+		
+		var firstPoint = myPieChart.getElementAtEvent(e)[0];
+		
+		if (firstPoint) {
+	        var label = myPieChart.data.labels[firstPoint._index];
+	        var value = myPieChart.data.datasets[firstPoint._datasetIndex].data[firstPoint._index];
+	        
+	        alert(label + " : " + value);
+	    }
+		
+	});
+	
+	
+	
 	//##########################################################
 	var config2 = {
 		type: 'pie',
@@ -786,23 +805,25 @@ var config11 ={
 	type: 'bar',
 	data: {
 		labels: ['제어방식'],
-		datasets: [{
-			label: '전자',
-			backgroundColor: color(window.chartColors.red).rgbString(),
-			borderColor: "#ffffff",//window.chartColors.white,
-			borderWidth: 2,
-			data: [
-				${totCnt1}
-			]
-		}, {
-			label: '일반',
-			backgroundColor: color(window.chartColors.blue).rgbString(),
-			borderColor:  "#ffffff",//window.chartColors.white,
-			borderWidth: 2,
-			data: [
-				${totCnt2}
-			]
-		}]
+		datasets: [
+			{
+				label: '전자',
+				backgroundColor: color(window.chartColors.red).rgbString(),
+				borderColor: "#ffffff",//window.chartColors.white,
+				borderWidth: 2,
+				data: [
+					${totCnt1}
+				]
+			}, {
+				label: '일반',
+				backgroundColor: color(window.chartColors.blue).rgbString(),
+				borderColor:  "#ffffff",//window.chartColors.white,
+				borderWidth: 2,
+				data: [
+					${totCnt2}
+				]
+			}
+		]
 	},
 	options: {
 		responsive: true,
@@ -846,6 +867,21 @@ var chart11 = document.getElementById('chart11');//.getContext('2d');
 chart11.height = 360;
 
 window.myPie = new Chart(chart11, config11);
+
+var myBarChart = new Chart(chart11, config11);
+
+$("#chart11").click(function(e){
+	
+	var firstPoint = myBarChart.getElementAtEvent(e)[0];
+	
+	if (firstPoint) {
+        var label = myBarChart.data.labels[firstPoint._index];
+        var value = myBarChart.data.datasets[firstPoint._datasetIndex].data[firstPoint._index];
+        
+        alert(label + " : " + value);
+    }
+	
+});
 //##########################################################
 var config12 ={
 	type: 'bar',

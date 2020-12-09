@@ -605,8 +605,8 @@
 }
 .tb_status_1{
 	color:#400000 !important;
-	background: #80ff00;
-	opacity:0.8;
+	background: #80ff00 !important;
+	/* opacity:0.8; */
 }
 
 /* 2.트랜스 엷은 회색 */
@@ -625,8 +625,8 @@
 }
 .tb_status_2{
 	color:#400000 !important;
-	background: #efefef;
-	opacity:0.8;
+	background: #efefef !important;
+	/* opacity:0.8; */
 }
 
 /* 3.오프라인 : 어두운 녹색 */
@@ -646,8 +646,8 @@
 }
 .tb_status_3{
 	color:#ffffff !important;
-	background: #5cb85c;
-	opacity:0.8;
+	background: #5cb85c !important;
+	/* opacity:0.8; */
 }
 
 /* 4.lc 수동 : 아쿠아 */
@@ -666,8 +666,8 @@
 }
 .tb_status_4{
 	color:#400000 !important;
-	background: #5bc0de;
-	opacity:0.8;
+	background: #5bc0de !important;
+	/* opacity:0.8; */
 }
 
 /* 미등록 상태 : 흰색  : 현재 미사용 */
@@ -689,8 +689,8 @@
 }
 .tb_status_5{
 	color:#efefef !important;
-	background: #d9534f;
-	opacity:0.8;
+	background: #d9534f !important;
+	/* opacity:0.8; */
 }
 
 /* 점멸 */
@@ -709,8 +709,8 @@
 }
 .tb_status_6{
 	color:#400000 !important;
-	background: #ee9d2f;
-	opacity:0.8;
+	background: #ee9d2f !important;
+	/* opacity:0.8; */
 }
 
 
@@ -733,8 +733,8 @@
 
 .tb_status_7{
 	color:#efefef !important;
-	background: #570057;
-	opacity:0.8;
+	background: #570057 !important;
+	/* opacity:0.8; */
 }
 
 .btn_status_all{
@@ -767,6 +767,11 @@
 	border-radius: 3px;
 }
 
+.tb_status_999{
+	color:#000000 !important;
+	background: #ffffff !important;
+	/* opacity:0.8; */
+}
 
 
 
@@ -810,6 +815,50 @@
 .btn_search_map:active{text-decoration:none;color:#fff;} /* height:22px; */
 
 
+.btn_reset_map{
+	/* position: absolute; */
+	display: inline-block;
+	box-sizing: border-box;
+	min-width: 60px;
+	padding: 4px 4px;
+	text-align: center;
+	color: #000000;
+	background: #ffffff;
+	font-size: 12px;
+	vertical-align: middle;
+	line-height: 1;
+	border: solid 1px #808080;
+	border-radius: 3px;
+}
+.btn_reset_map:link,
+.btn_reset_map:visited,
+.btn_reset_map:hover,
+.btn_reset_map:active{text-decoration:none;color:#000000;} /* height:22px; */
+
+
+
+
+
+
+.btn_copy_latlng{
+	/* position: absolute; */
+	display: inline-block;
+	box-sizing: border-box;
+	min-width: 60px;
+	padding: 4px 4px;
+	text-align: center;
+	color: #000000;
+	background: #ffffff;
+	font-size: 12px;
+	vertical-align: middle;
+	line-height: 1;
+	border: solid 1px #808080;
+	border-radius: 3px;
+}
+.btn_copy_latlng:link,
+.btn_copy_latlng:visited,
+.btn_copy_latlng:hover,
+.btn_copy_latlng:active{text-decoration:none;color:#000000;} /* height:22px; */
 
 
 /* 2020.06.04 양성진 지도검색 폴딩 메뉴 */
@@ -858,15 +907,15 @@ img .center {
 	box-sizing: border-box;
 	width:100%;
 	min-width: 100px;
-	padding: 15px 15px;
+	padding: 9px;
 	text-align: center;
 	color: #ffffff;
 	background: #484f65;
-	font-size: 15px;
+	font-size: 14px;
 	font-weight: normal;
 	line-height: 1;
 	border: solid 1px #343949;/* #1687b1; */
-	border-radius: 10px;
+	border-radius: 4px;
 	margin-top:1px !important;
 	margin-bottom:1px !important;
 }
@@ -876,7 +925,8 @@ img .center {
 	box-sizing: border-box;
 	width:100%;
 	min-width: 100px;
-	padding: 15px 15px;
+	/* padding: 15px 15px; */
+	padding: 9px;
 	text-align: center;
 	color: #ffffff;
 	background: #1a233e;
@@ -884,7 +934,7 @@ img .center {
 	font-weight: bold;
 	line-height: 1;
 	border: solid 1px #0b0f1a;/* #1687b1; */
-	border-radius: 10px;
+	border-radius: 4px;
 	margin-top:1px !important;
 	margin-bottom:1px !important;
 }
@@ -892,17 +942,28 @@ img .center {
 .sub_list {
 	box-sizing: border-box;
 	min-width: 100px;
-	padding: 10px 15px;
+	padding: 8px 15px;
 	text-align: left;
 	color: #ffffff;
 	background: #454956;
-	font-size: 13px;
+	font-size: 12px;
 	font-weight: normal;
 	line-height: 1;
 	border: solid 1px #2c2e36;
+	border-radius: 4px;
 	margin-top:1px !important;
 	opacity: 0.7;
 }
+
+.sub_list:hover{
+	color: #fff;
+	background-color: #1a233e;
+}
+
+/* #lnb>ul>li a:hover {
+	color: #fff;
+	background-color: #1a233e;
+} */
 
 .sub_list span{
 	/* margin-left:10px; */
@@ -915,14 +976,15 @@ img .center {
 .sub_list_on {
 	box-sizing: border-box;
 	min-width: 100px;
-	padding: 10px 15px;
+	padding: 8px 15px;
 	text-align: left;
 	color: #ffffff;
 	background: #454956;
-	font-size: 13px;
+	font-size: 12px;
 	font-weight: bold;
 	line-height: 1;
 	border: solid 1px #2c2e36;
+	border-radius: 4px;
 	margin-top:1px !important;
 	opacity: 0.9;
 }
@@ -1089,7 +1151,8 @@ img .center {
 	display: inline-block;
 	padding-left: 22px;
 	cursor: pointer;
-	background: url(/dwweb/images/board/icon_attach.gif) no-repeat 0 0.3em;
+	/* background: url(/dwweb/images/board/icon_attach.gif) no-repeat 0 0.3em; */
+	background: url(/dwweb/images/icons/icon_save2.png) no-repeat 0 0.3em;
 	background-size:16px 16px;
 }
 
@@ -1117,7 +1180,9 @@ img .center {
 	display: inline-block;
 	padding-left: 22px;
 	cursor: pointer;
-	background: url(/dwweb/images/board/icon_attach.gif) no-repeat 0 0.3em;
+	/* background: url(/dwweb/images/board/icon_attach.gif) no-repeat 0 0.3em;
+	background-size:16px 16px; */
+	background: url(/dwweb/images/icons/icon_print2.png) no-repeat 0 0.3em;
 	background-size:16px 16px;
 }
 
@@ -1137,7 +1202,9 @@ a {
 	position: relative;
 	/* width: 284px; */
 	height:926px;
+	/* background: #404555; */
 	overflow: auto;
+	
 }
 
 #lnb h1 {
@@ -1267,12 +1334,12 @@ a {
 .pop_tb_list {
 	table-layout: fixed;
 	width: 100%;
-	min-width:150px;
+	min-width:100px;
 }
 
 .pop_tb_list th {
 	/* padding: 10px 0; */
-	font-size:12px;
+	font-size:11px;
 	color: #333;
 	border: 1px solid #ddd;
 	background-color: #f5f5f5;
@@ -1299,12 +1366,60 @@ a {
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
-	font-size: 12px;
+	font-size: 11px;
 }
 .pop_tb_list button:hover{
 	background-color:#e2e2e2;
 	outline:0;
 }
+
+.pop_tb_list_button {
+	width: 100%;
+	background-color: #ffffff;
+	border: solid 1px #c0c0c0;
+	color: #000000 !important; 
+	/* padding: 4px 4px; */
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 11px;
+}
+
+/* .pop_tb_list_button: link hover visited active{ */
+.pop_tb_list_button:hover{
+	background-color:#e2e2e2;
+	/* outline:0; */
+	text-decoration: none;
+}
+.pop_tb_list_button:visited{
+	color: #000000 !important; 
+}
+
+
+.pop_tb_list_button2 {
+	width: 90%;
+	background-color: #ffffff;
+	border: solid 1px #c0c0c0;
+	color: #000000 !important; 
+	padding: 4px 4px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 12px;
+	line-height:24PX;
+	border-radius:16px;
+}
+
+/* .pop_tb_list_button: link hover visited active{ */
+.pop_tb_list_button2:hover{
+	background-color:#e2e2e2;
+	/* outline:0; */
+	text-decoration: none;
+}
+.pop_tb_list_button2:visited{
+	color: #000000 !important; 
+}
+
 /* 교차로정보 팝업 */
 
 /* 교차로정보 팝업 min */
@@ -1326,7 +1441,7 @@ a {
 .pop_tb_list_min td {
 	border: 1px solid #e1e1e1;
 	/* padding: 8px 10px; */
-	font-size:12px;
+	font-size:11px;
 	text-align: left;
 	color: #666;
 }
@@ -1345,7 +1460,7 @@ a {
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
-	font-size: 12px;
+	font-size: 11px;
 	
 }
 .pop_tb_list_min button:hover{
@@ -1359,7 +1474,7 @@ a {
 .pop_reg_tb_list {
 	table-layout: fixed;
 	width: 100%;
-	min-width:150px;
+	min-width: 150px;
 }
 
 .pop_reg_tb_list th {
@@ -1411,7 +1526,6 @@ a {
 	border: solid 1px #aaaaaa;
 	padding:0;
 }
-
 
 /* 마우스 우클릭 context-menu */
 .context-menu{
@@ -1481,3 +1595,96 @@ select .used{
 
 /* 2020.07.22 datepicker z-index 조정 */
 .ui-datepicker{ z-index: 9999 !important;}
+
+/* 2020.08.07. 지도 검색  */
+.main_search_title {
+	color:#ffffff;
+	font-size:12px;
+	font-weight:bold;
+}
+
+
+/* 2020.08.14 지도 tool_tip */
+.toolTipLayer {
+	display: none;
+	position: absolute;
+	/* border:solid 1px #004080; */
+	/* border-radius: 20px; */
+	cursor: move;
+	z-index: 999999;
+}
+
+.toolTipLayer table{
+	max-width:150px;
+	min-height:60px;
+	/* border-radius: 20px; */
+	background:#ffffff;
+}
+
+.toolTipLayer .tb_list td{
+	padding: 2px 2px;
+	/* clear: both; */
+}
+
+
+.etcToolTipLayer {
+	display: none;
+	position: absolute;
+	/* border:solid 1px #004080; */
+	/* border-radius: 20px; */
+	cursor: move;
+	z-index: 999999;
+}
+
+.etcToolTipLayer table{
+	max-width:200px;
+	min-height:70px;
+	/* border-radius: 20px; */
+	background:#ffffff;
+}
+
+.etcToolTipLayer .tb_list td{
+	padding: 2px 2px;
+	/* clear: both; */
+}
+/* 2020.08.14 지도 tool_tip */
+
+
+/* .leaflet-control-zoom-display {
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    padding-top: 0.3em;
+    font: bold 12px/20px Tahoma, Verdana, sans-serif;
+} */
+
+
+/* 20200907 보더 */
+.border_black{
+	border: solid 1px #000000 !important;
+}
+
+.border_red {
+	border: solid 1px #ff0080 !important;
+}
+
+.border_gray{
+	border: solid 1px #c0c0c0 !important;
+}
+
+.border_orange{
+	border: solid 1px #ff8000 !important;
+}
+
+.border_purple{
+	border: solid 1px #8000ff !important;
+}
+
+/* 20200907 보더 */
+

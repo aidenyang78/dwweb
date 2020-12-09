@@ -12,7 +12,7 @@
 	</bean>
 	
 	<!-- //사용자추가 -->
-	<bean name="propertyUtil" class="com.core.comm.util.PropertiesUtil">
+	<bean name="propertyUtil" class="com.cmm.util.PropertiesUtil">
 		<property name="locations">
 			<list>
 				<value>classpath:/egovframework/properties/*.properties</value>

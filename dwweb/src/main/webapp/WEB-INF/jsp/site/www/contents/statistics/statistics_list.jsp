@@ -347,7 +347,7 @@ function fnPrint(type){
                                     <tr align="left" valign="top">
                                         <td width="21" height="53" background="${pageContext.request.contextPath}/images/img/content_bg_crop_top_left.png" ></td>
                                         <td height="53" background="${pageContext.request.contextPath}/images/img/content_bg_crop_top_center.png">
-                                                left 제목 입니다.
+<!-- left 제목 입니다. -->
                                         </td>
                                         <td width="17" height="53" background="${pageContext.request.contextPath}/images/img/content_bg_crop_top_right.png"></td>
                                     </tr>
@@ -360,7 +360,7 @@ function fnPrint(type){
                                         -->
 <!-- //left drop down -->                                        
                                         <td background="${pageContext.request.contextPath}/images/img/content_bg_crop_middle_center.png" width="220px">
-											<div  style="min-height:926px;">
+											<div  style="min-height:926px;	position: relative;	height:926px; overflow: auto;">
 											    <ul>
 											        <li class="menu">
 											            <a><span id="list1002" data-districtCd='1002' class="top_list_on">평택시 서부</span></a>
@@ -420,7 +420,7 @@ function fnPrint(type){
                                     <tr align="left" valign="top">
                                         <td width="21" height="53" background="${pageContext.request.contextPath}/images/img/content_bg_right_crop_top_left.png"></td>
                                         <td height="53" background="${pageContext.request.contextPath}/images/img/content_bg_right_crop_top_center.png">
-                                                right 제목 입니다.
+<!-- right 제목 입니다. -->
                                         </td>
                                         <td width="17" height="53" background="${pageContext.request.contextPath}/images/img/content_bg_crop_top_right.png"></td>
                                     </tr>

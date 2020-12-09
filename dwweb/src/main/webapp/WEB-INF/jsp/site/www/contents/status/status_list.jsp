@@ -23,13 +23,24 @@ $(document).ready(function(){
 //검색
 function fnSearch(){
 	$("#pageNo").val('');
+	$("#linkedYn").val('N');
 	$("#frm").attr("method","get");
 	$("#frm").attr("actoin","${pageContext.request.contextPath}/management/listUser.do");
 	$("#frm").submit();
 }
 
+function fnSearchLinkedYn(val){
+	$("#pageNo").val('');
+	$("#linkedYn").val(val);
+	$("#frm").attr("method","get");
+	$("#frm").attr("actoin","${pageContext.request.contextPath}/management/listUser.do");
+	$("#frm").submit();
+	
+}
+
 function fnQuickSearch(stat){
 	//$("#fStatus > option[@value="+stat+"]").attr("selected","true");
+	$("#linkedYn").val('N');
 	$("#keyWord").val('');
 	$("#fStatus").val(stat).attr("selected","selected");
 	fnSearch();
@@ -64,6 +75,7 @@ function fnGoMap(polDistrict,routeCd,crossroadSeq,lat,lng){
 <input type="hidden" name="lat" id="lat"/>
 <input type="hidden" name="lng" id="lng"/>
 <input type="hidden" name="referer" id="referer" value="status"/>
+<input type="hidden" name="linkedYn" id="linkedYn" value="${param.linkedYn}" />
 <div id="contentWrapper">
 	<div id="contentLeft">
 		<jsp:include page="/WEB-INF/jsp/site/www/contents/include/left_menu.jsp"/> 
@@ -154,8 +166,19 @@ function fnGoMap(polDistrict,routeCd,crossroadSeq,lat,lng){
 																${liststatus.description}
 															</span>
 														</c:forEach>
+														
+														<c:choose>
+															<c:when test='${param.linkedYn eq ""or param.linkedYn eq null or param.linkedYn eq "N" }'>
+																<span class="btn_status_all pointer" onclick="fnSearchLinkedYn('Y');">연동건만 보기</span>
+															</c:when>
+															<c:otherwise>
+																<span class="btn_status_all pointer" onclick="fnSearchLinkedYn('N');">전체보기</span>
+															</c:otherwise>
+														</c:choose>
 													</td>
-													<td width="200px" class="right">총 <strong>${totErrCnt}</strong>건</td>
+													<td width="200px" class="right">
+														총 <strong>${totErrCnt}</strong>건
+													</td>
 												</tr>
 											</table>
 										</td>

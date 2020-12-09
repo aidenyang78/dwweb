@@ -23,11 +23,11 @@
 <table border="0" width="100%">
 	<tr>
 		<td class="naviText" align="left">교통신호 시설물 관리시스템 > ${naviText}</td>
-                 <td width="60" align="right" class="authorityText" >
-                 	<span class="pointer" onclick="fnGoMyInfo();">${NAME}</span> | </td>
+        <td width="200" align="right" class="authorityText">
+			<span class="pointer strong" onclick="fnGoMyInfo();">${NAME}</span> | </td>
 		<td width="60" class="naviText" align="right">
 			<a href="${pageContext.request.contextPath}/logout/logout.do" onMouseOut="fnSwapImgRestore()" onMouseOver="fnSwapImage('Image7','','${pageContext.request.contextPath}/images/img/logout_over.png',1)">
-				<img src="${pageContext.request.contextPath}/images/img/logout_nor.png" name="Image7" width="66" height="22" border="0"></a>
+				<img src="${pageContext.request.contextPath}/images/img/logout_nor.png" name="Image7" width="66" height="22" border="0" alt="로그아웃" title="로그아웃"></a>
 		</td>
 		<td width="30"></td>
 	</tr>

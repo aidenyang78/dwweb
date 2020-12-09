@@ -2,7 +2,305 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.site.contents.mgmtReg.MgmtReg">
 
+<!-- 신호관리대장 전체 카운트 -->
+	<select id="selectTotMgmtReg" parameterType="MgmtRegVo" resultType="Integer">
+		SELECT
+			COUNT(*) AS TOT
+		FROM MGMT_REG_INSTALL MRI
+		WHERE DEL_DATE IS NULL
+		<if test='searchDistrict != null and searchDistrict != ""'>
+			AND MRI.POL_DISTRICT = #{searchDistrict}
+		</if>
+		<if test='keyKind != null and keyKind == "routeNm"'>
+			AND MRI.ROUTE_NM LIKE CONCAT('%',#{keyWord},'%')
+		</if>
+		<if test='keyKind != null and keyKind == "crossroadNm"'>
+			AND MRI.CROSSROAD_NM LIKE CONCAT('%',#{keyWord},'%')
+		</if>
+		<if test='keyKind != null and keyKind == "crossroadCd"'>
+			AND MRI.CROSSROAD_CD = #{keyWord}
+		</if>
+	</select>
+	
+	<!-- 신호관리대장 리스트 조회 -->
+	<select id="selectListMgmtReg"  parameterType="MgmtRegVo" resultType="MgmtRegVo">
+		SELECT
+			MRI.MGMT_SEQ
+			,MRI.POL_NM
+			,MRI.POL_CD
+			,MRI.POL_DISTRICT
+			,MRI.ROUTE_CD
+			,MRI.ROUTE_NM
+			,MRI.LIGHT_NO1
+			,MRI.LIGHT_NO2
+			,MRI.LIGHT_NO3
+			<!-- ,INSTALL_DATE -->
+			,DATE_FORMAT(STR_TO_DATE(MRI.INSTALL_DATE, '%Y%m%d'),'%Y-%m-%d ') AS INSTALL_DATE
+			,MRI.CROSSROAD_CD
+			,MRI.CROSSROAD_NM
+			,MRI.INSTALL_ADDR_DTL1
+			,MRI.INSTALL_ADDR_DTL2
+			,MRI.INSTALL_ADDR_DTL3
+			,MRI.INSTALL_ADDR_DTL4
+			,MRI.INSTALL_ADDR_DTL5
+			,MRI.INSTALL_ADDR_DTL6
+			,MRI.TYPE_CONTROLL
+			,MRI.TYPE_ROAD
+			,MRI.DOC_STATUS
+			,MRI.CONTRADICTION_DETECTION
+			,MRI.REG_USERID
+			,MRI.REG_DATE
+		FROM MGMT_REG_INSTALL MRI
+		WHERE MRI.DEL_DATE IS NULL
+		<if test='searchDistrict != null and searchDistrict != ""'>
+			AND MRI.POL_DISTRICT = #{searchDistrict}
+		</if>
+		<if test='keyKind != null and keyKind == "routeNm"'>
+			AND MRI.ROUTE_NM LIKE CONCAT('%',#{keyWord},'%')
+		</if>
+		<if test='keyKind != null and keyKind == "crossroadNm"'>
+			AND MRI.CROSSROAD_NM LIKE CONCAT('%',#{keyWord},'%')
+		</if>
+		<if test='keyKind != null and keyKind == "crossroadCd"'>
+			AND MRI.CROSSROAD_CD = #{keyWord}
+		</if>
+		ORDER BY MRI.POL_DISTRICT, MRI.MGMT_SEQ DESC 
+		<!-- CAST(MRI.ROUTE_NM AS UNSIGNED), MRI.ROUTE_NM ASC --> 
+		<!-- MRI.MGMT_SEQ DESC -->
+		LIMIT #{limitStart}, #{limitEnd}
+	</select>
+	
+	<!-- 신호관리대장 조회 : 설치 정보 -->
+	<select id="selectMgmtRegInstall" parameterType="MgmtRegVo" resultType="MgmtRegVo">
+		SELECT
+			MRI.MGMT_SEQ
+			,MRI.POL_NM
+			,MRI.POL_CD
+			,MRI.POL_DISTRICT
+			,MRI.ROUTE_CD
+			,MRI.ROUTE_NM
+			,MRI.LIGHT_NO1
+			,MRI.LIGHT_NO2
+			,MRI.LIGHT_NO3
+			,INSTALL_DATE
+			,MRI.CROSSROAD_CD
+			,MRI.CROSSROAD_NM
+			,MRI.INSTALL_ADDR_DTL1
+			,MRI.INSTALL_ADDR_DTL2
+			,MRI.INSTALL_ADDR_DTL3
+			,MRI.INSTALL_ADDR_DTL4
+			,MRI.INSTALL_ADDR_DTL5
+			,MRI.INSTALL_ADDR_DTL6
+			,MRI.TYPE_CONTROLL
+			,MRI.TYPE_ROAD
+			,MRI.DOC_STATUS
+			,MRI.CONTRADICTION_DETECTION
+			,MRI.REG_USERID
+			,MRI.REG_DATE
+			,MRI.UPDT_USERID
+			,MRI.UPDT_DATE
+			,(SELECT NAME FROM USER_DETAIL WHERE USER_ID = UPDT_USERID LIMIT 0,1) AS MEMB_NM
+			,MRI.DEL_USERID
+			,MRI.DEL_DATE
+		FROM MGMT_REG_INSTALL MRI
+		WHERE MRI.DEL_DATE IS NULL
+		AND MRI.MGMT_SEQ = #{mgmtSeq}
+	</select>
 
+	<!-- 신호관리대장 중복 조회 -->
+	<select id="selectMgmtRegInstallDup" parameterType="MgmtRegVo" resultType="Int">
+		SELECT 
+			COUNT(MGMT_SEQ) AS CNT 
+		FROM MGMT_REG_INSTALL MRI
+		WHERE MRI.POL_CD = #{polCd} 
+		AND MRI.POL_DISTRICT = #{polDistrict} 
+		AND MRI.ROUTE_CD = #{routeCd} 
+		AND MRI.CROSSROAD_CD = #{crossroadCd} 
+		AND MRI.DEL_DATE IS NULL
+	</select>
+	
+	<!-- 신호관리대장 조회 : 공사일반 -->
+	<select id="selectMgmtRegConstruction"  parameterType="MgmtRegVo" resultType="MgmtRegVo">
+		SELECT
+			MRC.MGMT_SEQ
+			,MRC.SIGNAL_RULES
+			,MRC.SIGNAL_WIRING
+			,MRC.UPS_TYPE
+			,MRC.UPS_BAT_EXCHANGE_DATE
+			,MRC.CONSTRUCTOR_SIGNAL1
+			,MRC.CONSTRUCTOR_SIGNAL2
+			,MRC.CONSTRUCTOR_CTRL1
+			,MRC.CONSTRUCTOR_CTRL2
+			,MRC.CONSTRUCTOR_ENG1
+			,MRC.CONSTRUCTOR_ENG2
+			,MRC.CONSTRUCTION_EXPENSES
+		FROM MGMT_REG_CONSTRUCTION MRC
+		WHERE MRC.MGMT_SEQ = #{mgmtSeq}
+	</select>
+	
+	<!-- 신호관리대장 조회 : 교통신호등 -->
+	<select id="selectMgmtRegTrafficLight"  parameterType="MgmtRegVo" resultType="MgmtRegVo">
+		SELECT
+			MRTL.MGMT_SEQ
+			,MRTL.KIND_TRAFFIC_LIGHT1
+			,MRTL.KIND_TRAFFIC_LIGHT2
+			,MRTL.KIND_TRAFFIC_LIGHT3
+			,MRTL.KIND_TRAFFIC_LIGHT4
+			,MRTL.KIND_TRAFFIC_LIGHT5
+			,MRTL.KIND_TRAFFIC_LIGHT6
+			,MRTL.KIND_TRAFFIC_LIGHT7
+			,MRTL.KIND_TRAFFIC_LIGHT8
+			,MRTL.KIND_TRAFFIC_LIGHT9
+			,MRTL.KIND_TRAFFIC_LIGHT10
+			,MRTL.KIND_TRAFFIC_LIGHT11
+			,MRTL.KIND_TRAFFIC_LIGHT12
+			,MRTL.KIND_TRAFFIC_LIGHT13
+			,MRTL.KIND_TRAFFIC_LIGHT14
+			,MRTL.KIND_TRAFFIC_LIGHT15
+			,MRTL.KIND_TRAFFIC_LIGHT16
+			,MRTL.KIND_LAMP_WARNING1
+			,MRTL.KIND_LAMP_WARNING2
+			,MRTL.KIND_LAMP_WARNING3
+			,MRTL.KIND_LAMP_WARNING4
+			,MRTL.KIND_LAMP_WARNING5
+			,MRTL.KIND_LAMP_WARNING6
+			,MRTL.KIND_LAMP_WARNING7
+			,MRTL.KIND_LAMP_WARNING8
+			,MRTL.KIND_LAMP_WARNING9
+			,MRTL.KIND_LAMP_WARNING10
+			,MRTL.KIND_LAMP_WARNING11
+			,MRTL.KIND_LAMP_WARNING12
+			,MRTL.KIND_LAMP_VARIABLE1
+			,MRTL.KIND_LAMP_VARIABLE2
+			,MRTL.KIND_LAMP_VARIABLE3
+			,MRTL.KIND_LAMP_VARIABLE4
+			,MRTL.KIND_LAMP_VARIABLE5
+			,MRTL.KIND_LAMP_VARIABLE6
+			,MRTL.KIND_LAMP_VARIABLE7
+			,MRTL.KIND_LAMP_VARIABLE8
+			,MRTL.KIND_LAMP_VARIABLE9
+			,MRTL.KIND_LAMP_VARIABLE10
+			,MRTL.KIND_LAMP_VARIABLE11
+			,MRTL.KIND_LAMP_VARIABLE12
+			,MRTL.KIND_LAMP_WALKING1
+			,MRTL.KIND_LAMP_WALKING2
+			,MRTL.KIND_LAMP_WALKING3
+			,MRTL.KIND_LAMP_WALKING4
+			,MRTL.KIND_LAMP_WALKING5
+			,MRTL.KIND_LAMP_WALKING6
+			,MRTL.KIND_LAMP_WALKING7
+			,MRTL.KIND_LAMP_WALKING8
+			,MRTL.KIND_LAMP_WALKING9
+			,MRTL.KIND_LAMP_WALKING10
+			,MRTL.KIND_LAMP_WALKING11
+			,MRTL.KIND_LAMP_WALKING12
+		FROM MGMT_REG_TRAFFIC_LIGHT MRTL
+		WHERE MRTL.MGMT_SEQ = #{mgmtSeq}
+	</select>
+	
+	<!-- 신호관리대장 조회 : 신호등 지주 -->
+	<select id="selectMgmtRegPillar" parameterType="MgmtRegVo" resultType="MgmtRegVo">
+		SELECT
+			MRP.MGMT_SEQ
+			,MRP.PILLAR_VEHICLE_LAMP1
+			,MRP.PILLAR_VEHICLE_LAMP2
+			,MRP.PILLAR_VEHICLE_LAMP3
+			,MRP.PILLAR_VEHICLE_LAMP4
+			,MRP.PILLAR_VEHICLE_LAMP5
+			,MRP.PILLAR_WALKING_LAMP1
+			,MRP.PILLAR_WALKING_LAMP2
+			,MRP.PILLAR_TRAFFIC_LIGHT1
+			,MRP.PILLAR_TRAFFIC_LIGHT2
+			,MRP.PILLAR_TRAFFIC_LIGHT3
+			,MRP.PILLAR_TRAFFIC_LIGHT4
+			,MRP.PILLAR_TRAFFIC_LIGHT5
+			,MRP.PILLAR_INTEGRATION1
+			,MRP.PILLAR_INTEGRATION2
+			,MRP.ATTACH_ETC1
+		,MRP.ATTACH_ETC2
+		FROM MGMT_REG_PILLAR MRP
+		WHERE MRP.MGMT_SEQ = #{mgmtSeq}		
+	</select>
+	
+	<!-- 신호관리대장 조회 : 신호 제어기 -->
+	<select id="selectMgmtRegController" parameterType="MgmtRegVo" resultType="MgmtRegVo">
+		SELECT
+			MRC.MGMT_SEQ
+			,MRC.CTRL_ELECTRON
+			,MRC.CTRL_CYCLE
+			,MRC.CTRL_SENSITIVE
+			,MRC.SIGNAL_CYCLE1
+			,MRC.SIGNAL_CYCLE2
+			,MRC.SIGNAL_CYCLE3
+			,MRC.SIGNAL_CYCLE4
+			,MRC.SIGNAL_CYCLE5
+			,MRC.SIGNAL_CYCLE6
+			,MRC.SIGNAL_SEC1
+			,MRC.SIGNAL_SEC2
+			,MRC.SIGNAL_SEC3
+			,MRC.SIGNAL_SEC4
+			,MRC.SIGNAL_SEC5
+			,MRC.SIGNAL_SEC6
+			,MRC.SIGNAL_SEC_TOT
+			,MRC.CURRENT_SEL_TIME1
+			,MRC.CURRENT_SEL_TIME2
+			,MRC.CURRENT_SEL_TIME3
+			,MRC.CURRENT_SEL_TIME4
+			,MRC.CURRENT_SEL_TIME5
+			,MRC.CURRENT_SEL_TIME6
+			,MRC.CURRENT_SEL_TIME7
+			,MRC.CURRENT_TIME1
+			,MRC.CURRENT_TIME2
+			,MRC.CURRENT_TIME3
+			,MRC.CURRENT_TIME4
+			,MRC.CURRENT_TIME5
+			,MRC.CURRENT_TIME6
+			,MRC.CURRENT_TIME7
+			,MRC.SIGNAL_YELLOW1
+			,MRC.SIGNAL_YELLOW2
+			,MRC.SIGNAL_YELLOW3
+			,MRC.SIGNAL_YELLOW4
+			,MRC.SIGNAL_YELLOW5
+			,MRC.SIGNAL_YELLOW6
+			,MRC.SIGNAL_ALL_RED1
+			,MRC.SIGNAL_ALL_RED2
+			,MRC.SIGNAL_ALL_RED3
+			,MRC.SIGNAL_ALL_RED4
+			,MRC.SIGNAL_ALL_RED5
+			,MRC.SIGNAL_ALL_RED6
+			,MRC.SIGNAL_CROSSWALK1
+			,MRC.SIGNAL_CROSSWALK2
+			,MRC.SIGNAL_CROSSWALK3
+			,MRC.SIGNAL_CROSSWALK4
+			,MRC.SIGNAL_CROSSWALK5
+			,MRC.SIGNAL_CROSSWALK6
+		FROM MGMT_REG_CONTROLLER MRC
+		WHERE MRC.MGMT_SEQ = #{mgmtSeq}
+	</select>
+	
+	<select id="selectListSignalIcons" parameterType="IconVo" resultType="Integer">
+		SELECT
+			COUNT(SEQ) AS TOT_CNT
+		FROM SIGNAL_ICONS
+		WHERE DEL_DATE IS NULL
+		AND SEQ > 18
+	</select>
+	
+	<!-- <select id="selectListSignalIcons" parameterType="IconVo" resultType="IconVo">
+		SELECT
+			COUNT(*) OVER() AS TOT_CNT
+			,SEQ
+			,ICON_NM
+			,ICON_ORIGINAL_NM
+			,ICON_SAVE_PATH
+			,ICON_EXT
+			,ICON_SIZE
+		FROM SIGNAL_ICONS
+		WHERE DEL_DATE IS NULL
+		AND SEQ > 18
+		ORDER BY SEQ
+	</select> -->
+	
 	<!-- 신호관리대장 설치기본 정보 -->
 	<insert id="insertMgmtRegInstall" parameterType="MgmtRegVo" useGeneratedKeys="true" keyProperty="mgmtSeq">
 <!-- <selectKey keyProperty="mgmtSeq" resultType="String" order="AFTER">
@@ -28,10 +326,12 @@
 			,INSTALL_ADDR_DTL6
 			,TYPE_CONTROLL
 			,TYPE_ROAD
-			,LAT
-			,LNG
+			,DOC_STATUS
+			,CONTRADICTION_DETECTION
 			,REG_USERID
 			,REG_DATE
+			,UPDT_USERID
+			,UPDT_DATE
 		)VALUES(
 			#{polNm}
 			,#{polCd}
@@ -52,8 +352,10 @@
 			,#{installAddrDtl6, jdbcType=VARCHAR}
 			,#{typeControll, jdbcType=VARCHAR}
 			,#{typeRoad, jdbcType=VARCHAR}
-			,#{lat, jdbcType=VARCHAR}
-			,#{lng, jdbcType=VARCHAR}
+			,#{docStatus, jdbcType=VARCHAR}
+			,#{contradictionDetection, jdbcType=VARCHAR}
+			,#{regUserid}
+			,NOW()
 			,#{regUserid}
 			,NOW()
 		)
@@ -349,265 +651,6 @@
 		)
 	</insert>
 	
-	<!-- 신호관리대장 전체 카운트 -->
-	<select id="selectTotMgmtReg" parameterType="MgmtRegVo" resultType="Integer">
-		SELECT
-			COUNT(*) AS TOT
-		FROM MGMT_REG_INSTALL MRI
-		WHERE DEL_DATE IS NULL
-		<if test='searchDistrict != null and searchDistrict != ""'>
-			AND MRI.POL_DISTRICT = #{searchDistrict}
-		</if>
-		<if test='keyKind != null and keyKind == "routeNm"'>
-			AND MRI.ROUTE_NM LIKE CONCAT('%',#{keyWord},'%')
-		</if>
-		<if test='keyKind != null and keyKind == "crossroadNm"'>
-			AND MRI.CROSSROAD_NM LIKE CONCAT('%',#{keyWord},'%')
-		</if>
-		<if test='keyKind != null and keyKind == "crossroadCd"'>
-			AND MRI.CROSSROAD_CD = #{keyWord}
-		</if>
-	</select>
-	
-	<!-- 신호관리대장 리스트 조회 -->
-	<select id="selectListMgmtReg"  parameterType="MgmtRegVo" resultType="MgmtRegVo">
-		SELECT
-			MRI.MGMT_SEQ
-			,MRI.POL_NM
-			,MRI.POL_CD
-			,MRI.POL_DISTRICT
-			,MRI.ROUTE_CD
-			,MRI.ROUTE_NM
-			,MRI.LIGHT_NO1
-			,MRI.LIGHT_NO2
-			,MRI.LIGHT_NO3
-			<!-- ,INSTALL_DATE -->
-			,DATE_FORMAT(STR_TO_DATE(MRI.INSTALL_DATE, '%Y%m%d'),'%Y-%m-%d ') AS INSTALL_DATE
-			,MRI.CROSSROAD_CD
-			,MRI.CROSSROAD_NM
-			,MRI.INSTALL_ADDR_DTL1
-			,MRI.INSTALL_ADDR_DTL2
-			,MRI.INSTALL_ADDR_DTL3
-			,MRI.INSTALL_ADDR_DTL4
-			,MRI.INSTALL_ADDR_DTL5
-			,MRI.INSTALL_ADDR_DTL6
-			,MRI.TYPE_CONTROLL
-			,MRI.TYPE_ROAD
-			,MRI.LAT
-			,MRI.LNG
-			,MRI.REG_USERID
-			,MRI.REG_DATE
-		FROM MGMT_REG_INSTALL MRI
-		WHERE MRI.DEL_DATE IS NULL
-		<if test='searchDistrict != null and searchDistrict != ""'>
-			AND MRI.POL_DISTRICT = #{searchDistrict}
-		</if>
-		<if test='keyKind != null and keyKind == "routeNm"'>
-			AND MRI.ROUTE_NM LIKE CONCAT('%',#{keyWord},'%')
-		</if>
-		<if test='keyKind != null and keyKind == "crossroadNm"'>
-			AND MRI.CROSSROAD_NM LIKE CONCAT('%',#{keyWord},'%')
-		</if>
-		<if test='keyKind != null and keyKind == "crossroadCd"'>
-			AND MRI.CROSSROAD_CD = #{keyWord}
-		</if>
-		ORDER BY MRI.POL_DISTRICT, MRI.MGMT_SEQ DESC 
-		<!-- CAST(MRI.ROUTE_NM AS UNSIGNED), MRI.ROUTE_NM ASC --> 
-		<!-- MRI.MGMT_SEQ DESC -->
-		LIMIT #{limitStart}, #{limitEnd}
-	</select>
-	
-	<!-- 신호관리대장 조회 : 설치 정보 -->
-	<select id="selectMgmtRegInstall" parameterType="MgmtRegVo" resultType="MgmtRegVo">
-		SELECT
-			MRI.MGMT_SEQ
-			,MRI.POL_NM
-			,MRI.POL_CD
-			,MRI.POL_DISTRICT
-			,MRI.ROUTE_CD
-			,MRI.ROUTE_NM
-			,MRI.LIGHT_NO1
-			,MRI.LIGHT_NO2
-			,MRI.LIGHT_NO3
-			,INSTALL_DATE
-			,MRI.CROSSROAD_CD
-			,MRI.CROSSROAD_NM
-			,MRI.INSTALL_ADDR_DTL1
-			,MRI.INSTALL_ADDR_DTL2
-			,MRI.INSTALL_ADDR_DTL3
-			,MRI.INSTALL_ADDR_DTL4
-			,MRI.INSTALL_ADDR_DTL5
-			,MRI.INSTALL_ADDR_DTL6
-			,MRI.TYPE_CONTROLL
-			,MRI.TYPE_ROAD
-			,MRI.LAT
-			,MRI.LNG
-			,MRI.REG_USERID
-			,MRI.REG_DATE
-		FROM MGMT_REG_INSTALL MRI
-		WHERE MRI.DEL_DATE IS NULL
-		AND MRI.MGMT_SEQ = #{mgmtSeq}
-	</select>
-	
-	<!-- 신호관리대장 조회 : 공사일반 -->
-	<select id="selectMgmtRegConstruction"  parameterType="MgmtRegVo" resultType="MgmtRegVo">
-		SELECT
-			MRC.MGMT_SEQ
-			,MRC.SIGNAL_RULES
-			,MRC.SIGNAL_WIRING
-			,MRC.UPS_TYPE
-			,MRC.UPS_BAT_EXCHANGE_DATE
-			,MRC.CONSTRUCTOR_SIGNAL1
-			,MRC.CONSTRUCTOR_SIGNAL2
-			,MRC.CONSTRUCTOR_CTRL1
-			,MRC.CONSTRUCTOR_CTRL2
-			,MRC.CONSTRUCTOR_ENG1
-			,MRC.CONSTRUCTOR_ENG2
-			,MRC.CONSTRUCTION_EXPENSES
-		FROM MGMT_REG_CONSTRUCTION MRC
-		WHERE MRC.MGMT_SEQ = #{mgmtSeq}
-	</select>
-	
-	<!-- 신호관리대장 조회 : 교통신호등 -->
-	<select id="selectMgmtRegTrafficLight"  parameterType="MgmtRegVo" resultType="MgmtRegVo">
-		SELECT
-			MRTL.MGMT_SEQ
-			,MRTL.KIND_TRAFFIC_LIGHT1
-			,MRTL.KIND_TRAFFIC_LIGHT2
-			,MRTL.KIND_TRAFFIC_LIGHT3
-			,MRTL.KIND_TRAFFIC_LIGHT4
-			,MRTL.KIND_TRAFFIC_LIGHT5
-			,MRTL.KIND_TRAFFIC_LIGHT6
-			,MRTL.KIND_TRAFFIC_LIGHT7
-			,MRTL.KIND_TRAFFIC_LIGHT8
-			,MRTL.KIND_TRAFFIC_LIGHT9
-			,MRTL.KIND_TRAFFIC_LIGHT10
-			,MRTL.KIND_TRAFFIC_LIGHT11
-			,MRTL.KIND_TRAFFIC_LIGHT12
-			,MRTL.KIND_TRAFFIC_LIGHT13
-			,MRTL.KIND_TRAFFIC_LIGHT14
-			,MRTL.KIND_TRAFFIC_LIGHT15
-			,MRTL.KIND_TRAFFIC_LIGHT16
-			,MRTL.KIND_LAMP_WARNING1
-			,MRTL.KIND_LAMP_WARNING2
-			,MRTL.KIND_LAMP_WARNING3
-			,MRTL.KIND_LAMP_WARNING4
-			,MRTL.KIND_LAMP_WARNING5
-			,MRTL.KIND_LAMP_WARNING6
-			,MRTL.KIND_LAMP_WARNING7
-			,MRTL.KIND_LAMP_WARNING8
-			,MRTL.KIND_LAMP_WARNING9
-			,MRTL.KIND_LAMP_WARNING10
-			,MRTL.KIND_LAMP_WARNING11
-			,MRTL.KIND_LAMP_WARNING12
-			,MRTL.KIND_LAMP_VARIABLE1
-			,MRTL.KIND_LAMP_VARIABLE2
-			,MRTL.KIND_LAMP_VARIABLE3
-			,MRTL.KIND_LAMP_VARIABLE4
-			,MRTL.KIND_LAMP_VARIABLE5
-			,MRTL.KIND_LAMP_VARIABLE6
-			,MRTL.KIND_LAMP_VARIABLE7
-			,MRTL.KIND_LAMP_VARIABLE8
-			,MRTL.KIND_LAMP_VARIABLE9
-			,MRTL.KIND_LAMP_VARIABLE10
-			,MRTL.KIND_LAMP_VARIABLE11
-			,MRTL.KIND_LAMP_VARIABLE12
-			,MRTL.KIND_LAMP_WALKING1
-			,MRTL.KIND_LAMP_WALKING2
-			,MRTL.KIND_LAMP_WALKING3
-			,MRTL.KIND_LAMP_WALKING4
-			,MRTL.KIND_LAMP_WALKING5
-			,MRTL.KIND_LAMP_WALKING6
-			,MRTL.KIND_LAMP_WALKING7
-			,MRTL.KIND_LAMP_WALKING8
-			,MRTL.KIND_LAMP_WALKING9
-			,MRTL.KIND_LAMP_WALKING10
-			,MRTL.KIND_LAMP_WALKING11
-			,MRTL.KIND_LAMP_WALKING12
-		FROM MGMT_REG_TRAFFIC_LIGHT MRTL
-		WHERE MRTL.MGMT_SEQ = #{mgmtSeq}
-	</select>
-	
-	<!-- 신호관리대장 조회 : 신호등 지주 -->
-	<select id="selectMgmtRegPillar" parameterType="MgmtRegVo" resultType="MgmtRegVo">
-		SELECT
-			MRP.MGMT_SEQ
-			,MRP.PILLAR_VEHICLE_LAMP1
-			,MRP.PILLAR_VEHICLE_LAMP2
-			,MRP.PILLAR_VEHICLE_LAMP3
-			,MRP.PILLAR_VEHICLE_LAMP4
-			,MRP.PILLAR_VEHICLE_LAMP5
-			,MRP.PILLAR_WALKING_LAMP1
-			,MRP.PILLAR_WALKING_LAMP2
-			,MRP.PILLAR_TRAFFIC_LIGHT1
-			,MRP.PILLAR_TRAFFIC_LIGHT2
-			,MRP.PILLAR_TRAFFIC_LIGHT3
-			,MRP.PILLAR_TRAFFIC_LIGHT4
-			,MRP.PILLAR_TRAFFIC_LIGHT5
-			,MRP.PILLAR_INTEGRATION1
-			,MRP.PILLAR_INTEGRATION2
-			,MRP.ATTACH_ETC1
-		,MRP.ATTACH_ETC2
-		FROM MGMT_REG_PILLAR MRP
-		WHERE MRP.MGMT_SEQ = #{mgmtSeq}		
-	</select>
-	
-	<!-- 신호관리대장 조회 : 신호 제어기 -->
-	<select id="selectMgmtRegController" parameterType="MgmtRegVo" resultType="MgmtRegVo">
-		SELECT
-			MRC.MGMT_SEQ
-			,MRC.CTRL_ELECTRON
-			,MRC.CTRL_CYCLE
-			,MRC.CTRL_SENSITIVE
-			,MRC.SIGNAL_CYCLE1
-			,MRC.SIGNAL_CYCLE2
-			,MRC.SIGNAL_CYCLE3
-			,MRC.SIGNAL_CYCLE4
-			,MRC.SIGNAL_CYCLE5
-			,MRC.SIGNAL_CYCLE6
-			,MRC.SIGNAL_SEC1
-			,MRC.SIGNAL_SEC2
-			,MRC.SIGNAL_SEC3
-			,MRC.SIGNAL_SEC4
-			,MRC.SIGNAL_SEC5
-			,MRC.SIGNAL_SEC6
-			,MRC.SIGNAL_SEC_TOT
-			,MRC.CURRENT_SEL_TIME1
-			,MRC.CURRENT_SEL_TIME2
-			,MRC.CURRENT_SEL_TIME3
-			,MRC.CURRENT_SEL_TIME4
-			,MRC.CURRENT_SEL_TIME5
-			,MRC.CURRENT_SEL_TIME6
-			,MRC.CURRENT_SEL_TIME7
-			,MRC.CURRENT_TIME1
-			,MRC.CURRENT_TIME2
-			,MRC.CURRENT_TIME3
-			,MRC.CURRENT_TIME4
-			,MRC.CURRENT_TIME5
-			,MRC.CURRENT_TIME6
-			,MRC.CURRENT_TIME7
-			,MRC.SIGNAL_YELLOW1
-			,MRC.SIGNAL_YELLOW2
-			,MRC.SIGNAL_YELLOW3
-			,MRC.SIGNAL_YELLOW4
-			,MRC.SIGNAL_YELLOW5
-			,MRC.SIGNAL_YELLOW6
-			,MRC.SIGNAL_ALL_RED1
-			,MRC.SIGNAL_ALL_RED2
-			,MRC.SIGNAL_ALL_RED3
-			,MRC.SIGNAL_ALL_RED4
-			,MRC.SIGNAL_ALL_RED5
-			,MRC.SIGNAL_ALL_RED6
-			,MRC.SIGNAL_CROSSWALK1
-			,MRC.SIGNAL_CROSSWALK2
-			,MRC.SIGNAL_CROSSWALK3
-			,MRC.SIGNAL_CROSSWALK4
-			,MRC.SIGNAL_CROSSWALK5
-			,MRC.SIGNAL_CROSSWALK6
-		FROM MGMT_REG_CONTROLLER MRC
-		WHERE MRC.MGMT_SEQ = #{mgmtSeq}
-	</select>
-	
 	<!-- 신호관리대장 수정 : 설치정보 -->
 	<update id="updateMgmtRegInstall" parameterType="MgmtRegVo">
 		UPDATE MGMT_REG_INSTALL
@@ -630,8 +673,8 @@
 			,INSTALL_ADDR_DTL6 = #{installAddrDtl6, jdbcType=VARCHAR}
 			,TYPE_CONTROLL = #{typeControll, jdbcType=VARCHAR}
 			,TYPE_ROAD = #{typeRoad, jdbcType=VARCHAR}
-			,LAT = #{lat, jdbcType=VARCHAR}
-			,LNG = #{lng, jdbcType=VARCHAR}
+			,DOC_STATUS = #{docStatus, jdbcType=VARCHAR}
+			,CONTRADICTION_DETECTION = #{contradictionDetection, jdbcType=VARCHAR}
 			,UPDT_USERID = #{updtUserid}
 			,UPDT_DATE = NOW()
 		WHERE MGMT_SEQ = #{mgmtSeq}

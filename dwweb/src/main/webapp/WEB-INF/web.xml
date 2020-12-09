@@ -15,7 +15,7 @@
   </filter>
   <filter>
     <filter-name>https</filter-name>
-    <filter-class>com.core.comm.filter.HttpsFilter</filter-class>
+    <filter-class>com.cmm.filter.HttpsFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>https</filter-name>

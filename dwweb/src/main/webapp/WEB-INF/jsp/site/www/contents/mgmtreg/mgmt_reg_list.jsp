@@ -55,13 +55,14 @@ function fnUpdateMgmtReg(mgmtSeq){
 //삭제
 function fndeleteMgmtReg(mgmtSeq){
 	//alert(mgmtSeq + " : 삭제 ");
-	if(confirm('삭제 하시겠습니까?')){
+	if(confirm('삭제 하시겠습니까??')){
 		$("#mgmtSeq").val(mgmtSeq);
 		$("#frm").attr("action","${pageContext.request.contextPath}/mgmtreg/deleteMgmtRegAct.do");
 		$("#frm").attr("method","post");
-		$("#frm").submit();
-		
+		$("#frm").submit();		
 	}
+	
+	return false;
 }
 
 </script>
@@ -224,9 +225,9 @@ function fndeleteMgmtReg(mgmtSeq){
 														<th width="*"  class="th">기능</th>
 													</tr>
 												<c:forEach var="list" items="${listmgmt}" varStatus="status">
-													<tr class="pointer" onclick="fnUpdateMgmtReg('${list.mgmtSeq}');">
-														<td class="td center">${cntNo-status.index}</td>
-														<td class="td">
+													<tr class="pointer">
+														<td class="td center" onclick="fnUpdateMgmtReg('${list.mgmtSeq}');">${cntNo-status.index}</td>
+														<td class="td" onclick="fnUpdateMgmtReg('${list.mgmtSeq}');">
 															<c:choose>
 																<c:when test='${list.polDistrict eq "1001" }'>동부</c:when>
 																<c:when test='${list.polDistrict eq "1002" }'>서부</c:when>
@@ -234,9 +235,9 @@ function fndeleteMgmtReg(mgmtSeq){
 																<c:when test='${list.polDistrict eq "1004" }'>북부</c:when>
 															</c:choose>
 														</td>
-														<td class="td">${list.routeNm}</td>
-														<td class="td">${list.crossroadNm}</td>
-														<td class="td center">${list.installDate}</td>
+														<td class="td" onclick="fnUpdateMgmtReg('${list.mgmtSeq}');">${list.routeNm}</td>
+														<td class="td" onclick="fnUpdateMgmtReg('${list.mgmtSeq}');">${list.crossroadNm}</td>
+														<td class="td center" onclick="fnUpdateMgmtReg('${list.mgmtSeq}');">${list.installDate}</td>
 														<td class="td center">
 															<a href="javascript:;" onclick="fnUpdateMgmtReg('${list.mgmtSeq}');" class="btn_grayStyle01">수정</a>
 															<a href="javascript:;" onclick="fndeleteMgmtReg('${list.mgmtSeq}');" class="btn_redStyle01">삭제</a>

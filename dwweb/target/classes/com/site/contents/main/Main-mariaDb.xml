@@ -18,31 +18,63 @@
 	<!-- 교차로 리스트 조회 -->
 	<select id="selectMainCrossroadList" parameterType="MainVo" resultType="MainVo">
 		SELECT
-			MRI.SEQ
-			,MRI.POL_CD
-			,MRI.POL_DISTRICT
-			,MRI.ROUTE_NM
-			,MCI.SEQ AS CROSSROAD_SEQ
-			,MCI.ROUTE_CD
-			,MCI.CROSSROAD_NM
-			,MCI.LAT
-			,MCI.LNG
-			,MCI.LINKED_SEQ
+			DT.*
+			,INST.INSTALL_DATE
+		FROM(
+				SELECT
+					MRI.SEQ
+					,MRI.POL_CD
+					,MRI.POL_DISTRICT
+					,MRI.ROUTE_NM
+					,MCI.SEQ AS CROSSROAD_SEQ
+					,MCI.ROUTE_CD
+					,MCI.CROSSROAD_NM
+					,MCI.LAT
+					,MCI.LNG
+					,MCI.LINKED_SEQ
+				FROM MGMT_ROUTE_INFO MRI, MGMT_CROSSROAD_INFO MCI
+				WHERE MRI.POL_CD = MCI.POL_CD
+				AND MRI.POL_DISTRICT = MCI.POL_DISTRICT
+				AND MRI.SEQ = MCI.ROUTE_CD
+				AND MRI.DEL_DATE IS NULL
+				AND MCI.DEL_DATE IS NULL
+			<if test='keyWord != null and keyWord != ""'>
+				AND MCI.CROSSROAD_NM LIKE CONCAT('%',#{keyWord},'%')
+			</if>
+			)DT LEFT OUTER JOIN MGMT_REG_INSTALL INST
+								ON (
+									DT.POL_CD = INST.POL_CD
+									AND DT.POL_DISTRICT = INST.POL_DISTRICT
+									AND DT.ROUTE_CD = INST.ROUTE_CD
+									AND DT.CROSSROAD_SEQ = INST.CROSSROAD_CD
+								)
+		WHERE 1=1
+		AND INST.DEL_DATE IS NULL
+	<if test='stdDate != null and stdDate != ""'>
+		AND INST.INSTALL_DATE <![CDATA[>=]]> #{stdDate} 
+	</if>
+	<if test='endDate != null and endDate != ""'>
+		AND INST.INSTALL_DATE <![CDATA[<=]]> #{endDate}
+	</if>
+		ORDER  BY DT.POL_DISTRICT ASC ,DT.SEQ ASC
+	</select>
+	
+	
+	<select id="selectMainMapBounds" parameterType="MainVo" resultType="MainVo">
+		SELECT
+			MAX(MCI.LAT) AS MAX_LAT
+			,MAX(MCI.LNG) AS MAX_LNG
+			,MIN(MCI.LAT) AS MIN_LAT
+			,MIN(MCI.LNG) AS MIN_LNG
 		FROM MGMT_ROUTE_INFO MRI, MGMT_CROSSROAD_INFO MCI
 		WHERE MRI.POL_CD = MCI.POL_CD
 		AND MRI.POL_DISTRICT = MCI.POL_DISTRICT
 		AND MRI.SEQ = MCI.ROUTE_CD
 		AND MRI.DEL_DATE IS NULL
 		AND MCI.DEL_DATE IS NULL
-		ORDER BY MRI.POL_DISTRICT ASC
-			,MCI.SEQ ASC
-			<!-- ,CAST(MRI.ROUTE_NM AS UNSIGNED)
-			,MRI.ROUTE_NM ASC
-			,CAST(MCI.CROSSROAD_NM AS UNSIGNED)
-			,MCI.CROSSROAD_NM ASC -->
 	</select>
 	
-		<!-- 지도위 좌표 수정 실행  -->
+	<!-- 지도위 좌표 수정 실행  -->
 	<update id="updateCrossroadLatLngAjax"  parameterType="MainVo">
 		UPDATE MGMT_CROSSROAD_INFO
 			SET LAT = #{lat}
@@ -67,9 +99,12 @@
 			,MRI.MGMT_SEQ
 			,MRI.INSTALL_DATE
 			,CASE WHEN MRI.MGMT_SEQ IS NULL THEN 'N' ELSE 'Y' END AS INSTALL_YN
-			,IFNULL((SELECT STATUS FROM DW_ITS.STATUS WHERE NO = MCI.LINKED_SEQ),999) AS FAC_STATUS			
+			<!-- ,IFNULL((SELECT STATUS FROM DW_ITS.STATUS WHERE NO = MCI.LINKED_SEQ),999) AS FAC_STATUS -->			
+			,999 AS FAC_STATUS
 		FROM MGMT_CROSSROAD_INFO MCI LEFT OUTER JOIN MGMT_REG_INSTALL MRI
 			ON MCI.POL_CD = MRI.POL_CD
+			AND MRI.DEL_DATE IS NULL 
+			AND MRI.DEL_DATE IS NULL
 			AND MCI.POL_DISTRICT = MRI.POL_DISTRICT
 			AND MCI.ROUTE_CD = MRI.ROUTE_CD
 			AND MCI.SEQ = MRI.CROSSROAD_CD
@@ -95,18 +130,37 @@
 			,MRI.MGMT_SEQ
 			,MRI.INSTALL_DATE
 			,CASE WHEN MRI.MGMT_SEQ IS NULL THEN 'N' ELSE 'Y' END AS INSTALL_YN
-			,IFNULL((SELECT STATUS FROM DW_ITS.STATUS WHERE NO = MCI.LINKED_SEQ),999) AS FAC_STATUS
+			<!-- ,IFNULL((SELECT STATUS FROM DW_ITS.STATUS WHERE NO = MCI.LINKED_SEQ),999) AS FAC_STATUS -->
+			,999 AS FAC_STATUS
+		<if test='lat != null and lat !="" and lng != null and lng != ""'>
+			,( 6371 * ACOS(COS(RADIANS(#{lat})) * COS(RADIANS(MCI.LAT)) * COS( RADIANS(MCI.LNG) - RADIANS(#{lng})) + SIN(RADIANS(#{lat})) * SIN(RADIANS(MCI.LAT))) ) AS DISTANCE 	
+		</if>
 		FROM MGMT_CROSSROAD_INFO MCI LEFT OUTER JOIN MGMT_REG_INSTALL MRI
 			ON MCI.POL_CD = MRI.POL_CD
 			AND MCI.POL_DISTRICT = MRI.POL_DISTRICT
 			AND MCI.ROUTE_CD = MRI.ROUTE_CD
 			AND MCI.SEQ = MRI.CROSSROAD_CD
 		WHERE MCI.DEL_DATE IS NULL
+		AND MRI.DEL_DATE IS NULL
 		AND MCI.LAT IS NOT NULL
 		AND MCI.LNG IS NOT NULL
+	<if test='routeCd != null and routeCd !=""'>		
 		AND MCI.ROUTE_CD = #{routeCd}
+	</if>		
 	<if test='seq != null and seq !=""'>
 		AND MCI.SEQ = #{seq} 
+	</if>
+	<if test='listSeq != null and listSeq != ""'>
+		AND MCI.SEQ NOT IN(#{listSeq})
+	</if>
+	<if test='lat != null and lat !="" and lng != null and lng != ""'>
+		HAVING DISTANCE <![CDATA[<=]]> 3 
+		LIMIT 0 , 100
+	</if>
+
+	<if test='neLat != null and neLat != "" and  neLng != null and neLng != "" and swLat != null and swLat != "" and  swLng != null and swLng != ""'>
+		HAVING MCI.LAT BETWEEN #{swLat} AND #{neLat}
+				AND MCI.LNG BETWEEN #{swLng} AND #{neLng}
 	</if>
 	</select>
 	

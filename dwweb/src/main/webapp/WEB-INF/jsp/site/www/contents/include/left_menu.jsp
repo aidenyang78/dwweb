@@ -53,9 +53,9 @@ function fnSwapImage() { //v3.0
 </script>
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 	<tr valign="top" height="96">
-		<td><img
-			src="${pageContext.request.contextPath}/images/img/logo.png"
-			width="92" height="96"></td>
+		<td>
+			<img src="${pageContext.request.contextPath}/images/img/logo.png" width="92" height="96">
+		</td>
 	</tr>
 	<tr>
 		<td height="20px"></td>
@@ -65,13 +65,11 @@ function fnSwapImage() { //v3.0
 		<c:choose>
 			<c:when test='${param.menuSeq eq "1001" }'>
 				<a href="${pageContext.request.contextPath}/main/main.do?menuSeq=1001">
-					<img src="${pageContext.request.contextPath}/images/img/icon_map_over.png" width="92" height="96"></a>
+					<img src="${pageContext.request.contextPath}/images/img/icon_map_over.png" width="92" height="96" alt="지도 검색" title="지도 검색"></a>
 			</c:when>
 			<c:otherwise>
-				<a href="${pageContext.request.contextPath}/main/main.do?menuSeq=1001" onMouseOut="fnSwapImgRestore()"
-				onMouseOver="fnSwapImage('Image2','','${pageContext.request.contextPath}/images/img/icon_map_over.png',1)"><img
-					src="${pageContext.request.contextPath}/images/img/icon_map_nor.png"
-					name="Image2" width="92" height="96" border="0"></a>
+				<a href="${pageContext.request.contextPath}/main/main.do?menuSeq=1001" onMouseOut="fnSwapImgRestore()" onMouseOver="fnSwapImage('Image2','','${pageContext.request.contextPath}/images/img/icon_map_over.png',1)">
+					<img src="${pageContext.request.contextPath}/images/img/icon_map_nor.png" name="Image2" width="92" height="96" border="0" alt="지도 검색" title="지도 검색"></a>
 			</c:otherwise>
 		</c:choose>
 		</td>
@@ -82,81 +80,73 @@ function fnSwapImage() { //v3.0
 		<c:choose>
 			<c:when test='${param.menuSeq eq "1002" }'>
 				<a href="${pageContext.request.contextPath}/mgmtreg/listMgmtReg.do?menuSeq=1002">
-					<img src="${pageContext.request.contextPath}/images/img/icon_signal_over.png" width="92" height="96"></a>					
+					<img src="${pageContext.request.contextPath}/images/img/icon_signal_over.png" width="92" height="96" alt="신호관리 대장" title="신호관리 대장"></a>					
 			</c:when>
 			<c:otherwise>
-				<a href="${pageContext.request.contextPath}/mgmtreg/listMgmtReg.do?menuSeq=1002" onMouseOut="fnSwapImgRestore()"
-				onMouseOver="fnSwapImage('Image3','','${pageContext.request.contextPath}/images/img/icon_signal_over.png',1)"><img
-					src="${pageContext.request.contextPath}/images/img/icon_signal_nor.png"
-					name="Image3" width="92" height="96" border="0"></a>
+				<a href="${pageContext.request.contextPath}/mgmtreg/listMgmtReg.do?menuSeq=1002" onMouseOut="fnSwapImgRestore()" onMouseOver="fnSwapImage('Image3','','${pageContext.request.contextPath}/images/img/icon_signal_over.png',1)">
+				<img src="${pageContext.request.contextPath}/images/img/icon_signal_nor.png" name="Image3" width="92" height="96" border="0" alt="신호관리 대장" title="신호관리 대장"></a>
 			</c:otherwise>
 		</c:choose>
 		</td>
 	</tr>
 
-	<tr valign="top" height="96">
+	<%-- <tr valign="top" height="96">
 		<td>
 		<c:choose>
 			<c:when test='${param.menuSeq eq "1003" }'>
 				<a href="${pageContext.request.contextPath}/status/listStatus.do?menuSeq=1003">
-					<img src="${pageContext.request.contextPath}/images/img/icon_fclty_over.png" width="92" height="96"></a>
+					<img src="${pageContext.request.contextPath}/images/img/icon_fclty_over.png" width="92" height="96" alt="시설물 장애" title="시설물 장애"></a>
 			</c:when>
 			<c:otherwise>
-			<a href="${pageContext.request.contextPath}/status/listStatus.do?menuSeq=1003" onMouseOut="fnSwapImgRestore()"
-			onMouseOver="fnSwapImage('Image4','','${pageContext.request.contextPath}/images/img/icon_fclty_over.png',1)"><img
-				src="${pageContext.request.contextPath}/images/img/icon_fclty_nor.png"
-				name="Image4" width="92" height="96" border="0"></a>
+			<a href="${pageContext.request.contextPath}/status/listStatus.do?menuSeq=1003" onMouseOut="fnSwapImgRestore()" onMouseOver="fnSwapImage('Image4','','${pageContext.request.contextPath}/images/img/icon_fclty_over.png',1)">
+				<img src="${pageContext.request.contextPath}/images/img/icon_fclty_nor.png" name="Image4" width="92" height="96" border="0" alt="시설물 장애" title="시설물 장애"></a>
 			</c:otherwise>
 		</c:choose>
 		</td>
-	</tr>
+	</tr> --%>
 
 	<tr valign="top" height="96">
 		<td>
 		<c:choose>
 			<c:when test='${param.menuSeq eq "1004" }'>
 				<a href="${pageContext.request.contextPath}/statistics/listStatistics.do?menuSeq=1004&listType=txt">
-				<img src="${pageContext.request.contextPath}/images/img/icon_chart_over.png" width="92" height="96"></a>
+				<img src="${pageContext.request.contextPath}/images/img/icon_chart_over.png" width="92" height="96" alt="시설물 통계" title="시설물 통계"></a>
 			</c:when>
 			<c:otherwise>
-			<a href="${pageContext.request.contextPath}/statistics/listStatistics.do?menuSeq=1004&listType=txt" onMouseOut="fnSwapImgRestore()"
-			onMouseOver="fnSwapImage('Image5','','${pageContext.request.contextPath}/images/img/icon_chart_over.png',1)"><img
-				src="${pageContext.request.contextPath}/images/img/icon_chart_nor.png"
-				name="Image5" width="92" height="96" border="0"></a>
+			<a href="${pageContext.request.contextPath}/statistics/listStatistics.do?menuSeq=1004&listType=txt" onMouseOut="fnSwapImgRestore()" onMouseOver="fnSwapImage('Image5','','${pageContext.request.contextPath}/images/img/icon_chart_over.png',1)">
+				<img src="${pageContext.request.contextPath}/images/img/icon_chart_nor.png" name="Image5" width="92" height="96" border="0" alt="시설물 통계" title="시설물 통계"></a>
 			</c:otherwise>
 		</c:choose>
 		</td>
 	</tr>
-
+<c:if test ='${USER_MODIFY eq 1 and MAP_EDIT eq 1}'>
+	<tr valign="middle" height="96">
+		<td class="center">
+		<c:choose>
+			<c:when test='${param.menuSeq eq "1006"}'>
+				<h2 id="tmp" class="tmp_on">
+					<a href="${pageContext.request.contextPath}/crossroadinfo/listCrossroadInfo.do?menuSeq=1006" title="교차로 관리">교차로<br/>관리</a>
+				</h2>
+			</c:when>
+			<c:otherwise>
+				<h2 id="tmp" class="tmp" onMouseOut="fnTmpOver();" onMouseOver="fnTmpOver('on')">
+					<a href="${pageContext.request.contextPath}/crossroadinfo/listCrossroadInfo.do?menuSeq=1006" title="교차로 관리">교차로<br/>관리</a>
+				</h2>
+			</c:otherwise>
+		</c:choose>
+		</td>
+	</tr>
+</c:if>	
 	<tr valign="top" height="96">
 		<td>
 		<c:choose>
 			<c:when test='${param.menuSeq eq "1005" }'>
 				<a href="${pageContext.request.contextPath}/config/config.do?menuSeq=1005">
-					<img name="Image6" src="${pageContext.request.contextPath}/images/img/icon_setting_over.png" width="92" height="96"></a>
+					<img name="Image6" src="${pageContext.request.contextPath}/images/img/icon_setting_over.png" width="92" height="96" alt="설정" title="설정"></a>
 			</c:when>
 			<c:otherwise>
-				<a href="${pageContext.request.contextPath}/config/config.do?menuSeq=1005"
-			onMouseOut="fnSwapImgRestore()"
-			onMouseOver="fnSwapImage('Image6','','${pageContext.request.contextPath}/images/img/icon_setting_over.png',1)"><img
-				src="${pageContext.request.contextPath}/images/img/icon_setting_nor.png"
-				name="Image6" width="92" height="96" border="0"></a>
-			</c:otherwise>
-		</c:choose>
-		</td>
-	</tr>
-	<tr valign="top" height="96">
-		<td class="center">
-		<c:choose>
-			<c:when test='${param.menuSeq eq "1006"}'>
-				<h2 id="tmp" class="tmp_on">
-					<a href="${pageContext.request.contextPath}/crossroadinfo/listCrossroadInfo.do?menuSeq=1006">교차로<br/>관리</a>
-				</h2>
-			</c:when>
-			<c:otherwise>
-				<h2 id="tmp" class="tmp" onMouseOut="fnTmpOver();" onMouseOver="fnTmpOver('on')">
-					<a href="${pageContext.request.contextPath}/crossroadinfo/listCrossroadInfo.do?menuSeq=1006">교차로<br/>관리</a>
-				</h2>
+				<a href="${pageContext.request.contextPath}/config/config.do?menuSeq=1005" onMouseOut="fnSwapImgRestore()" onMouseOver="fnSwapImage('Image6','','${pageContext.request.contextPath}/images/img/icon_setting_over.png',1)">
+					<img src="${pageContext.request.contextPath}/images/img/icon_setting_nor.png" name="Image6" width="92" height="96" border="0" alt="설정" title="설정"></a>
 			</c:otherwise>
 		</c:choose>
 		</td>
